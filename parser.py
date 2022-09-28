@@ -30,7 +30,11 @@ class MyHTMLParser(HTMLParser):
         self.capacity = ""
         self.credits = ""
         self.level = ""
-
+        self.mon = ""
+        self.tues = ""
+        self.wed = ""
+        self.thur = ""
+        self.fri = ""
         # Set of meetings in the current course
         self.meetings = list()
         self.meeting = ""
@@ -52,14 +56,36 @@ class MyHTMLParser(HTMLParser):
         self.capacity = ""
         self.credits = ""
         self.level = ""
+        self.mon = ""
+        self.tues = ""
+        self.wed = ""
+        self.thur = ""
+        self.fri = ""
         self.row_index = -1
         self.cell_index = -1
+
+    # Method to check what days have classes
+    def check_meeting(self):
+        # create a list of all possible meeting types that can have classes
+        meetingtypes = ['LEC', 'LAB', 'SEM']
+        # parse each meeting by lec,lab,sem, and exam
+        for meeting in self.meetings:
+            for meetingtype in meetingtypes:
+                # check for all meeting types that can have classes
+                if meetingtype in meeting:
+                    # if found and lectures on weekdays and 'yes' to csv to indicate what days a class is available 
+                    if 'Mon' in meeting: self.mon = 'Yes'
+                    if 'Tues' in meeting: self.tues = 'Yes'
+                    if 'Wed' in meeting: self.wed = 'Yes'
+                    if 'Thur' in meeting: self.thur = 'Yes'
+                    if 'Fri' in meeting: self.fri = 'Yes'
 
     # Method to add a parsed course to the courses list
     def add_course(self):
         # If there is a meeting to add still we must add it to the list
         if (self.meeting != ""):
             self.meetings.append(self.meeting)
+            self.check_meeting()    
             self.meeting = ""
         # If this is the last cell in the row then add this new course to the list
         self.courses.append([
@@ -71,7 +97,12 @@ class MyHTMLParser(HTMLParser):
             self.professor,
             self.capacity,
             self.credits,
-            self.level
+            self.level,
+            self.mon,
+            self.tues,
+            self.wed,
+            self.thur,
+            self.fri,
         ])
         self.clear()
 
@@ -185,7 +216,7 @@ def convertToCSV(outfile, input_file):
     output.info(f"Creating CSV file: '{outfile + '.csv'}'")
     csv_file = open(outfile+".csv", 'w', encoding='UTF8', newline='')
     writer = csv.writer(csv_file)
-    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level'])
+    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])
     for course in parser.courses:
         writer.writerow(course)
     csv_file.close()
