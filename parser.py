@@ -35,6 +35,10 @@ class MyHTMLParser(HTMLParser):
         self.wed = ""
         self.thur = ""
         self.fri = ""
+        self.lec = ""
+        self.lab = ""
+        self.sem = ""
+        self.de = ""
         # Set of meetings in the current course
         self.meetings = list()
         self.meeting = ""
@@ -61,6 +65,10 @@ class MyHTMLParser(HTMLParser):
         self.wed = ""
         self.thur = ""
         self.fri = ""
+        self.lec = ""
+        self.lab = ""
+        self.sem = ""
+        self.de = ""
         self.row_index = -1
         self.cell_index = -1
 
@@ -70,9 +78,13 @@ class MyHTMLParser(HTMLParser):
         meetingtypes = ['LEC', 'LAB', 'SEM']
         # parse each meeting by lec,lab,sem, and exam
         for meeting in self.meetings:
+            if 'Distance Education' in meeting: self.de = 'Yes'
             for meetingtype in meetingtypes:
                 # check for all meeting types that can have classes
                 if meetingtype in meeting:
+                    if meetingtype == 'LEC': self.lec = 'Yes'
+                    elif meetingtype == 'LAB': self.lab = 'Yes'
+                    elif meetingtype == 'SEM': self.sem = 'Yes'
                     # if found and lectures on weekdays and 'yes' to csv to indicate what days a class is available 
                     if 'Mon' in meeting: self.mon = 'Yes'
                     if 'Tues' in meeting: self.tues = 'Yes'
@@ -103,6 +115,10 @@ class MyHTMLParser(HTMLParser):
             self.wed,
             self.thur,
             self.fri,
+            self.lec,
+            self.lab,
+            self.sem,
+            self.de,
         ])
         self.clear()
 
@@ -216,7 +232,7 @@ def convertToCSV(outfile, input_file):
     output.info(f"Creating CSV file: '{outfile + '.csv'}'")
     csv_file = open(outfile+".csv", 'w', encoding='UTF8', newline='')
     writer = csv.writer(csv_file)
-    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'])
+    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Lecture', 'Lab', 'Seminar', 'DE'])
     for course in parser.courses:
         writer.writerow(course)
     csv_file.close()
