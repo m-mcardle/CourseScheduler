@@ -43,6 +43,8 @@ class MyHTMLParser(HTMLParser):
         self.meetings = list()
         self.meeting = ""
 
+        # Number of meetings in a current course
+        self.numMeetings = 0
         # row_index used to tell which column we are in on the table
         self.row_index = -1
         # cell_index used to tell which row we are at in the cell (for meeting info)
@@ -69,6 +71,7 @@ class MyHTMLParser(HTMLParser):
         self.lab = ""
         self.sem = ""
         self.de = ""
+        self.numMeetings = 0
         self.row_index = -1
         self.cell_index = -1
 
@@ -78,6 +81,7 @@ class MyHTMLParser(HTMLParser):
         meetingtypes = ['LEC', 'LAB', 'SEM']
         # parse each meeting by lec,lab,sem, and exam
         for meeting in self.meetings:
+            print("Metting is " + meeting)
             if 'Distance Education' in meeting: self.de = 'Yes'
             for meetingtype in meetingtypes:
                 # check for all meeting types that can have classes
@@ -86,11 +90,21 @@ class MyHTMLParser(HTMLParser):
                     elif meetingtype == 'LAB': self.lab = 'Yes'
                     elif meetingtype == 'SEM': self.sem = 'Yes'
                     # if found and lectures on weekdays and 'yes' to csv to indicate what days a class is available 
-                    if 'Mon' in meeting: self.mon = 'Yes'
-                    if 'Tues' in meeting: self.tues = 'Yes'
-                    if 'Wed' in meeting: self.wed = 'Yes'
-                    if 'Thur' in meeting: self.thur = 'Yes'
-                    if 'Fri' in meeting: self.fri = 'Yes'
+                    if 'Mon' in meeting: 
+                        self.mon = 'Yes' 
+                        self.numMeetings += 1
+                    if 'Tues' in meeting: 
+                        self.tues = 'Yes'
+                        self.numMeetings += 1
+                    if 'Wed' in meeting: 
+                        self.wed = 'Yes'
+                        self.numMeetings += 1
+                    if 'Thur' in meeting: 
+                        self.thur = 'Yes'
+                        self.numMeetings += 1
+                    if 'Fri' in meeting: 
+                        self.fri = 'Yes'
+                        self.numMeetings += 1
 
     # Method to add a parsed course to the courses list
     def add_course(self):
@@ -119,6 +133,7 @@ class MyHTMLParser(HTMLParser):
             self.lab,
             self.sem,
             self.de,
+            self.numMeetings,
         ])
         self.clear()
 
@@ -232,7 +247,7 @@ def convertToCSV(outfile, input_file):
     output.info(f"Creating CSV file: '{outfile + '.csv'}'")
     csv_file = open(outfile+".csv", 'w', encoding='UTF8', newline='')
     writer = csv.writer(csv_file)
-    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Lecture', 'Lab', 'Seminar', 'DE'])
+    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Lecture', 'Lab', 'Seminar', 'DE', "# of Meetings"])
     for course in parser.courses:
         writer.writerow(course)
     csv_file.close()
