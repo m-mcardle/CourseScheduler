@@ -4,6 +4,7 @@ from enum import Enum
 import json
 import sys
 import output
+import time
 
 class Column(Enum):
     TERM = 0
@@ -15,6 +16,29 @@ class Column(Enum):
     CAPACITY = 6
     CREDITS = 7
     LEVEL = 8
+
+outputColumns = [
+    'Term',
+    'Status',
+    'Section Name and Title',
+    'Location',
+    'Meeting Information',
+    'Faculty',
+    'Available/Capacity',
+    'Credits',
+    'Academic Level',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Lecture',
+    'Lab',
+    'Seminar',
+    'DE',
+    'Morning',
+    'Afternoon'
+]
 
 class MyHTMLParser(HTMLParser):
     def __init__(self):
@@ -39,6 +63,8 @@ class MyHTMLParser(HTMLParser):
         self.lab = ""
         self.sem = ""
         self.de = ""
+        self.morning = ""
+        self.afternoon = ""
         # Set of meetings in the current course
         self.meetings = list()
         self.meeting = ""
@@ -69,28 +95,47 @@ class MyHTMLParser(HTMLParser):
         self.lab = ""
         self.sem = ""
         self.de = ""
+        self.morning = ""
+        self.afternoon = ""
         self.row_index = -1
         self.cell_index = -1
 
     # Method to check what days have classes
     def check_meeting(self):
         # create a list of all possible meeting types that can have classes
-        meetingtypes = ['LEC', 'LAB', 'SEM']
+        meetingTypes = ['LEC', 'LAB', 'SEM']
         # parse each meeting by lec,lab,sem, and exam
         for meeting in self.meetings:
+            rows = meeting.split('\n')
+            typeAndDays = rows[0]
+            times = rows[1].split(' - ')
+
             if 'Distance Education' in meeting: self.de = 'Yes'
-            for meetingtype in meetingtypes:
+            for meetingType in meetingTypes:
                 # check for all meeting types that can have classes
-                if meetingtype in meeting:
-                    if meetingtype == 'LEC': self.lec = 'Yes'
-                    elif meetingtype == 'LAB': self.lab = 'Yes'
-                    elif meetingtype == 'SEM': self.sem = 'Yes'
+                if meetingType in typeAndDays:
+                    if meetingType == 'LEC': self.lec = 'Yes'
+                    elif meetingType == 'LAB': self.lab = 'Yes'
+                    elif meetingType == 'SEM': self.sem = 'Yes'
                     # if found and lectures on weekdays and 'yes' to csv to indicate what days a class is available 
-                    if 'Mon' in meeting: self.mon = 'Yes'
-                    if 'Tues' in meeting: self.tues = 'Yes'
-                    if 'Wed' in meeting: self.wed = 'Yes'
-                    if 'Thur' in meeting: self.thur = 'Yes'
-                    if 'Fri' in meeting: self.fri = 'Yes'
+                    if 'Mon' in typeAndDays: self.mon = 'Yes'
+                    if 'Tues' in typeAndDays: self.tues = 'Yes'
+                    if 'Wed' in typeAndDays: self.wed = 'Yes'
+                    if 'Thur' in typeAndDays: self.thur = 'Yes'
+                    if 'Fri' in typeAndDays: self.fri = 'Yes'
+
+                    try:
+                        startTime = time.strptime(times[0], "%I:%M%p")
+                        if startTime.tm_hour <= 11:
+                            self.morning = 'Yes'
+
+                        endTime = time.strptime(times[1], "%I:%M%p")
+                        if endTime.tm_hour >= 3:
+                            self.afternoon = 'Yes'
+                    except:
+                        None
+
+                    break
 
     # Method to add a parsed course to the courses list
     def add_course(self):
@@ -119,6 +164,8 @@ class MyHTMLParser(HTMLParser):
             self.lab,
             self.sem,
             self.de,
+            self.morning,
+            self.afternoon,
         ])
         self.clear()
 
@@ -232,7 +279,7 @@ def convertToCSV(outfile, input_file):
     output.info(f"Creating CSV file: '{outfile + '.csv'}'")
     csv_file = open(outfile+".csv", 'w', encoding='UTF8', newline='')
     writer = csv.writer(csv_file)
-    writer.writerow(['Term', 'Status', 'Section Name and Title', 'Location', 'Meeting Information', 'Faculty', 'Available/Capacity', 'Credits', 'Academic Level', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Lecture', 'Lab', 'Seminar', 'DE'])
+    writer.writerow(outputColumns)
     for course in parser.courses:
         writer.writerow(course)
     csv_file.close()
