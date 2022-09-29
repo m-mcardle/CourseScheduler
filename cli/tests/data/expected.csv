@@ -1,2 +1,2 @@
-Term,Status,Section Name and Title,Location,Meeting Information,Faculty,Available/Capacity,Credits,Academic Level,Monday,Tuesday,Wednesday,Thursday,Friday,Lecture,Lab,Seminar,DE,Morning,Afternoon
-Fall 2022,Open,ACCT*1220*0101 (6573) Intro Financial Accounting,Guelph,"['LEC Fri\n08:30AM - 10:20AM\nROZH, Room 104', 'SEM Mon\n04:30PM - 05:20PM\nMCKN, Room 225', 'EXAM Tues\n08:30AM - 10:30AM (2022/12/06)\nRoom TBA']",P. Lassou,3 / 48,0.50,Undergraduate,Yes,,,,Yes,Yes,,Yes,,Yes,Yes
+Term,Status,Section Name and Title,Location,Meeting Information,Faculty,Available/Capacity,Credits,Academic Level,Monday,Tuesday,Wednesday,Thursday,Friday,Lecture,Lab,Seminar,DE,Morning,Afternoon,# of Meetings
+Fall 2022,Open,ACCT*1220*0101 (6573) Intro Financial Accounting,Guelph,"['LEC Fri\n08:30AM - 10:20AM\nROZH, Room 104', 'SEM Mon\n04:30PM - 05:20PM\nMCKN, Room 225', 'EXAM Tues\n08:30AM - 10:30AM (2022/12/06)\nRoom TBA']",P. Lassou,3 / 48,0.50,Undergraduate,Yes,,,,Yes,Yes,,Yes,,Yes,Yes,2

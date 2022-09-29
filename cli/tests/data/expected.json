@@ -19,6 +19,7 @@
         "Seminar": "Yes",
         "DE": "",
         "Morning": "Yes",
-        "Afternoon": "Yes"
+        "Afternoon": "Yes",
+        "# of Meetings": "2"
     }
 ]

@@ -37,7 +37,8 @@ outputColumns = [
     'Seminar',
     'DE',
     'Morning',
-    'Afternoon'
+    'Afternoon',
+    "# of Meetings"
 ]
 
 class MyHTMLParser(HTMLParser):
@@ -69,6 +70,8 @@ class MyHTMLParser(HTMLParser):
         self.meetings = list()
         self.meeting = ""
 
+        # Number of meetings in a current course
+        self.numMeetings = 0
         # row_index used to tell which column we are in on the table
         self.row_index = -1
         # cell_index used to tell which row we are at in the cell (for meeting info)
@@ -95,6 +98,7 @@ class MyHTMLParser(HTMLParser):
         self.lab = ""
         self.sem = ""
         self.de = ""
+        self.numMeetings = 0
         self.morning = ""
         self.afternoon = ""
         self.row_index = -1
@@ -118,11 +122,21 @@ class MyHTMLParser(HTMLParser):
                     elif meetingType == 'LAB': self.lab = 'Yes'
                     elif meetingType == 'SEM': self.sem = 'Yes'
                     # if found and lectures on weekdays and 'yes' to csv to indicate what days a class is available 
-                    if 'Mon' in typeAndDays: self.mon = 'Yes'
-                    if 'Tues' in typeAndDays: self.tues = 'Yes'
-                    if 'Wed' in typeAndDays: self.wed = 'Yes'
-                    if 'Thur' in typeAndDays: self.thur = 'Yes'
-                    if 'Fri' in typeAndDays: self.fri = 'Yes'
+                    if 'Mon' in typeAndDays: 
+                        self.mon = 'Yes' 
+                        self.numMeetings += 1
+                    if 'Tues' in typeAndDays: 
+                        self.tues = 'Yes'
+                        self.numMeetings += 1
+                    if 'Wed' in typeAndDays: 
+                        self.wed = 'Yes'
+                        self.numMeetings += 1
+                    if 'Thur' in typeAndDays: 
+                        self.thur = 'Yes'
+                        self.numMeetings += 1
+                    if 'Fri' in typeAndDays: 
+                        self.fri = 'Yes'
+                        self.numMeetings += 1
 
                     try:
                         startTime = time.strptime(times[0], "%I:%M%p")
@@ -166,6 +180,7 @@ class MyHTMLParser(HTMLParser):
             self.de,
             self.morning,
             self.afternoon,
+            self.numMeetings,
         ])
         self.clear()
 
