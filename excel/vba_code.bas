@@ -40,11 +40,14 @@ End Sub
 ' @param Cell3 - Location of professor name cell to fill
 ' @param Cell4 - Location of status cell to fill
 ' @param userCourse - Course name entered by user
-Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As String, userCourse As String) As Long
+Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As String, userCourse As String, Silent As Boolean) As Boolean
     Worksheets("Calendar").Unprotect
     Dim LecTime As String
     Dim ProfName As String
     Dim CourseName As String
+
+    Dim Success As Boolean
+    Success = True
     
     Worksheets("Calendar").Range(Cell1).Value = userCourse
     
@@ -78,7 +81,10 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
             Dim NotValid As Boolean
             NotValid = CheckIfCourseSelected(CourseName, Cell1)
             If NotValid = True Then
-                MsgBox ("Error: Course is already selected.")
+                If Silent <> True Then
+                    MsgBox ("Error: Course is already selected.")
+                End If
+                Success = False
             Else
                 Dim CalendarEntries() As String
                 CalendarEntries = ParseMeetings(CourseName, LecTime, False)
@@ -112,7 +118,10 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
                         ' Check for collisions
                         If WorksheetFunction.CountA(Range(FillColumn & StartRow & ":" & FillColumn & EndRow)) <> 0 Then
                             Collision = True
-                            Call MsgBoxCriticalIcon
+                            If Silent <> True Then
+                                Call MsgBoxCriticalIcon
+                            End If
+                            Success = False
                             Worksheets("Calendar").Range(Cell2).Value = ""
                             Worksheets("Calendar").Range(Cell3).Value = ""
                             Worksheets("Calendar").Range(Cell4).Value = "Conflict"
@@ -144,41 +153,42 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
         End If
     End If
     Worksheets("Calendar").Protect
+    GetCourse = Success
 End Function
 
 ' Subroutine to submit a course name to add to calendar
 Sub Addbutton_Click()
     Dim userCourse As String
     userCourse = Worksheets("Calendar").Range("I34").Value
-    Call GetCourse("I34", "J34", "K34", "L34", userCourse)
+    Call GetCourse("I34", "J34", "K34", "L34", userCourse, False)
 End Sub
 
 ' Subroutine to submit a course name to add to calendar
 Sub Addbutton2_Click()
     Dim userCourse As String
     userCourse = Worksheets("Calendar").Range("I35").Value
-    Call GetCourse("I35", "J35", "K35", "L35", userCourse)
+    Call GetCourse("I35", "J35", "K35", "L35", userCourse, False)
 End Sub
 
 ' Subroutine to submit a course name to add to calendar
 Sub Addbutton3_Click()
     Dim userCourse As String
     userCourse = Worksheets("Calendar").Range("I36").Value
-    Call GetCourse("I36", "J36", "K36", "L36", userCourse)
+    Call GetCourse("I36", "J36", "K36", "L36", userCourse, False)
 End Sub
 
 ' Subroutine to submit a course name to add to calendar
 Sub Addbutton4_Click()
     Dim userCourse As String
     userCourse = Worksheets("Calendar").Range("I37").Value
-    Call GetCourse("I37", "J37", "K37", "L37", userCourse)
+    Call GetCourse("I37", "J37", "K37", "L37", userCourse, False)
 End Sub
 
 ' Subroutine to submit a course name to add to calendar
 Sub Addbutton5_Click()
     Dim userCourse As String
     userCourse = Worksheets("Calendar").Range("I38").Value
-    Call GetCourse("I38", "J38", "K38", "L38", userCourse)
+    Call GetCourse("I38", "J38", "K38", "L38", userCourse, False)
 End Sub
 
 ' Function to parse the meeting information into a format we can use to create entries on the calendar
@@ -493,28 +503,66 @@ Sub FilterCourse()
     If Worksheets("Calendar").CheckBoxes("FriCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=14, Criteria1:=""
     End If
-    If Worksheets("Calendar").CheckBoxes("MorningCheckbox").Value = 1 Then
+    If Worksheets("Calendar").CheckBoxes("LecCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=15, Criteria1:=""
     End If
-    If Worksheets("Calendar").CheckBoxes("AfternoonCheckbox").Value = 1 Then
+    If Worksheets("Calendar").CheckBoxes("LabCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=16, Criteria1:=""
     End If
-    If Worksheets("Calendar").CheckBoxes("LecCheckbox").Value = 1 Then
+    If Worksheets("Calendar").CheckBoxes("SemCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=17, Criteria1:=""
     End If
-    If Worksheets("Calendar").CheckBoxes("LabCheckbox").Value = 1 Then
-        Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=18, Criteria1:=""
-    End If
-    If Worksheets("Calendar").CheckBoxes("SemCheckbox").Value = 1 Then
+    If Worksheets("Calendar").CheckBoxes("MorningCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=19, Criteria1:=""
     End If
-    If Worksheets("Calendar").CheckBoxes("DECheckbox").Value = 1 Then
+    If Worksheets("Calendar").CheckBoxes("AfternoonCheckbox").Value = 1 Then
         Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=20, Criteria1:=""
     End If
-    
-    
+
+    Worksheets("Courses").Range("$A$1:$U$3036").AutoFilter Field:=18, Criteria1:=""
+
+    Dim Filtered As Range
+    Set Filtered = Worksheets("Courses").Range("$A$1:$U$3036").SpecialCells(xlCellTypeVisible)
+    Call SuggestCourses(Filtered)
+
     ' Clears all filters applied
-    ' Worksheets("Courses").AutoFilter.ShowAllData
+    Worksheets("Courses").AutoFilter.ShowAllData
+End Sub
+
+Sub SuggestCourses(Courses As Range)
+    Dim i As Integer
+    i = 0
+
+    ' how many courses are selected? CountA() check from I34:I38
+    ' handle collision
+    Dim MeetingSlots As Range
+    Set MeetingSlots = Worksheets("Calendar").Range("I34:I38")
+    
+    For Each Slot In MeetingSlots
+        Debug.Print(Slot.Item(1).Value)
+        If CStr(Slot.Item(1).Value) = "" Then
+            Dim j As Integer
+            j = 0
+            For Each Row In Courses.Rows
+                If j <> 0 Then
+                    Worksheets("Courses").Activate
+                    Row.Select
+
+                    Dim CourseName As String
+                    CourseName = CStr(Selection.Item(3).Value)
+                    
+                    Dim Success As Boolean
+                    Success = GetCourse("I" & CStr(34 + i), "J" & CStr(34 + i), "K" & CStr(34 + i), "L" & CStr(34 + i), CourseName, True)
+
+                    If Success = True Then
+                       Exit For 
+                    End If
+                End If
+                j = j + 1
+            Next Row
+        End If
+        i = i + 1
+    Next Slot
 End Sub
 
 ' Unchecks all checkboxes
