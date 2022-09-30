@@ -143,6 +143,7 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
                             Range(FillColumn & StartRow) = ShortName & vbNewLine & MeetingType
                             With Range(FillColumn & StartRow & ":" & FillColumn & EndRow)
                                 .Merge
+                                .Borders.Weight = xlMedium
                                 .HorizontalAlignment = xlCenter
                                 .VerticalAlignment = xlCenter
                             End With
@@ -270,10 +271,9 @@ Function ParseMeetings(CourseName As String, MeetingString As String, Delete As 
                         CalendarEntries(MeetingIndex, 4) = MeetingType
                     End If
                 End If
+            MeetingIndex = MeetingIndex + 1
             Next
         End If
-
-        MeetingIndex = MeetingIndex + 1
     Next
 
     ParseMeetings = CalendarEntries
@@ -437,6 +437,7 @@ Sub DeleteCells(Name As String, FillType As String, Day As String, ByRef Time() 
     Range(FillColumn & StartRow) = ""
     With Range(FillColumn & StartRow & ":" & FillColumn & EndRow)
         .UnMerge
+        .Borders.LineStyle = xlLineStyleNone
     End With
 End Sub
 
@@ -464,9 +465,9 @@ Function FindMeetingRange(StartTime As Date, EndTime As Date, Day As String) As 
 
     Output(1) = CStr(Worksheets("Calendar").Range("A3:A32").Find(StartTime).Row)
     If Minute(EndTime) <> 0 And Minute(EndTime) <> 30 Then
-        Output(2) = CStr(Worksheets("Calendar").Range("A3:A32").Find(DateAdd("n", 10, CStr(EndTime))).Row)
+        Output(2) = CStr(Worksheets("Calendar").Range("A3:A32").Find(DateAdd("n", 10, CStr(EndTime))).Row - 1)
     Else
-        Output(2) = CStr(Worksheets("Calendar").Range("A3:A32").Find(EndTime).Row)
+        Output(2) = CStr(Worksheets("Calendar").Range("A3:A32").Find(EndTime).Row - 1)
     End If
 
     FindMeetingRange = Output
@@ -539,7 +540,6 @@ Sub SuggestCourses(Courses As Range)
     Set MeetingSlots = Worksheets("Calendar").Range("I34:I38")
     
     For Each Slot In MeetingSlots
-        Debug.Print(Slot.Item(1).Value)
         If CStr(Slot.Item(1).Value) = "" Then
             Dim j As Integer
             j = 0
