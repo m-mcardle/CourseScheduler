@@ -474,3 +474,51 @@ Sub ClearAll()
     End If
     Worksheets("Calendar").Protect
 End Sub
+
+' Filters courses in courses.csv by checked preferences
+Sub FilterCourse()
+    Worksheets("Courses").Activate
+    If Worksheets("Calendar").CheckBoxes("MonCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Mon*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("TuesCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Tues*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("WedCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Wed*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("ThursCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Thur*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("FriCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Fri*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("MorningCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*AM*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("AfternoonCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*PM*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("LecCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*LEC*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("LabCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*LAB*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("SemCheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*SEM*"
+    End If
+    If Worksheets("Calendar").CheckBoxes("DECheckbox").Value = 1 Then
+        Worksheets("Courses").Range("A1").AutoFilter Field:=5, Criteria1:="*Distance Education*"
+    End If
+    
+    ' Clears all filters applied
+    ' Worksheets("Courses").AutoFilter.ShowAllData
+End Sub
+
+' Unchecks all checkboxes
+Sub UncheckBoxes()
+    For Each box In ActiveSheet.CheckBoxes
+        box.Value = xlOff
+    Next box
+End Sub
