@@ -33,4 +33,4 @@ Full design documentation for this project can be found in the GitLab Wiki.
 
 
 # Video Demo
-[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/tNdpDgYqR6ri5FdKE5Avqx?)
+
