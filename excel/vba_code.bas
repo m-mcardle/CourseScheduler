@@ -89,6 +89,11 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
                 Dim CalendarEntries() As String
                 CalendarEntries = ParseMeetings(CourseName, LecTime, False)
 
+                If IsEmpty(CalendarEntries) Then
+                    Success = False
+                    GetCourse = Success
+                End If
+
                 Dim ShortName As String
                 ShortName = CalendarEntries(0, 3)
 
@@ -197,6 +202,10 @@ End Sub
 ' @param MeetingString - meeting information in raw string format
 ' @param Delete - boolean to determine if this is a delete operation or an addition operation
 Function ParseMeetings(CourseName As String, MeetingString As String, Delete As Boolean) As String()
+    ' x - Max of 5 meetings?
+    ' y - Output of GetCells = Column, StartRow, EndRow
+    Dim CalendarEntries(5, 5) As String
+
     Dim Str1 As String
     Dim Str2 As String
     
@@ -204,6 +213,7 @@ Function ParseMeetings(CourseName As String, MeetingString As String, Delete As 
 
     ' This ensures that we have a valid meeting string before parsing it
     If Len(MeetingString) < 5 Then
+        ParseMeetings = CalendarEntries
         Exit Function
     End If
 
@@ -218,10 +228,6 @@ Function ParseMeetings(CourseName As String, MeetingString As String, Delete As 
     Dim Days() As String
     Dim MeetingTime As String
     Dim Location As String
-
-    ' x - Max of 5 meetings?
-    ' y - Output of GetCells = Column, StartRow, EndRow
-    Dim CalendarEntries(5, 5) As String
 
     Dim MeetingIndex As Integer
     MeetingIndex = 0
