@@ -116,7 +116,7 @@ Function GetCourse(Cell1 As String, Cell2 As String, Cell3 As String, Cell4 As S
                     ' Ensure that this is a valid entry
                     If FillColumn <> "" Then
                         ' Check for collisions
-                        If WorksheetFunction.CountA(Range(FillColumn & StartRow & ":" & FillColumn & EndRow)) <> 0 Then
+                        If IsNull(Worksheets("Calendar").Range(FillColumn & StartRow & ":" & FillColumn & EndRow).MergeCells) Then
                             Collision = True
                             If Silent <> True Then
                                 Call MsgBoxCriticalIcon
@@ -338,49 +338,12 @@ Sub Clear_5()
     End If
 End Sub
 
-' Subroutine to add a meeting to the calendar
+' Subroutine to find a meeting's location on the calendar
 ' @param Name - Course name
 ' @param FillType - Type of meeting (LEC, LAB, etc...)
 ' @param Day - Day of meeting
 ' @param Time - Two element array containing start time and end time
-Sub FillCells(Name As String, FillType As String, Day As String, ByRef Time() As String)
-    Dim FillColumn As String
-    Dim StartRow As String
-    Dim EndRow As String
-    Dim ShortName As String
-    ShortName = Split(Name, " ", 2)(0)
-
-    Worksheets("Calendar").Activate
-    
-    Dim StartTime As Date
-    StartTime = CDate(Time(0))
-    
-    Dim EndTime As Date
-    EndTime = CDate(Time(1))
-
-    Dim Output() As String
-    Output = FindMeetingRange(StartTime, EndTime, Day)
-
-    FillColumn = Output(0)
-    StartRow = Output(1)
-    EndRow = Output(2)
-
-    If FillColumn = "X" Then
-        Exit Sub
-    End If
-    
-    If WorksheetFunction.CountA(Range(FillColumn & StartRow & ":" & FillColumn & EndRow)) = 0 Then
-        Range(FillColumn & StartRow) = ShortName & vbNewLine & FillType
-        With Range(FillColumn & StartRow & ":" & FillColumn & EndRow)
-            .Merge
-            .HorizontalAlignment = xlCenter
-            .VerticalAlignment = xlCenter
-        End With
-    Else
-        Call MsgBoxCriticalIcon
-    End If
-End Sub
-
+' @return String() - [ Column, StartRow, EndRow, Text ]
 Function GetCells(Name As String, FillType As String, Day As String, ByRef Time() As String) As String()
     Dim FillColumn As String
     Dim StartRow As String
@@ -555,7 +518,7 @@ Sub SuggestCourses(Courses As Range)
                     Success = GetCourse("I" & CStr(34 + i), "J" & CStr(34 + i), "K" & CStr(34 + i), "L" & CStr(34 + i), CourseName, True)
 
                     If Success = True Then
-                       Exit For 
+                       Exit For
                     End If
                 End If
                 j = j + 1
