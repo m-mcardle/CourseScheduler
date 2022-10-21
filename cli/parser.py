@@ -1,3 +1,4 @@
+from cgitb import handler
 from html.parser import HTMLParser
 import csv
 from enum import Enum
@@ -41,7 +42,60 @@ outputColumns = [
     "# of Meetings"
 ]
 
+sec = {
+    "WSS_COURSE_SECTIONS" : Column.TERM,
+    "LIST_VAR1" : Column.STATUS,
+    "SEC_SHORT_TITLE" : Column.NAME,
+    "SEC_LOCATION" : Column.LOCATION,
+    "SEC_MEETING_INFO" : Column.MEETINGS,
+    "SEC_FACULTY_INFO" : Column.FACULTY,
+    "LIST_VAR5" : Column.CAPACITY,
+    "SEC_MIN_CRED" : Column.CREDITS,
+    "SEC_ACAD_LEVEL" : Column.LEVEL
+}
+
+def handleTerm(self, data):
+    self.semester = data
+    return
+
+def handleStatus(self, data):
+    return
+
+def handleName(self, data):
+    return
+
+def handleLocation(self, data):
+    return
+
+def handleMeetings(self, data):
+    return
+
+def handleFaculty(self, data):
+    return
+
+def handleCapacity(self, data):
+    return
+
+def handleCredits(self, data):
+    return
+
+def handleLevel(self, data):
+    return
+
+handlers = {
+    Column.TERM: handleTerm,
+    Column.STATUS: handleStatus,
+    Column.NAME: handleName,
+    Column.LOCATION: handleLocation,
+    Column.MEETINGS: handleMeetings,
+    Column.FACULTY: handleFaculty,
+    Column.CAPACITY: handleCapacity,
+    Column.CREDITS: handleCredits,
+    Column.LEVEL: handleLevel
+}
+
 class MyHTMLParser(HTMLParser):
+    
     def __init__(self):
         super().__init__()
         self.courses = list()
@@ -77,6 +131,18 @@ class MyHTMLParser(HTMLParser):
         # cell_index used to tell which row we are at in the cell (for meeting info)
         self.cell_index = -1
 
+        self.handler = {
+            Column.TERM: handleTerm,
+            Column.STATUS: handleStatus,
+            Column.NAME: handleName,
+            Column.LOCATION: handleLocation,
+            Column.MEETINGS: handleMeetings,
+            Column.FACULTY: handleFaculty,
+            Column.CAPACITY: handleCapacity,
+            Column.CREDITS: handleCredits,
+            Column.LEVEL: handleLevel
+        }
+
     # Method to reset the current values after entering a new cell
     def clear(self):
         self.semester = ""
@@ -103,6 +169,9 @@ class MyHTMLParser(HTMLParser):
         self.afternoon = ""
         self.row_index = -1
         self.cell_index = -1
+
+    
+
 
     # Method to check what days have classes
     def check_meeting(self):
@@ -226,20 +295,10 @@ class MyHTMLParser(HTMLParser):
             return
 
         # This sets the index to the appropriate cell in the row based on the expected class of the <td> element
-        dict = {
-            "WSS_COURSE_SECTIONS" : Column.TERM,
-            "LIST_VAR1" : Column.STATUS,
-            "SEC_SHORT_TITLE" : Column.NAME,
-            "SEC_LOCATION" : Column.LOCATION,
-            "SEC_MEETING_INFO" : Column.MEETINGS,
-            "SEC_FACULTY_INFO" : Column.FACULTY,
-            "LIST_VAR5" : Column.CAPACITY,
-            "SEC_MIN_CRED" : Column.CREDITS,
-            "SEC_ACAD_LEVEL" : Column.LEVEL
-        }
+        
         row = attrs[0][1].split(" ")
-        if (len(row) > 1 and row[1] in dict):
-            self.row_index = dict.get(row[1])
+        if (len(row) > 1 and row[1] in sec):
+            self.row_index = sec.get(row[1])
 
     # Method extended from `html.parser` to parse text nodes
     # @param data the value of the text being parsed
@@ -247,6 +306,7 @@ class MyHTMLParser(HTMLParser):
         data = data.strip()
         if (self.row_index == -1 or data == ""):
             return
+
 
         if (self.row_index == Column.TERM):
             self.semester = data
