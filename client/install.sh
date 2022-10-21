@@ -33,11 +33,13 @@ echo "Finshed configuring NGINX"
 echo "Installing npm packages"
 # Install project dependencies
 npm install
+sudo npm install forever -g
 echo "Finished installing npm packages"
 
 
 echo "Starting server"
-npm start
+# Forever starts the server indefinetly
+forever start -c "npm start" ./
 
 # Don't think this is needed
 # sudo npm cache clean -f
