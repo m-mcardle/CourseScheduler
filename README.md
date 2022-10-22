@@ -1,4 +1,4 @@
-# Sprint 3
+# Sprint 4
 This branch contains the code that was created by team 205 to meet requirements for sprint three. This sprint was an add on to the second sprint which still involves using VBA to suggest classes for schedules. View the full guidelines here.
 
 ### Course Selection With Helper
