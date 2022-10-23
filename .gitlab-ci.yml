@@ -25,4 +25,4 @@ deploy:
   script:
     - chmod 400 $SSH_KEY
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./client Team-205@20.168.192.248:~/
-    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "pwd; ls; forever list; cd ~/client; forever stopall; forever start -c 'npm start' ./;"
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/client; forever stopall; npm install; forever start -c 'npm start' ./;"
