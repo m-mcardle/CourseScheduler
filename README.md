@@ -1,4 +1,4 @@
-# Sprint 3
+# Sprint 4
 This branch contains the code that was created by team 205 to meet requirements for sprint three. This sprint was an add on to the second sprint which still involves using VBA to suggest classes for schedules. View the full guidelines here.
 
 ### Course Selection With Helper
@@ -33,4 +33,4 @@ Full design documentation for this project can be found in the GitLab Wiki.
 
 
 # Video Demo
-[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/NhHwZyedBGaf6h8uqq9eRi?)
+[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/pHoNQmrYd2oZ4k9dvusd9R?)

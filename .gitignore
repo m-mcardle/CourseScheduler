@@ -1,9 +1,5 @@
 # MacOS
 .DS_Store
 
-# HTML
-*.html
-!test.html
-
 # Python
 *__pycache__/
