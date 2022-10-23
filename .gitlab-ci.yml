@@ -57,3 +57,7 @@ test:
 #       - public
 #   rules:
 #     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:
+  script:
+    - scp -i $SSH_KEY -r client Team-205@20.168.192.248:deployed/
