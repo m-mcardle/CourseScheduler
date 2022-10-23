@@ -13,22 +13,6 @@ image: python:latest
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-# Pip's cache doesn't store the python packages
-# https://pip.pypa.io/en/stable/reference/pip_install/#caching
-#
-# If you want to also cache the installed packages, you have to install
-# them in a virtualenv and cache it as well.
-# cache:
-#   paths:
-#     - .cache/pip
-#     - venv/
-
-# before_script:
-#   - python --version  # For debugging
-#   - pip install virtualenv
-#   - virtualenv venv
-#   - source venv/bin/activate
-
 test:
   script:
       - cd cli
@@ -37,28 +21,11 @@ test:
     # - pip install tox flake8  # you can also use tox
     # - tox -e py36,flake8
 
-# run:
-#   script:
-#     - python setup.py bdist_wheel
-#     # an alternative approach is to install and run:
-#     - pip install dist/*
-#     # run the command here
-#   artifacts:
-#     paths:
-#       - dist/*.whl
-
-# pages:
-#   script:
-#     - pip install sphinx sphinx-rtd-theme
-#     - cd doc ; make html
-#     - mv build/html/ ../public/
-#   artifacts:
-#     paths:
-#       - public
-#   rules:
-#     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
 deploy:
   script:
     - chmod 400 $SSH_KEY
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./client Team-205@20.168.192.248:~/
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248
+    - cd ~/client
+    - forever stopall
+    - forever start -c "npm start" ./ 
