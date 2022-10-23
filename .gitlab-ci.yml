@@ -60,4 +60,5 @@ test:
 
 deploy:
   script:
-    - scp -i $SSH_KEY -r client Team-205@20.168.192.248:deployed/
+    - chmod 400 $SSH_KEY
+    - scp -i $SSH_KEY -r client Team-205@20.168.192.248:
