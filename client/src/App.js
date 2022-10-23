@@ -1,22 +1,15 @@
-import logo from './logo.svg';
+import { Typography } from '@mui/material';
+import { CourseSelectionForm } from './CourseSelectionForm';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="AppHeader">
+        <Typography m={3} align="center" variant="h3" component="h1">
+          Course Selection Helper
+        </Typography>
+        <CourseSelectionForm />
       </header>
     </div>
   );
