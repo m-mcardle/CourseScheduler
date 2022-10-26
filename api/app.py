@@ -37,12 +37,12 @@ fields = [
 ]
 
 # Endpoint provides all course data
-@app.route("/courses")
+@app.route("/api/courses")
 def all_courses():
     return courses
 
 # Endpoint returns all courses that contain a "value" for a given "field"
-@app.route("/course/<field>/<value>")
+@app.route("/api/course/<field>/<value>")
 def get_course(field = "Section Name and Title", value=None):
     found_courses = []
     if field not in fields:
