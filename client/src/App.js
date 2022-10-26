@@ -8,7 +8,7 @@ function App() {
 
   useEffect( () => {
     async function fetchData() {
-      const response = await fetch('http://20.168.192.248:8080/courses');
+      const response = await fetch('http://20.168.192.248:8080/api/courses');
       setData(await response.json());
     }
 
