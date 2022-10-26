@@ -19,7 +19,19 @@ fields = [
     'Faculty', 
     'Available/Capacity', 
     'Credits', 
-    'Academic Level'
+    'Academic Level',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'DE',
+    'Seminar',
+    'Lecture',
+    'Lab',
+    'Afternoon',
+    'Morning',
+    '# of Meetings'
 ]
 
 # Endpoint provides all course data
