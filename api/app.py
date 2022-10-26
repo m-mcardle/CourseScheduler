@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 import json
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Open data file
 file = open('./data/courses.json')

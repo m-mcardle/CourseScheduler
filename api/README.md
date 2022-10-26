@@ -11,5 +11,13 @@ python3 -m venv venv
 . venv/bin/activate
 pip install flask
 pip install gunicorn
-gunicorn -b 0.0.0.0:8080 'app:app'
+gunicorn -w 4 -b 0.0.0.0:8080 'app:app'
+```
+
+## pm2
+
+`pm2` is used to manage the long-running process.
+
+```
+pm2 list
 ```
