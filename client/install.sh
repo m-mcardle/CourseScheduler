@@ -10,11 +10,16 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
 echo "Finished installing packages"
 
+# Installing Python
+sudo apt-get install python3.6
+sudo apt install python3.8-venv
+
 echo "Configuring NGINX"
 # Setup ufw
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 22/tcp
 sudo ufw allow 'Nginx Full'
+sudo ufw allow 8080
 
 # Create SSL Certificate (Will require user input)
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt

@@ -11,5 +11,5 @@ python3 -m venv venv
 . venv/bin/activate
 pip install flask
 pip install gunicorn
-gunicorn -b 0.0.0.0 'app:app'
+gunicorn -b 0.0.0.0:8080 'app:app'
 ```
