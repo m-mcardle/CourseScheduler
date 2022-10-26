@@ -1,8 +1,23 @@
 import { Typography } from '@mui/material';
 import { CourseSelectionForm } from './CourseSelectionForm';
+import { useEffect, useState } from 'react'
 import './App.css';
 
 function App() {
+  const [data, setData] = useState({});
+
+  useEffect( () => {
+    async function fetchData() {
+      const response = await fetch('http://20.168.192.248:8080/courses');
+      setData(await response.json());
+    }
+
+    fetchData()
+    return () => {}
+  }, [])
+  
+  console.log(data);
+
   return (
     <div className="App">
       <header className="AppHeader">
