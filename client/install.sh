@@ -39,6 +39,7 @@ echo "Installing npm packages"
 # Install project dependencies
 npm install
 sudo npm install forever -g
+sudo npm install pm2@latest -g
 echo "Finished installing npm packages"
 
 
