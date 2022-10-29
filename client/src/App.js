@@ -1,36 +1,32 @@
-import  CourseSelectionPanel  from './CourseSelectionPanel';
+import CourseSelectionPanel from './CourseSelectionPanel';
 import CourseDataPanel from './CourseDataPanel';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import './App.css';
-import {Grid} from '@mui/material';
+import { Grid } from '@mui/material';
 
-function App() {
+export default function App() {
   const [data, setData] = useState({});
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const response = await fetch('https://20.168.192.248/api/courses');
       setData(await response.json());
     }
 
-    fetchData()
-    return () => {}
-  }, [])
-  
+    fetchData();
+    return () => {};
+  }, []);
+
   console.log(data);
 
   return (
     <div className="App">
       <header className="AppHeader">
-        <Grid container direction={'row'} sx={{height: "100vh"}}>
+        <Grid container m={2} direction={'row'} sx={{ height: '100vh' }}>
           <CourseSelectionPanel />
-          <CourseDataPanel/>
+          <CourseDataPanel />
         </Grid>
-
-
       </header>
     </div>
   );
 }
-
-export default App;
