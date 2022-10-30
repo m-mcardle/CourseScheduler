@@ -1,5 +1,5 @@
-# Sprint 4
-This branch contains the code that was created by team 205 to meet requirements for sprint four. This sprint was focused on installing and configuring our technology stack on our VM. This required finding a suitable stack that will be used in later sprints. 
+# Sprint 5
+This branch contains the code that was created by team 205 to meet requirements for sprint five. This sprint was focused on 
 
 https://20.168.192.248/ <- check out our web application using this link!
 
@@ -17,27 +17,36 @@ VM
 Linux
 - Ubuntu
  
-Backend Server (API)optional for right now
+Backend Server
 - Flask (Python)
-.
+- WSGI: Gunicorn
 
 
 ## Prerequisites:
 - Azure VM with Ubuntu Image
-- Open ports 3000 and 80
+- Open ports 3000, 8000, and 80
 
 ## Install Script Usage:
 - cd team205_project
 - cd client
 - ./install.sh
 
+
 ## How to Start the Server for the First Time:
 - Start VM in the Azure console
   - Make sure ports 3000 and 80 are open
 - SSH into VM
-- Clone Sprint 4 from GitLab
+- Clone Sprint 5 from GitLab
 - Use install script 
   - to restart server re run install script
+- Follow the Readme.md in the api folder (Note the demo  wasn't updated to show this)
+  - cd api
+  - python3 -m venv venv
+  - . venv/bin/activate
+  - pip install flask
+  - pip install gunicorn
+  - gunicorn -w 4 -b 0.0.0.0:8080 'app:app'
+  - pm2 list
 - enjoy
 
 # Video Demo
