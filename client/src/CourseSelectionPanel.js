@@ -1,6 +1,5 @@
 import { Typography, Grid, Button } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
-import React, { useState } from 'react';
 
 const courses = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -13,6 +12,8 @@ export default function CourseSelectionPanel() {
           UoG Course Selection
         </Typography>
       </Grid>
+
+      {/* loop for adding 5 course components */}
       {courses.map((course) => {
         return (
           <Grid item xs={12} key={course}>

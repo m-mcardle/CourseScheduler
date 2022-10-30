@@ -5,9 +5,11 @@ import React, { useState } from 'react';
 
 
 export default function CourseSelectionComponent({ course }) {
+  // setting states
   const [courseName, setCourseName] = useState('');
   const [{courseDisplay}, setCourse] = useState({ courseData: '', courseDisplay: 'Search for a course' })
 
+  // function to get course data from api
   async function getCourseData(){
     const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName);
     const data = await response.json();
@@ -23,7 +25,9 @@ export default function CourseSelectionComponent({ course }) {
   }
 
   return (
+    // main grid
     <Grid container spacing={0} sx={{ p: 3 }}>
+      {/* text field for course input */}
       <Grid item xs={3} sx={{}}>
         <TextField 
           label={course} 
@@ -33,9 +37,9 @@ export default function CourseSelectionComponent({ course }) {
           onChange={(event) => setCourseName(event.target.value)}
         />
       </Grid>
-
       <Box sx={{ m: 3 }}></Box>
 
+      {/* button for adding course */}
       <Grid
         item
         xs={.5}
@@ -54,9 +58,9 @@ export default function CourseSelectionComponent({ course }) {
           <AddIcon />
         </IconButton>
       </Grid>
-
       <Box sx={{ m: 1 }}></Box>
 
+      {/* button for deleting  course */}
       <Grid
         item
         xs={.5}
@@ -75,6 +79,7 @@ export default function CourseSelectionComponent({ course }) {
         </IconButton>
       </Grid>
       
+      {/* textarea for displaying data */}
       <Grid
         item
         xs={7}
