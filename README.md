@@ -34,7 +34,7 @@ Backend Server
 
 ## How to Start the Server for the First Time:
 - Start VM in the Azure console
-  - Make sure ports 3000 and 80 are open
+  - Make sure ports 3000, 8000, and 80 are open
 - SSH into VM
 - Clone Sprint 5 from GitLab
 - Use install script 
@@ -46,7 +46,10 @@ Backend Server
   - pip install flask
   - pip install gunicorn
   - gunicorn -w 4 -b 0.0.0.0:8080 'app:app'
-  - pm2 list
+    - runs the server in the forground, restart flask server by ctrl^C and running above again
+  - pm2 "gunicorn -w 4 -b 0.0.0.0:8080 'app:app'"
+    - runs the flask server in the background, use command below to restart flask server
+    - pm2 reload all
 - enjoy
 
 # Video Demo
