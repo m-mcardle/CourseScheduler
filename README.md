@@ -1,5 +1,5 @@
 # Sprint 5
-This branch contains the code that was created by team 205 to meet requirements for sprint five. This sprint was focused on 
+This branch contains the code that was created by team 205 to meet requirements for sprint five. This sprint was focused on creating and demonstrating request and response paths across our stack. This involved updating the frontend with interactable interface, building a flask server with Gunicorn, and connecting everything together.
 
 https://20.168.192.248/ <- check out our web application using this link!
 
@@ -27,9 +27,9 @@ Backend Server
 - Open ports 3000, 8000, and 80
 
 ## Install Script Usage:
-- cd team205_project
-- cd client
-- ./install.sh
+- `cd team205_project`
+- `cd client`
+- `./install.sh`
 
 
 ## How to Start the Server for the First Time:
@@ -40,16 +40,16 @@ Backend Server
 - Use install script 
   - to restart server re run install script
 - Follow the Readme.md in the api folder (Note the demo  wasn't updated to show this)
-  - cd api
-  - python3 -m venv venv
-  - . venv/bin/activate
-  - pip install flask
-  - pip install gunicorn
-  - gunicorn -w 4 -b 0.0.0.0:8080 'app:app'
+  - `cd api`
+  - `python3 -m venv venv`
+  - `. venv/bin/activate`
+  - `pip install flask`
+  - `pip install gunicorn`
+  - `gunicorn -w 4 -b 0.0.0.0:8080 'app:app'`
     - runs the server in the forground, restart flask server by ctrl^C and running above again
-  - pm2 "gunicorn -w 4 -b 0.0.0.0:8080 'app:app'"
-    - runs the flask server in the background, use command below to restart flask server
-    - pm2 reload all
+  - `pm2 "gunicorn -w 4 -b 0.0.0.0:8080 'app:app'"`
+    - runs the flask server in the background
+    - `pm2 reload all` to restart flask server
 - enjoy
 
 # Video Demo
