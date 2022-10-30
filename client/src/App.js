@@ -17,14 +17,14 @@ export default function App() {
     return () => {};
   }, []);
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="App">
       <header className="AppHeader">
         <Grid container m={2} direction={'row'} sx={{ height: '100vh' }}>
           <CourseSelectionPanel />
-          <CourseDataPanel />
+          {/* <CourseDataPanel /> */}
         </Grid>
       </header>
     </div>
