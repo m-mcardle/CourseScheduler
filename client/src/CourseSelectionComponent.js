@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, TextField, IconButton, Box, Typography} from '@mui/material';
+import { Grid, TextField, IconButton, Box, Typography, TextareaAutosize} from '@mui/material';
 import React, { useState } from 'react';
 
 
@@ -77,21 +77,22 @@ export default function CourseSelectionComponent({ course }) {
       
       <Grid
         item
-        xs={6}
+        xs={7}
         sx={{
           justifyContent: 'center',
           display: 'flex'
         }}
       >
-        <Typography
-          align="center"
-          style={{ width: '100%', margin: '5px', maxHeight: '300px', overflow: 'auto' }}
+        <TextareaAutosize
+          maxRows={5}
+          minRows={5}
           value={courseDisplay}
-        >
-          {courseDisplay}
-        </Typography>
-      </Grid>
+          style={{ width: '80%' }}
+          disabled = {true}
+          sx={{ pl: 3 }}
+        />
 
+      </Grid>
     </Grid>
   );
 }
