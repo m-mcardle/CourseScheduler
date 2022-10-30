@@ -1,12 +1,12 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, TextField, IconButton, Box, Typography} from '@mui/material';
+import { Grid, TextField, IconButton, Box, TextareaAutosize} from '@mui/material';
 import React, { useState } from 'react';
 
 
 export default function CourseSelectionComponent({ course }) {
   const [courseName, setCourseName] = useState('');
-  const [{_, courseDisplay}, setCourse] = useState({ courseData: '', courseDisplay: 'Search for a course' })
+  const [{courseDisplay}, setCourse] = useState({ courseData: '', courseDisplay: 'Search for a course' })
 
   async function getCourseData(){
     const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName);
@@ -77,21 +77,22 @@ export default function CourseSelectionComponent({ course }) {
       
       <Grid
         item
-        xs={6}
+        xs={7}
         sx={{
           justifyContent: 'center',
           display: 'flex'
         }}
       >
-        <Typography
-          align="center"
-          style={{ width: '100%', margin: '5px', maxHeight: '300px', overflow: 'auto' }}
+        <TextareaAutosize
+          maxRows={5}
+          minRows={5}
           value={courseDisplay}
-        >
-          {courseDisplay}
-        </Typography>
-      </Grid>
+          style={{ width: '80%' }}
+          disabled = {true}
+          sx={{ pl: 3 }}
+        />
 
+      </Grid>
     </Grid>
   );
 }
