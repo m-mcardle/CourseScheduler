@@ -1,5 +1,5 @@
 import { Typography, Grid, Button } from '@mui/material';
-import CourseSelectionComponent from './CourseSelectionComponet';
+import CourseSelectionComponent from './CourseSelectionComponent';
 
 const courses = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -13,7 +13,7 @@ export default function CourseSelectionPanel() {
       </Grid>
       {courses.map((course) => {
         return (
-          <Grid item xs={12}>
+          <Grid item xs={12} key={course}>
             <CourseSelectionComponent course={course} />
           </Grid>
         );
