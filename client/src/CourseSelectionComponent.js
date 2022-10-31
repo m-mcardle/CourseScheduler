@@ -4,7 +4,7 @@ import { Grid, TextField, IconButton, Box, TextareaAutosize} from '@mui/material
 import React, { useState } from 'react';
 
 
-export default function CourseSelectionComponent({ course }) {
+export default function CourseSelectionComponent({ course, setCourses }) {
   // setting states
   const [courseName, setCourseName] = useState('');
   const [{courseDisplay}, setCourse] = useState({ courseData: '', courseDisplay: 'Search for a course' })
@@ -22,6 +22,10 @@ export default function CourseSelectionComponent({ course }) {
       message = JSON.stringify(data);
     }
     setCourse({ courseDisplay: message, courseData: data });
+
+    if (data.length === 1) {
+      setCourses((state) => ({...state, [course]: data[0] }))
+    }
   }
 
   return (
