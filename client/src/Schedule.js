@@ -98,7 +98,7 @@ export default function Schedule({ courses }) {
   }, [courses])
 
   return (
-    <Paper>
+    <Paper style={{ maxWidth: '90%', height: '750px', margin: 'auto' }}>
       <Scheduler
         data={state.appointments}
       >
@@ -107,7 +107,7 @@ export default function Schedule({ courses }) {
         />
         <WeekView
           startDayHour={8}
-          endDayHour={20}
+          endDayHour={22}
           excludedDays={[0, 6]}
           dayScaleLayoutComponent={DayScaleLayout}
         />
