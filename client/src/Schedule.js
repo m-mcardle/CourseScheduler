@@ -5,11 +5,11 @@ import {
   Scheduler,
   Appointments,
   WeekView,
+  Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
-const currentDate = '2021-11-0';
+const currentMonth = '2021-11';
 const DayScaleLayout = props => ( <WeekView.DayScaleLayout {...props} style={{ display: 'none' }} />);
-
 const week = {
     'Mon': 1,
     'Tues': 2,
@@ -19,9 +19,22 @@ const week = {
 }
 
 export default function Schedule({ courses }) {
-    const [schedule, setSchedule] = useState([])
+    const [state, setState] = useState({
+      appointments: [],
+      resources: [
+        {
+          fieldName: 'course',
+          title: 'Course',
+          instances: []
+        }
+      ]
+    });
+
     useEffect(() => {
         const entries = []
+        const instances = []
+
+        let courseNum = 0;
         for (const [, value] of Object.entries(courses)) {
             const courseName = value['Section Name and Title']
             let rawMeetings = value['Meeting Information']
@@ -38,10 +51,9 @@ export default function Schedule({ courses }) {
                 }
 
                 const days = rows[0].replace(type, "").replace(/ /g, "").split(",");
-                console.log(days);
     
                 const time = rows[1].split(" - ")
-                // const location = rows[2]
+                const location = rows[2]
     
                 for (const j in days) {
                     const start = time[0].includes("PM")
@@ -53,26 +65,45 @@ export default function Schedule({ courses }) {
                         : time[1].replace("AM", "")
         
                     const newEntry = {
-                        startDate: currentDate + week[days[j]] + 'T' + start,
-                        endDate: currentDate + week[days[j]] + 'T' + end,
-                        title: courseName
+                        startDate: currentMonth + '-0' + week[days[j]] + 'T' + start,
+                        endDate: currentMonth + '-0' + week[days[j]] + 'T' + end,
+                        title: courseName,
+                        location,
+                        id: courseNum + i + week[days[j]],
+                        course: courseName
                     }
         
                     entries.push(newEntry)
                 }
             }
+
+            instances.push(
+                {
+                  id: courseName
+                }
+              )
         }
 
-        setSchedule(entries)
+        setState(state => ({
+          ...state,
+          appointments: entries,
+          resources: [
+            {
+              fieldName: 'course',
+              title: 'Course',
+              instances
+            }
+          ]
+        }))
     }, [courses])
 
     return (
         <Paper>
           <Scheduler
-            data={schedule}
+            data={state.appointments}
           >
             <ViewState
-              currentDate={currentDate + '1'}
+              currentDate={currentMonth + '-01'}
             />
             <WeekView
               startDayHour={8}
@@ -81,6 +112,10 @@ export default function Schedule({ courses }) {
               dayScaleLayoutComponent={DayScaleLayout}
             />
             <Appointments />
+            <Resources
+              data={state.resources}
+              mainResourceName={'course'}
+            />
           </Scheduler>
         </Paper>
     );
