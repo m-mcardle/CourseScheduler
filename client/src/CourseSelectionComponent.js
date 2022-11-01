@@ -6,8 +6,7 @@ import React, { useState } from 'react';
 
 export default function CourseSelectionComponent({ course, setCourses }) {
   // setting states
-  const [courseName, setCourseName] = useState('');
-  const [{courseDisplay}, setCourse] = useState({ courseData: '', courseDisplay: 'Search for a course' })
+  const [{courseName, courseDisplay}, setCourse] = useState({ courseName: '', courseData: '', courseDisplay: 'Search for a course' })
 
   // function to get course data from api
   async function getCourseData(){
@@ -21,7 +20,7 @@ export default function CourseSelectionComponent({ course, setCourses }) {
     } else {
       message = JSON.stringify(data);
     }
-    setCourse({ courseDisplay: message, courseData: data });
+    setCourse((state) => ({ ...state, courseDisplay: message, courseData: data, }));
 
     if (data.length === 1) {
       setCourses((state) => ({...state, [course]: data[0] }))
@@ -38,7 +37,7 @@ export default function CourseSelectionComponent({ course, setCourses }) {
           variant="filled"
           value={courseName}
           fullWidth
-          onChange={(event) => setCourseName(event.target.value)}
+          onChange={(event) => setCourse((state) => ({ ...state, courseName: event.target.value }))}
         />
       </Grid>
       <Box sx={{ m: 3 }}></Box>
@@ -77,7 +76,16 @@ export default function CourseSelectionComponent({ course, setCourses }) {
         }}
       >
         <IconButton
-          onClick={() => setCourse({ courseData: '', courseDisplay: 'Search for a course' })}
+          onClick={() => {
+            // Remove course from `courses`
+            setCourses((state) => {
+              delete state[course];
+              return  { ...state };
+            })
+
+            // Clear input values
+            setCourse({ courseName: '', courseData: '', courseDisplay: 'Search for a course' })
+          }}
         >
           <DeleteIcon />
         </IconButton>
