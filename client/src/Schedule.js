@@ -55,20 +55,20 @@ export default function Schedule({ courses }) {
         const location = rows[2]
 
         for (const j in days) {
-          const start = time[0].includes("PM")
+          const start = time[0].includes("PM") && !time[1].includes("12:")
             ? String(Number(time[0].replace("PM", "").split(":")[0]) + 12) + ":" + time[0].replace("PM", "").split(":")[1]
-            : time[0].replace("AM", "")
+            : time[0].replace("AM", "").replace("PM", "")
 
-          const end = time[1].includes("PM")
+          const end = time[1].includes("PM") && !time[1].includes("12:")
             ? String(Number(time[1].replace("PM", "").split(":")[0]) + 12) + ":" + time[1].replace("PM", "").split(":")[1]
-            : time[1].replace("AM", "")
+            : time[1].replace("AM", "").replace("PM", "")
 
           const newEntry = {
             startDate: currentMonth + '-0' + week[days[j]] + 'T' + start,
             endDate: currentMonth + '-0' + week[days[j]] + 'T' + end,
             title: courseName,
             location,
-            id: courseNum + i + week[days[j]],
+            id: courseName + courseNum + i + week[days[j]],
             course: courseName
           }
 
@@ -97,7 +97,7 @@ export default function Schedule({ courses }) {
   }, [courses])
 
   return (
-    <Paper style={{ maxWidth: '60%', height: '800px', margin: 'auto' }}>
+    <Paper style={{ maxWidth: '55%', height: '800px', margin: 'auto' }}>
       <Scheduler
         data={state.appointments}
       >

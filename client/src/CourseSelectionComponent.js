@@ -1,11 +1,16 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, TextField, IconButton, Box } from '@mui/material';
+import { Grid, TextField, IconButton, Box, Autocomplete } from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState } from 'react';
 
-export default function CourseSelectionComponent({ course, setCourses }) {
+const filterOptions = createFilterOptions({
+  limit: 15,
+});
+
+export default function CourseSelectionComponent({ course, setCourses, allCourses }) {
   // setting states
-  const [{courseName}, setCourse] = useState({ courseName: '', courseData: [], courseDisplay: 'Search for a course' })
+  const [{courseName}, setCourse] = useState({ courseName: null, courseData: [], courseDisplay: 'Search for a course' });
 
   // function to get course data from api
   async function getCourseData(){
@@ -32,13 +37,20 @@ export default function CourseSelectionComponent({ course, setCourses }) {
     // main grid
     <Grid container spacing={0} sx={{ p: 3 }}>
       {/* text field for course input */}
-      <Grid item xs={7} sx={{}}>
-        <TextField 
-          label={course} 
-          variant="filled"
+      <Grid item xs={8} sx={{}}>
+        <Autocomplete
+          options={allCourses}
+          filterOptions={filterOptions}
           value={courseName}
-          fullWidth
-          onChange={(event) => setCourse((state) => ({ ...state, courseName: event.target.value }))}
+          onChange={(_, value) => setCourse((state) => ({ ...state, courseName: value }))}
+          renderInput={(params) => (
+            <TextField
+              label={course} 
+              variant="filled"
+              fullWidth
+              {...params}
+            />
+          )}
         />
       </Grid>
       <Box sx={{ m: 3 }}></Box>
@@ -46,7 +58,7 @@ export default function CourseSelectionComponent({ course, setCourses }) {
       {/* button for adding course */}
       <Grid
         item
-        xs={1.5}
+        xs={1}
         sx={{
           bgcolor: 'green',
           justifyContent: 'center',
@@ -67,7 +79,7 @@ export default function CourseSelectionComponent({ course, setCourses }) {
       {/* button for deleting  course */}
       <Grid
         item
-        xs={1.5}
+        xs={1}
         sx={{
           bgcolor: 'red',
           justifyContent: 'center',
@@ -85,7 +97,7 @@ export default function CourseSelectionComponent({ course, setCourses }) {
             })
 
             // Clear input values
-            setCourse({ courseName: '', courseData: [], courseDisplay: 'Search for a course' })
+            setCourse({ courseName: null, courseData: [], courseDisplay: 'Search for a course' })
           }}
         >
           <DeleteIcon />
