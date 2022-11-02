@@ -5,7 +5,7 @@ import CourseSelectionPanel from './CourseSelectionPanel';
 import './App.css';
 
 export default function App() {
-  const [courses, setCourses] = useState({});
+  const [state, setCourses] = useState({ courses: {}, collisions: []});
   const [allCourses, setAllCourses] = useState([]);
 
   useEffect(() => {
@@ -18,11 +18,12 @@ export default function App() {
 
     fetchData();
   }, []);
+
   return (
     <div className="App">
       <Grid container p={2} direction={'row'} sx={{ height: '100%' }}>
         <CourseSelectionPanel setCourses={setCourses} allCourses={allCourses} />
-        <Schedule courses={courses} />
+        <Schedule courses={state.courses} setCourses={setCourses}/>
       </Grid>
     </div>
   );

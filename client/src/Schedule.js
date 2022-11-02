@@ -7,6 +7,10 @@ import {
   WeekView,
   Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(isBetween);
 
 const currentMonth = '2021-11';
 const week = {
@@ -17,7 +21,7 @@ const week = {
   'Fri': 5
 }
 
-export default function Schedule({ courses }) {
+export default function Schedule({ courses, setCourses }) {
   const [state, setState] = useState({
     appointments: [],
     resources: [
@@ -95,6 +99,33 @@ export default function Schedule({ courses }) {
       ]
     }))
   }, [courses])
+
+  useEffect(() => {
+    const collisions = [];
+    const dates = [];
+    for (const i in state.appointments) {
+      const appointment = state.appointments[i]
+      const start = dayjs(appointment.startDate);
+      const end = dayjs(appointment.endDate);
+
+      for (const j in dates) {
+        const newStart = start.add(1, 'second');
+        const newEnd = end.subtract(1, 'second');
+        if (newStart.isBetween(dates[j].start, dates[j].end) || newEnd.isBetween(dates[j].start, dates[j].end)) {
+          collisions.push({
+            course1: appointment.course,
+            course2: state.appointments[j].course,
+          })
+        }
+      }
+
+      dates[i] = {
+        start,
+        end
+      };
+    }
+    setCourses(state => ({ ...state, collisions }));
+  }, [state.appointments, setCourses])
 
   return (
     <Paper style={{ maxWidth: '55%', height: '800px', margin: 'auto' }}>

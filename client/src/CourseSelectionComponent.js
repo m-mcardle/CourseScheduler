@@ -29,7 +29,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
     setCourse((state) => ({ ...state, courseDisplay: message, courseData: data }));
 
     if (data.length === 1) {
-      setCourses((state) => ({...state, [course]: data[0] }))
+      setCourses((state) => ({...state, courses: { ...state.courses, [course]: data[0] } }))
     }
   }
 
@@ -92,8 +92,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           onClick={() => {
             // Remove course from `courses`
             setCourses((state) => {
-              delete state[course];
-              return  { ...state };
+              delete state.courses[course];
+              return  { ...state, courses:  { ...state.courses } };
             })
 
             // Clear input values
