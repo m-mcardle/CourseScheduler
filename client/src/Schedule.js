@@ -9,7 +9,6 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 const currentMonth = '2021-11';
-const DayScaleLayout = props => (<WeekView.DayScaleLayout {...props} style={{ display: 'none' }} />);
 const week = {
   'Mon': 1,
   'Tues': 2,
@@ -98,7 +97,7 @@ export default function Schedule({ courses }) {
   }, [courses])
 
   return (
-    <Paper style={{ maxWidth: '90%', height: '750px', margin: 'auto' }}>
+    <Paper style={{ maxWidth: '60%', height: '800px', margin: 'auto' }}>
       <Scheduler
         data={state.appointments}
       >
@@ -109,7 +108,6 @@ export default function Schedule({ courses }) {
           startDayHour={8}
           endDayHour={22}
           excludedDays={[0, 6]}
-          dayScaleLayoutComponent={DayScaleLayout}
         />
         <Appointments />
         <Resources

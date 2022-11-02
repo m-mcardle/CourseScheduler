@@ -8,12 +8,10 @@ export default function App() {
   const [courses, setCourses] = useState({});
   return (
     <div className="App">
-      <header className="AppHeader">
-        <Grid container m={2} direction={'row'} sx={{ height: '100vh' }}>
-          <CourseSelectionPanel setCourses={setCourses} />
-          <Schedule courses={courses} />
-        </Grid>
-      </header>
+      <Grid container p={2} direction={'row'} sx={{ height: '100%' }}>
+        <CourseSelectionPanel setCourses={setCourses} />
+        <Schedule courses={courses} />
+      </Grid>
     </div>
   );
 }

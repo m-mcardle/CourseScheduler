@@ -1,7 +1,12 @@
 .App {
-  min-height: 100vh;
+  max-height: 100vh;
 }
 
 .AppHeader {
   font-size: calc(10px + 2vmin);
+}
+
+/* Hack to hide day numbers */
+.Cell-dayOfMonth {
+  display: none !important;
 }

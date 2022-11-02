@@ -6,7 +6,7 @@ const courses = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 export default function CourseSelectionPanel({ setCourses }) {
 
   return (
-    <Grid container spacing={0} sx={{ width: '100%' }}>
+    <Grid container spacing={0} sx={{ width: '30%' }}>
       <Grid item xs={12} bgcolor="red" sx={{ borderTopRightRadius: 3 }}>
         <Typography align="left" variant="h3" component="h1">
           UoG Course Selection
