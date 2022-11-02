@@ -30,6 +30,7 @@ export default function CourseSelectionPanel({ setCourses, allCourses, collision
               otherCourses.push(collisions[i].course1);
             }
           }
+          otherCourses = [...new Set(otherCourses)];
         }
         return (
           <Grid item xs={12} key={courseKey} style={{ backgroundColor: (collides ? 'rgba(205, 50, 3, 0.26)' : '') }}>
