@@ -100,6 +100,7 @@ export default function Schedule({ courses, setCourses }) {
     }))
   }, [courses])
 
+  // Hook for detecting collisions
   useEffect(() => {
     const collisions = [];
     const dates = [];
@@ -109,6 +110,7 @@ export default function Schedule({ courses, setCourses }) {
       const end = dayjs(appointment.endDate);
 
       for (const j in dates) {
+        // Shift times by a second to ensure that matching start/end times count as collisions
         const newStart = start.add(1, 'second');
         const newEnd = end.subtract(1, 'second');
         if (newStart.isBetween(dates[j].start, dates[j].end) || newEnd.isBetween(dates[j].start, dates[j].end)) {

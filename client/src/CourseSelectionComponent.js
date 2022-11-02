@@ -8,7 +8,7 @@ const filterOptions = createFilterOptions({
   limit: 15,
 });
 
-export default function CourseSelectionComponent({ course, setCourses, allCourses }) {
+export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses }) {
   // setting states
   const [{courseName}, setCourse] = useState({ courseName: null, courseData: [], courseDisplay: 'Search for a course' });
 
@@ -103,6 +103,17 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           <DeleteIcon />
         </IconButton>
       </Grid>
+      {collisionCourses.length
+        ?
+        <Grid>
+          <p style={{ fontSize: '10px'}}>Collision with:</p>
+          {
+          collisionCourses.map(otherCourse =>
+            (<p className='Note'>{otherCourse}</p>)
+          )}
+        </Grid>
+        : undefined
+      }
     </Grid>
   );
 }

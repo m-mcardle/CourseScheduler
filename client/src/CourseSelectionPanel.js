@@ -1,9 +1,9 @@
 import { Typography, Grid, Button } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
 
-const courses = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
+const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
-export default function CourseSelectionPanel({ setCourses, allCourses }) {
+export default function CourseSelectionPanel({ setCourses, allCourses, collisions, courses }) {
 
   return (
     <Grid container spacing={0} sx={{ width: '40%' }}>
@@ -14,10 +14,26 @@ export default function CourseSelectionPanel({ setCourses, allCourses }) {
       </Grid>
 
       {/* loop for adding 5 course components */}
-      {courses.map((course) => {
+      {courseKeys.map((courseKey) => {
+        let collides = false;
+        let otherCourses = [];
+        const courseData = courses[courseKey];
+        if (courseData) {
+          for (const i in collisions) {
+            if (collisions[i].course1 === courseData['Section Name and Title']) {
+              collides = true;
+              otherCourses.push(collisions[i].course2);
+            }
+
+            if (collisions[i].course2 === courseData['Section Name and Title']) {
+              collides = true;
+              otherCourses.push(collisions[i].course1);
+            }
+          }
+        }
         return (
-          <Grid item xs={12} key={course}>
-            <CourseSelectionComponent course={course} setCourses={setCourses} allCourses={allCourses}/>
+          <Grid item xs={12} key={courseKey} style={{ backgroundColor: (collides ? 'rgba(205, 50, 3, 0.26)' : '') }}>
+            <CourseSelectionComponent course={courseKey} setCourses={setCourses} allCourses={allCourses} collisionCourses={otherCourses}/>
           </Grid>
         );
       })}

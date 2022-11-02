@@ -10,3 +10,8 @@
 .Cell-dayOfMonth {
   display: none !important;
 }
+
+.Note {
+  font-style: italic;
+  font-size: 8px;
+}
