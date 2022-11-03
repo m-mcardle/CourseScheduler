@@ -26,10 +26,10 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 # Copy config files
-sudo cp self-signed.conf /etc/nginx/snippets/self-signed.conf
-sudo cp ssl-params.conf /etc/nginx/snippets/ssl-params.conf
-sudo cp default.conf /etc/nginx/sites-available/default
-sudo cp nginx.conf /etc/nginx/nginx.conf
+sudo cp ./config/self-signed.conf /etc/nginx/snippets/self-signed.conf
+sudo cp ./config/ssl-params.conf /etc/nginx/snippets/ssl-params.conf
+sudo cp ./config/default.conf /etc/nginx/sites-available/default
+sudo cp ./config/nginx.conf /etc/nginx/nginx.conf
 
 # Restart NGINX
 sudo systemctl restart nginx
