@@ -1,11 +1,11 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, TextField, IconButton, Box, Autocomplete } from '@mui/material';
+import { Grid, TextField, IconButton, Autocomplete } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState } from 'react';
 
 const filterOptions = createFilterOptions({
-  limit: 15,
+  limit: 8,
 });
 
 export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses }) {
@@ -35,9 +35,9 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
   return (
     // main grid
-    <Grid container spacing={0} sx={{ p: 3 }}>
+    <Grid container  sx={{ p: 1 ,alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
       {/* text field for course input */}
-      <Grid item xs={8} sx={{}}>
+      <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius: 1}}>
         <Autocomplete
           options={allCourses}
           filterOptions={filterOptions}
@@ -45,6 +45,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           onChange={(_, value) => setCourse((state) => ({ ...state, courseName: value }))}
           renderInput={(params) => (
             <TextField
+              color = "main"
+              focused
               label={course} 
               variant="filled"
               fullWidth
@@ -53,42 +55,43 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           )}
         />
       </Grid>
-      <Box sx={{ m: 3 }}></Box>
+      
 
       {/* button for adding course */}
       <Grid
         item
         xs={1}
         sx={{
-          bgcolor: 'green',
+          mx: 1.5,
+          bgcolor: 'rgba(255,204,0)',
           justifyContent: 'center',
           display: 'flex',
-          borderRadius: 2,
-          maxHeight: '75px'
+          borderRadius: 100
         }}
       >
         <IconButton 
           aria-label="add"
           onClick={() => getCourseData()}
+          sx={{  color: 'white' }}
         >
-          <AddIcon />
+          <AddIcon sx={{  height: "30px", width: "30px"}} />
         </IconButton>
       </Grid>
-      <Box sx={{ m: 1 }}></Box>
 
       {/* button for deleting  course */}
       <Grid
         item
         xs={1}
         sx={{
-          bgcolor: 'red',
+          mx: 1.5,
+          bgcolor: 'rgba(194,4,48)',
           justifyContent: 'center',
           display: 'flex',
-          borderRadius: 2,
-          maxHeight: '75px'
+          borderRadius: 100
         }}
       >
         <IconButton
+          sx={{  color: 'white' }}
           onClick={() => {
             // Remove course from `courses`
             setCourses((state) => {
@@ -100,7 +103,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
             setCourse({ courseName: null, courseData: [], courseDisplay: 'Search for a course' })
           }}
         >
-          <DeleteIcon />
+          <DeleteIcon sx={{  height: "30px", width: "30px"}} />
         </IconButton>
       </Grid>
       {collisionCourses.length

@@ -9,6 +9,7 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import { Typography } from '@mui/material';
 
 dayjs.extend(isBetween);
 
@@ -130,24 +131,30 @@ export default function Schedule({ courses, setCourses }) {
   }, [state.appointments, setCourses])
 
   return (
-    <Paper style={{ maxWidth: '55%', height: '800px', margin: 'auto' }}>
-      <Scheduler
-        data={state.appointments}
-      >
-        <ViewState
-          currentDate={currentMonth + '-01'}
-        />
-        <WeekView
-          startDayHour={8}
-          endDayHour={22}
-          excludedDays={[0, 6]}
-        />
-        <Appointments />
-        <Resources
-          data={state.resources}
-          mainResourceName={'course'}
-        />
-      </Scheduler>
-    </Paper>
+    <div style={{ maxWidth: '70%', height: '100vh', margin: 'auto' }}>
+      <Typography color = "grey" align="center" fontSize= "4vh" fontWeight= "bold" >
+        Course Schedule
+      </Typography>
+      <Paper style={{height: '92vh', width: "100%"}}>
+        <Scheduler
+          data={state.appointments}
+        >
+          <ViewState
+            currentDate={currentMonth + '-01'}
+          />
+          <WeekView
+            startDayHour={8}
+            endDayHour={22}
+            excludedDays={[0, 6]}
+          />
+          <Appointments />
+          <Resources
+            data={state.resources}
+            mainResourceName={'course'}
+          />
+        </Scheduler>
+      </Paper>
+    </div> 
+
   );
 };
