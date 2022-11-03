@@ -33,6 +33,7 @@ export default function Schedule({ courses, setCourses }) {
     ]
   });
 
+  // Hook for parsing selected courses' meetings
   useEffect(() => {
     const entries = []
     const instances = []
@@ -46,19 +47,29 @@ export default function Schedule({ courses, setCourses }) {
       const meetings = JSON.parse(rawMeetings)
 
       for (const i in meetings) {
-        const rows = meetings[i].split('\n')
+        const rows = meetings[i].split('\n');
 
         const type = rows[0].split(' ', 1)[0]
+        // If meeting isn't a valid type skip
         if (type !== 'LEC' && type !== 'LAB' && type !== 'SEM') {
           continue;
         }
 
         const days = rows[0].replace(type, "").replace(/ /g, "").split(",");
+        // If day is TBA skip
+        if (days.includes('TBA')) {
+          continue;
+        }
 
-        const time = rows[1].split(" - ")
-        const location = rows[2]
+        const time = rows[1].split(" - ");
+        const location = rows[2];
 
         for (const j in days) {
+          // If time is TBA skip
+          if (time[0].includes('TBA') || time[1].includes('TBA')) {
+            continue;
+          }
+
           const start = time[0].includes("PM") && !time[1].includes("12:")
             ? String(Number(time[0].replace("PM", "").split(":")[0]) + 12) + ":" + time[0].replace("PM", "").split(":")[1]
             : time[0].replace("AM", "").replace("PM", "")
