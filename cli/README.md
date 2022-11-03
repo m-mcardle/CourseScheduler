@@ -1,4 +1,4 @@
-# Sprint 1
+# /cli
 
 This repository contains the code required for **Sprint 1**. This sprint involves parsing a HTML file containing the course list for the University of Guelph, storing the relevant data into a CSV or JSON file, and then providing a CLI to search for courses using this data. View the full guidelines [here](https://gitlab.socs.uoguelph.ca/groups/cis3760_team205/-/wikis/Sprint-One---Description).
 
