@@ -31,7 +31,8 @@ describe('Valid meetings', () => {
 
     const expectedInstances = [
       {
-        id: 'Valid course'
+        id: 'Valid course',
+        text: 'Valid course'
       }
     ];
 
@@ -55,7 +56,8 @@ describe('Invalid meetings', () => {
 
     const expectedInstances = [
       {
-        id: 'Invalid course'
+        id: 'Invalid course',
+        text: 'Invalid course'
       }
     ];
 
