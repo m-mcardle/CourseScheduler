@@ -1,4 +1,4 @@
-# Sprint 2
+# /excel
 This repository contains the code required for Sprint 2. This sprint involves creating a VBA tool for an Excel spreadsheet to dynamically create class schedules. View the full guidelines [here](https://gitlab.socs.uoguelph.ca/groups/cis3760_team205/-/wikis/Sprint-Two-Description).
 
 ### Course Selection
@@ -8,7 +8,6 @@ Full design documentation for this project is available [here](https://gitlab.so
 
 
 ## Usage:
-- Clone the Sprint 2 Repository
 - Enable macros usage 
   - MacOS: https://support.microsoft.com/en-us/office/enable-or-disable-macros-in-office-for-mac-c2494c99-a637-4ce6-9b82-e02cbb85cb96 
   - Windows: https://support.microsoft.com/en-us/office/enable-or-disable-macros-in-office-files-12b036fd-d140-4e74-b45e-16fed1a7e5c6 

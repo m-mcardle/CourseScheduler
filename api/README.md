@@ -1,4 +1,4 @@
-# API
+# /api
 
 This is our team's API to provide course information from a Flask server.
 
