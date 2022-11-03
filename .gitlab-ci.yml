@@ -1,20 +1,29 @@
-image: python:latest
-
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-test:
+test-cli:
+  image: python:latest
   script:
     - cd cli
     - python -m unittest -b tests/*.py
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      changes:
+    - changes:
         - cli/**/*
 
+test-client:
+  image: node:latest
+  script:
+    - cd client
+    - npm install
+    - npm test
+  rules:
+    - changes:
+        - client/**/*
+
 deploy:
+  image: node:latest
   script:
     - chmod 400 $SSH_KEY
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./client Team-205@20.168.192.248:~/
@@ -23,3 +32,14 @@ deploy:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - client/**/*
+
+deploy-api:
+  image: node:latest
+  script:
+    - chmod 400 $SSH_KEY
+    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./api Team-205@20.168.192.248:~/
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/api; python3 -m venv venv; . venv/bin/activate; pip install flask; pip install gunicorn; pm2 reload 0;"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - api/**/*
