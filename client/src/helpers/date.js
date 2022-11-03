@@ -71,7 +71,8 @@ export function parseCourses(courses) {
 
       instances.push(
         {
-          id: courseName
+          id: courseName,
+          text: courseName
         }
       )
     }

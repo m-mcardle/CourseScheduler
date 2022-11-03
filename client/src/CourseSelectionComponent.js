@@ -108,7 +108,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       </Grid>
       {collisionCourses.length
         ?
-        <Grid>
+        <Grid sx={{ width: '100%' }}>
           <p style={{ fontSize: '10px'}}>Collision with:</p>
           {
           collisionCourses.map(otherCourse =>

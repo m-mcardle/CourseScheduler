@@ -6,6 +6,7 @@ import {
   Appointments,
   WeekView,
   Resources,
+  AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -91,6 +92,9 @@ export default function Schedule({ courses, setCourses }) {
             excludedDays={[0, 6]}
           />
           <Appointments />
+          <AppointmentTooltip
+            showCloseButton
+          />
           <Resources
             data={state.resources}
             mainResourceName={'course'}
