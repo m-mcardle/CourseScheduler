@@ -41,15 +41,3 @@ npm install
 sudo npm install forever -g
 sudo npm install pm2@latest -g
 echo "Finished installing npm packages"
-
-
-echo "Starting server"
-# Forever starts the server indefinetly
-forever start -c "npm start" ./
-
-# Don't think this is needed
-# sudo npm cache clean -f
-# sudo npm install -g n
-# sudo n stable
-
-# sudo npm -g install create-react-app
