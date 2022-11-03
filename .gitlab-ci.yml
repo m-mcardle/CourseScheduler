@@ -1,18 +1,30 @@
-image: python:latest
+image:
+  name: python:latest
+
+services:
+  - name: node:latest
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-test:
+test-cli:
   script:
     - cd cli
     - python -m unittest -b tests/*.py
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      changes:
+    - changes:
         - cli/**/*
+
+test-client:
+  script:
+    - cd client
+    - npm install
+    - npm test
+  rules:
+    - changes:
+        - client/**/*
 
 deploy:
   script:
