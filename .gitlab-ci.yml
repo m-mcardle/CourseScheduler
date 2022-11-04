@@ -43,3 +43,26 @@ deploy-api:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - api/**/*
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .npm/
+
+e2e:
+  image: node:latest
+  script:
+    - cd client
+    - npm ci
+    - npm run e2e
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - client/**/*
+  artifacts:
+    when: always
+    paths:
+      - client/cypress/videos/**/*.mp4
+      - client/cypress/screenshots/**/*.png
+    expire_in: 1 day
