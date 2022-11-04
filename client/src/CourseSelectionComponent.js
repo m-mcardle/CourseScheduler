@@ -21,8 +21,9 @@ const filterOptions = createFilterOptions({
 
 export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses }) {
   // setting states
-  const [{courseName}, setCourse] = useState({ courseName: null, courseData: [], courseDisplay: 'Search for a course' });
-
+  const [{courseName}, setCourse] = useState({ courseName: null});
+  const [{courseData}, setCourseData] = useState({ courseData: [] });
+  
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -41,7 +42,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
     })
 
     // Clear input values
-    setCourse({ courseName: null, courseData: [], courseDisplay: 'Search for a course' })
+    setCourse({ courseName: null})
+    setCourseData({ courseData: []})
   };
 
   const handleCloseCancel = () => {
@@ -54,20 +56,21 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   
     const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName);
     const data = await response.json();
-    let message = '';
-    if (!data || data.length === 0){
-      message = 'No Course Found'
-    } else if (data.length > 1) {
-      message = 'Multiple courses found please specify search'
-    } else {
-      message = JSON.stringify(data);
-    }
-    setCourse((state) => ({ ...state, courseDisplay: message, courseData: data }));
+    
+    setCourse((state) => ({ ...state, courseData: data }));
 
     if (data.length === 1) {
       setCourses((state) => ({...state, courses: { ...state.courses, [course]: data[0] } }))
     }
   }
+
+  async function getExtraData(value){
+    setCourse((state) => ({ ...state, courseName: value }))
+    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+value);
+    const data = await response.json();
+    setCourseData((state) => ({ ...state, courseData: data[0]}));
+  }
+
 
   return (
     // main grid
@@ -78,7 +81,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           options={allCourses}
           filterOptions={filterOptions}
           value={courseName}
-          onChange={(_, value) => setCourse((state) => ({ ...state, courseName: value }))}
+          onChange={(_, value) => getExtraData(value)}
           renderInput={(params) => (
             <TextField
               color = "main"
@@ -155,12 +158,21 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         </Dialog>
 
       </Grid>
+
+      {courseName
+        ?
+        <div id='collide' style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+          <p style={{ fontWeight: 'bold', fontSize: '15px', display: 'inline', color: '#3F3938'}}> Faculty: {courseData['Faculty']}, Number of Meetings: {courseData['# of Meetings']}</p>
+        </div>
+        : undefined
+      }
+
       {collisionCourses.length
         ?
-        <div style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ bgcolor: 'green', fontSize: '10px', display: 'inline'}}> Conflicts with: </p>
+        <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+          <p style={{ fontSize: '14px', display: 'inline'}}> Conflicts with: </p>
           {collisionCourses.map(otherCourse =>
-            (<p style={{ fontSize: '10px', display: 'inline'}}>{otherCourse}</p>)
+            (<p style={{ fontSize: '14px', display: 'inline'}}>{otherCourse}  </p>)
           )}
         </div>
         : undefined
