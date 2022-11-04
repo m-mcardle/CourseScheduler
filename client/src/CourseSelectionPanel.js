@@ -69,7 +69,8 @@ export default function CourseSelectionPanel({ setCourses, allCourses, collision
       >
         <Button 
           variant="contained" 
-          sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+          color="error"
+          sx={{ height: 40, bgcolor: 'rgba(194,4,48)'}}
           // onClick = {() => window.location.reload(false)}
           onClick={handleClickOpen}
         >
