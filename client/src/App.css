@@ -46,6 +46,7 @@
 /* Handle */
 #collide::-webkit-scrollbar-thumb {
   background: #888;
+  border-radius: 30px;
 }
 /* Handle on hover */
 #collide::-webkit-scrollbar-thumb:hover {
