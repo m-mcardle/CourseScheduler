@@ -55,7 +55,7 @@ e2e:
   script:
     - cd client
     - npm ci
-    - npm run e2e
+    - npm run e2e:prod
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
