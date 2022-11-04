@@ -20,7 +20,12 @@ This project includes unit tests build for `@testing-library` than can be execut
 npm test
 ```
 
-These tests will be ran by GitLab's CI/CD each time a commit is made to the repo that changes any code inside this directory.
+This project also includes `e2e` testing through Cypress. To learn more view the `README` in the `/cypress` directory. To run the tests against the production environment:
+```
+./node_modules/.bin/cypress run
+```
+
+Both these test suites will be ran by GitLab's CI/CD each time a commit is made to the repo that changes any code inside this directory.
 
 ## Deployment
 

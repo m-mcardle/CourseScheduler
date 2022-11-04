@@ -6,7 +6,7 @@ https://20.168.192.248/ <- check out our web application using this link!
 
 # Repository
 
-This next section describes the purpose of each subdirectory in this repo. For more specific information about a given service, please view each directory's README.
+This next section describes the purpose of each subdirectory in this repo. For more specific information about a given service, please view each directory's `README`.
 
 ## /api 📊
 
@@ -26,9 +26,15 @@ Contains code for our React Web Application that provides an interface for a use
 
 Contains unit tests that are automatically ran each time a commit is made that adjusts code in this directory. Also is automatically re-deployed whenever new changes are made to the `main` branch.
 
+Contains an 'end-to-end' test suite built using the Cypress framework. Simulates common user flows and asserts that our production environment behaves as expected. Cypress has been integrated into our GitLab CI/CD and will perform a test run whenever the `main` branch is updated. Videos of the `e2e` testing are stored as artifacts and more detailed information about each run can be viewed on our Cypress dashboard [here](https://dashboard.cypress.io/projects/q43meb/).
+
 ## /excel 🚧
 
 Contains our tool's prototype that was built in Excel using VBA. We have kept it because the logic used to parse the meeting information is still relevant now that we are re-implementing this functionality.
+
+## /nginx 📡
+
+Contains our NGINX configuration files along with bash script to manage fresh installation and applying changes to the configuration.
 
 # Video Demo
 [![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/qWTJtqAvRKeVmLFMaKJmAW?)
