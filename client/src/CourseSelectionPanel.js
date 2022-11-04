@@ -30,7 +30,7 @@ export default function CourseSelectionPanel({ setCourses, allCourses, collision
   };
 
   return (
-    <Grid container spacing={0} sx={{minWidth: "500px", width: '30%', bgcolor : 'rgba(216,216,216)', borderTopRightRadius: 40, borderBottomRightRadius: 40, justifyContent: 'center', display: 'flex' }}>
+    <Grid id="selection-panel" container spacing={0} sx={{ minWidth: "500px", width: '30%', bgcolor : 'rgba(216,216,216)', borderTopRightRadius: 40, borderBottomRightRadius: 40, justifyContent: 'center', display: 'flex' }}>
       <Grid item xs={12} bgcolor = 'rgba(205,50,3)' sx={{ borderTopRightRadius: 40, height: "8vh", p: 1, textAlign: 'center' }}>
         <Typography color = "white" align="left" fontSize= "4vh" fontWeight= "bold" >
           UoG Course Selection
