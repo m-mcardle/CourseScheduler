@@ -75,7 +75,7 @@ export default function Schedule({ courses, setCourses }) {
   }, [state.appointments, setCourses])
 
   return (
-    <div id="schedule" style={{ maxWidth: '70%', height: '100vh', margin: 'auto' }}>
+    <div id="schedule" style={{ maxWidth: '70%', height: '100vh'}}>
       <Typography color = "grey" align="center" fontSize= "4vh" fontWeight= "bold" >
         Course Schedule
       </Typography>
