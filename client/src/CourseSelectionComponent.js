@@ -166,7 +166,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
       {courseName
         ?
-        <div id='collide' style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+        <div style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
           <p style={{ fontWeight: 'bold', fontSize: '15px', display: 'inline', color: '#3F3938'}}> Faculty: {courseData['Faculty']}, Number of Meetings: {courseData['# of Meetings']}</p>
         </div>
         : undefined
@@ -175,10 +175,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       {collisionCourses.length
         ?
         <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ fontSize: '14px', display: 'inline'}}> Conflicts with: </p>
-          {collisionCourses.map(otherCourse =>
-            (<p style={{ fontSize: '14px', display: 'inline'}}>{otherCourse}  </p>)
-          )}
+          <p style={{ fontSize: '14px', display: 'inline'}}>Conflicts with: {collisionCourses.join(', ')}</p>
         </div>
         : undefined
       }
