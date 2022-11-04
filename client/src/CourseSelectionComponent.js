@@ -78,7 +78,10 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       {/* text field for course input */}
       <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius:1}}>
         <Autocomplete
+          id="course-input"
           options={allCourses}
+          autoHighlight
+          autoComplete
           filterOptions={filterOptions}
           value={courseName}
           onChange={(_, value) => getExtraData(value)}
@@ -107,7 +110,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           borderRadius: 100
         }}
       >
-        <IconButton 
+        <IconButton
+          id="course-submit"
           aria-label="add"
           onClick={() => getCourseData()}
           sx={{  color: 'white' }}
@@ -129,6 +133,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         }}
       >
         <IconButton
+          id="course-delete"
           sx={{  color: 'white' }}
           onClick={handleClickOpen}
         >
@@ -151,7 +156,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseCancel} sx={{color:'grey'}}>Cancel</Button>
-            <Button onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
+            <Button id="dialog-confirm" onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
               Confirm
             </Button>
           </DialogActions>
@@ -161,7 +166,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
       {courseName
         ?
-        <div id='collide' style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+        <div style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
           <p style={{ fontWeight: 'bold', fontSize: '15px', display: 'inline', color: '#3F3938'}}> Faculty: {courseData['Faculty']}, Number of Meetings: {courseData['# of Meetings']}</p>
         </div>
         : undefined
@@ -170,10 +175,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       {collisionCourses.length
         ?
         <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ fontSize: '14px', display: 'inline'}}> Conflicts with: </p>
-          {collisionCourses.map(otherCourse =>
-            (<p style={{ fontSize: '14px', display: 'inline'}}>{otherCourse}  </p>)
-          )}
+          <p style={{ fontSize: '14px', display: 'inline'}}>Conflicts with: {collisionCourses.join(', ')}</p>
         </div>
         : undefined
       }
