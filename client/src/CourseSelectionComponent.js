@@ -1,6 +1,17 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { Grid, TextField, IconButton, Autocomplete } from '@mui/material';
+import { 
+  Grid, 
+  TextField, 
+  IconButton, 
+  Button,
+  Autocomplete, 
+  Dialog, 
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState } from 'react';
 
@@ -11,6 +22,31 @@ const filterOptions = createFilterOptions({
 export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses }) {
   // setting states
   const [{courseName}, setCourse] = useState({ courseName: null, courseData: [], courseDisplay: 'Search for a course' });
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    if (courseName !== null) {
+      setOpen(true);
+    }
+  };
+
+  const handleCloseConfirm = () => {
+    setOpen(false);
+    
+    // Remove course from `courses`
+    setCourses((state) => {
+      delete state.courses[course];
+      return  { ...state, courses:  { ...state.courses } };
+    })
+
+    // Clear input values
+    setCourse({ courseName: null, courseData: [], courseDisplay: 'Search for a course' })
+  };
+
+  const handleCloseCancel = () => {
+    setOpen(false);
+  };
 
   // function to get course data from api
   async function getCourseData(){
@@ -35,9 +71,9 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
   return (
     // main grid
-    <Grid container  sx={{ p: 1 ,alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
+    <Grid container  sx={{ p: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
       {/* text field for course input */}
-      <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius: 1}}>
+      <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius:1}}>
         <Autocomplete
           options={allCourses}
           filterOptions={filterOptions}
@@ -56,7 +92,6 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         />
       </Grid>
       
-
       {/* button for adding course */}
       <Grid
         item
@@ -92,29 +127,42 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       >
         <IconButton
           sx={{  color: 'white' }}
-          onClick={() => {
-            // Remove course from `courses`
-            setCourses((state) => {
-              delete state.courses[course];
-              return  { ...state, courses:  { ...state.courses } };
-            })
-
-            // Clear input values
-            setCourse({ courseName: null, courseData: [], courseDisplay: 'Search for a course' })
-          }}
+          onClick={handleClickOpen}
         >
           <DeleteIcon sx={{  height: "30px", width: "30px"}} />
         </IconButton>
+
+        <Dialog
+          open={open}
+          onClose={handleCloseCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title" >
+            {"Delete " + course}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to remove {courseName} from the schedule?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseCancel} sx={{color:'grey'}}>Cancel</Button>
+            <Button onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+
       </Grid>
       {collisionCourses.length
         ?
-        <Grid sx={{ width: '100%' }}>
-          <p style={{ fontSize: '10px'}}>Collision with:</p>
-          {
-          collisionCourses.map(otherCourse =>
-            (<p className='Note'>{otherCourse}</p>)
+        <div style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+          <p style={{ bgcolor: 'green', fontSize: '10px', display: 'inline'}}> Conflicts with: </p>
+          {collisionCourses.map(otherCourse =>
+            (<p style={{ fontSize: '10px', display: 'inline'}}>{otherCourse}</p>)
           )}
-        </Grid>
+        </div>
         : undefined
       }
     </Grid>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, ThemeProvider } from '@mui/material';
+import { darkTheme } from './themes';
 import Schedule from './Schedule';
 import CourseSelectionPanel from './CourseSelectionPanel';
 import './App.css';
@@ -20,11 +21,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="App">
-      <Grid container direction={'row'} sx={{ height: '100vh' }}>
-        <CourseSelectionPanel setCourses={setCourses} allCourses={allCourses} collisions={state.collisions} courses={state.courses} />
-        <Schedule courses={state.courses} setCourses={setCourses}/>
-      </Grid>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <div className="App">
+        <Grid container direction={'row'} sx={{ height: '100vh' }}>
+          <CourseSelectionPanel setCourses={setCourses} allCourses={allCourses} collisions={state.collisions} courses={state.courses} />
+          <Schedule courses={state.courses} setCourses={setCourses}/>
+        </Grid>
+      </div>
+    </ThemeProvider>
   );
 }
