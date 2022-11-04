@@ -155,12 +155,21 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         </Dialog>
 
       </Grid>
+
+      {courseName
+        ?
+        <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+          <p style={{ bgcolor: 'green', fontSize: '14px', display: 'inline'}}>  </p>
+        </div>
+        : undefined
+      }
+
       {collisionCourses.length
         ?
-        <div style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ bgcolor: 'green', fontSize: '10px', display: 'inline'}}> Conflicts with: </p>
+        <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
+          <p style={{ bgcolor: 'green', fontSize: '14px', display: 'inline'}}> Conflicts with: </p>
           {collisionCourses.map(otherCourse =>
-            (<p style={{ fontSize: '10px', display: 'inline'}}>{otherCourse}</p>)
+            (<p style={{ fontSize: '14px', display: 'inline'}}>{otherCourse} - </p>)
           )}
         </div>
         : undefined
