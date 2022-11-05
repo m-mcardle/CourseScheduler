@@ -22,7 +22,7 @@ describe('home page', () => {
       .click()
   
     // Assert course was added
-    cy.get('#schedule').should('contain.text', 'ACCT*1220*0101 (6573) Intro Financial Accounting')
+    cy.get('#schedule').should('contain.text', 'ACCT*1220*0101')
 
     cy.get('#course-delete')
       .first()
@@ -32,6 +32,6 @@ describe('home page', () => {
       .click()
 
     // Assert course was removed
-    cy.get('#schedule').should('not.contain.text', 'ACCT*1220*0101 (6573) Intro Financial Accounting')
+    cy.get('#schedule').should('not.contain.text', 'ACCT*1220*0101')
   })
 })

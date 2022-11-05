@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import WarningIcon from '@mui/icons-material/Warning';
 import { 
   Grid, 
   TextField, 
@@ -166,16 +167,17 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
       {courseName
         ?
-        <div style={{marginTop: 3, marginBottom: 3, align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ fontWeight: 'bold', fontSize: '15px', display: 'inline', color: '#3F3938'}}> Faculty: {courseData['Faculty']}, Number of Meetings: {courseData['# of Meetings']}</p>
+        <div className='secondary-info'>
+          <p className='secondary-text'>Faculty: {courseData['Faculty']}, Meetings: {courseData['# of Meetings']}</p>
         </div>
         : undefined
       }
 
       {collisionCourses.length
         ?
-        <div id='collide' style={{align: 'left', height: '20%', maxWidth: "100%", width: '100%', display: 'inline', overflowX:'auto', whiteSpace:'nowrap'}}>
-          <p style={{ fontSize: '14px', display: 'inline'}}>Conflicts with: {collisionCourses.join(', ')}</p>
+        <div id='collide' className='secondary-info'>
+          <WarningIcon sx={{  height: "14px", width: "14px", display: 'inline', verticalAlign: 'middle' }} />
+          <p style={{ fontSize: '14px', display: 'inline' }}>Conflicts with: {collisionCourses.join(', ')}</p>
         </div>
         : undefined
       }

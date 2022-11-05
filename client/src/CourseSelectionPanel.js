@@ -47,12 +47,12 @@ export default function CourseSelectionPanel({ setCourses, allCourses, collision
           for (const i in collisions) {
             if (collisions[i].course1 === courseData['Section Name and Title']) {
               collides = true;
-              otherCourses.push(collisions[i].course2);
+              otherCourses.push(collisions[i].course2.split(' ', 1)[0]);
             }
 
             if (collisions[i].course2 === courseData['Section Name and Title']) {
               collides = true;
-              otherCourses.push(collisions[i].course1);
+              otherCourses.push(collisions[i].course1.split(' ', 1)[0]);
             }
           }
           otherCourses = [...new Set(otherCourses)];

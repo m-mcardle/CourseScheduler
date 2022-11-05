@@ -19,6 +19,7 @@ export function parseCourses(courses) {
     let courseNum = 0;
     for (const [, value] of Object.entries(courses)) {
       const courseName = value['Section Name and Title']
+      const courseCode = courseName.split(' ', 1)[0]
       let rawMeetings = value['Meeting Information']
       rawMeetings = rawMeetings.replace(/'/g, '"')
 
@@ -59,7 +60,7 @@ export function parseCourses(courses) {
           const newEntry = {
             startDate: currentMonth + '-' + dayOfWeek[days[j]] + 'T' + startTime,
             endDate: currentMonth + '-' + dayOfWeek[days[j]] + 'T' + endTime,
-            title: courseName,
+            title: courseCode + ` (${type})`,
             location,
             id: courseName + courseNum + i + dayOfWeek[days[j]],
             course: courseName
