@@ -79,7 +79,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
       {/* text field for course input */}
       <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius:1}}>
         <Autocomplete
-          id="course-input"
+          className="course-input"
           options={allCourses}
           autoHighlight
           autoComplete
@@ -112,7 +112,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         }}
       >
         <IconButton
-          id="course-submit"
+          className="course-submit"
           aria-label="add"
           onClick={() => getCourseData()}
           sx={{  color: 'white' }}
@@ -134,7 +134,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         }}
       >
         <IconButton
-          id="course-delete"
+          className="course-delete"
           sx={{  color: 'white' }}
           onClick={handleClickOpen}
         >
@@ -157,7 +157,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseCancel} sx={{color:'grey'}}>Cancel</Button>
-            <Button id="dialog-confirm" onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
+            <Button className="dialog-confirm" onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
               Confirm
             </Button>
           </DialogActions>
@@ -175,7 +175,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
       {collisionCourses.length
         ?
-        <div id='collide' className='secondary-info'>
+        <div className='collide secondary-info'>
           <WarningIcon sx={{  height: "14px", width: "14px", display: 'inline', verticalAlign: 'middle' }} />
           <p style={{ fontSize: '14px', display: 'inline' }}>Conflicts with: {collisionCourses.join(', ')}</p>
         </div>
