@@ -27,7 +27,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "e2e": "cypress run",
-    "e2e:prod": "cypress run --record"
+    "e2e:dev": "CYPRESS_BASE_URL=http://localhost:3000 cypress run",
+    "e2e:prod": "cypress run --record",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": [
