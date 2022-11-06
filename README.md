@@ -1,5 +1,5 @@
-# Sprint 5
-This branch contains the code that was created by team 205 to meet requirements for sprint five. This sprint was focused on creating and demonstrating request and response paths across our stack. This involved updating the frontend with interactable interface, building a flask server with Gunicorn, and connecting everything together.
+# Sprint 6
+This branch contains the code that was created by team 205 to meet requirements for sprint six. This sprint was focused on creating a way for undergraduate students to create a schedule for the Fall 2022 semester. This involved updating the frontend with interactable interface. We also needed to considere courses that conflict with each other and how the system may eal with that in a neat way.
 
 https://20.168.192.248/ <- check out our web application using this link!
 
@@ -37,4 +37,4 @@ Contains our tool's prototype that was built in Excel using VBA. We have kept it
 Contains our NGINX configuration files along with bash script to manage fresh installation and applying changes to the configuration.
 
 # Video Demo
-[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/qWTJtqAvRKeVmLFMaKJmAW?)
+[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/Co7DsVx9DhAwgtctCrmYJV?)
