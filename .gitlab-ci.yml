@@ -39,7 +39,7 @@ deploy:
 deploy-api:
   image: node:latest
   environment:
-    name: production
+    name: production-api
     url: https://20.168.192.248/api
   script:
     - chmod 400 $SSH_KEY
