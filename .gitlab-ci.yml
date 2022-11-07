@@ -36,7 +36,7 @@ build:
   script:
     - cd client
     - npm install
-    - npm build
+    - npm run build
   artifacts:
     paths:
       - client/build/
