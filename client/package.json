@@ -29,7 +29,8 @@
     "e2e": "cypress run",
     "e2e:dev": "CYPRESS_BASE_URL=http://localhost:3000 cypress run",
     "e2e:prod": "cypress run --record",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "lint": "eslint src/**/*.js"
   },
   "eslintConfig": {
     "extends": [
