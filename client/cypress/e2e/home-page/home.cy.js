@@ -62,4 +62,28 @@ describe('home page', () => {
       .last()
       .should('contain.text', 'ACCT*1220*0101')
   })
+
+  it('can add DE course and not display on schedule', () => {
+    const course_3 = 'ACCT*1220*DE01 (6583) Intro Financial Accounting'
+    cy.get('.course-input')
+      .first()
+      .type(`${course_3}{enter}`)
+
+    cy.get('.course-submit')
+      .first()
+      .click()
+  
+    // Assert course was not added to schedule
+    cy.get('.schedule').should('not.contain.text', 'ACCT*1220*DE01')
+
+    cy.get('.course-delete')
+      .first()
+      .click()
+
+    cy.get('.dialog-confirm')
+      .click()
+
+    // Assert course was removed
+    cy.get('.schedule').should('not.contain.text', 'ACCT*1220*DE01')
+  })
 })
