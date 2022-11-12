@@ -9,6 +9,16 @@ stages:
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
+test-api:
+  image: python:latest
+  stage: test
+  script:
+    - cd api
+    - pylint app.py
+  rules:
+    - changes:
+        - api/**/*
+
 test-cli:
   image: python:latest
   stage: test
