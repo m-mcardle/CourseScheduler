@@ -1,10 +1,28 @@
+stages:
+  - test
+  - build
+  - deploy
+  - e2e
+
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
+test-api:
+  image: python:latest
+  stage: test
+  script:
+    - cd api
+    - pip install pylint
+    - pylint app.py
+  rules:
+    - changes:
+        - api/**/*
+
 test-cli:
   image: python:latest
+  stage: test
   script:
     - cd cli
     - python -m unittest -b tests/*.py
@@ -14,6 +32,7 @@ test-cli:
 
 test-client:
   image: node:latest
+  stage: test
   script:
     - cd client
     - npm install
@@ -22,15 +41,32 @@ test-client:
     - changes:
         - client/**/*
 
+build:
+  image: node:latest
+  stage: build
+  script:
+    - cd client
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - client/build/
+  rules:
+    - changes:
+        - client/**/*
+
 deploy:
   image: node:latest
+  stage: deploy
   environment:
     name: production
     url: https://20.168.192.248/
   script:
     - chmod 400 $SSH_KEY
-    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./client Team-205@20.168.192.248:~/
-    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/client; npm install; npm run build; sudo cp -r ./build /www;"
+    - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./client/build Team-205@20.168.192.248:~/
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/client; sudo cp -r ./build /www;"
+  dependencies:
+    - build
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -38,13 +74,14 @@ deploy:
 
 deploy-api:
   image: node:latest
+  stage: deploy
   environment:
     name: production-api
     url: https://20.168.192.248/api
   script:
     - chmod 400 $SSH_KEY
     - scp -i $SSH_KEY -o StrictHostKeyChecking=no -r ./api Team-205@20.168.192.248:~/
-    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/api; python3 -m venv venv; . venv/bin/activate; pip install flask; pip install gunicorn; pm2 reload 0;"
+    - ssh -i $SSH_KEY -o StrictHostKeyChecking=no Team-205@20.168.192.248 "cd ~/api; python3 -m venv venv; . venv/bin/activate; pip install flask; pip install pylint; pip install gunicorn; pm2 reload 0;"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
@@ -58,6 +95,7 @@ cache:
 
 e2e:
   image: cypress/browsers:node16.14.0-chrome99-ff97
+  stage: e2e
   script:
     - cd client
     - npm ci

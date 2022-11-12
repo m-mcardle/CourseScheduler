@@ -23,34 +23,34 @@ export default function Schedule({ courses, setCourses }) {
       {
         fieldName: 'course',
         title: 'Course',
-        instances: []
-      }
-    ]
+        instances: [],
+      },
+    ],
   });
 
   // Hook for parsing selected courses' meetings
   useEffect(() => {
     const { entries, instances } = parseCourses(courses);
 
-    setState(state => ({
+    setState((state) => ({
       ...state,
       appointments: entries,
       resources: [
         {
           fieldName: 'course',
           title: 'Course',
-          instances
-        }
-      ]
-    }))
-  }, [courses])
+          instances,
+        },
+      ],
+    }));
+  }, [courses]);
 
   // Hook for detecting collisions
   useEffect(() => {
     const collisions = [];
     const dates = [];
     for (const i in state.appointments) {
-      const appointment = state.appointments[i]
+      const appointment = state.appointments[i];
       const start = dayjs(appointment.startDate);
       const end = dayjs(appointment.endDate);
 
@@ -58,50 +58,39 @@ export default function Schedule({ courses, setCourses }) {
         // Shift times by a second to ensure that matching start/end times count as collisions
         const newStart = start.add(1, 'second');
         const newEnd = end.subtract(1, 'second');
-        if (newStart.isBetween(dates[j].start, dates[j].end) || newEnd.isBetween(dates[j].start, dates[j].end)) {
+        if (
+          newStart.isBetween(dates[j].start, dates[j].end) ||
+          newEnd.isBetween(dates[j].start, dates[j].end)
+        ) {
           collisions.push({
             course1: appointment.course,
             course2: state.appointments[j].course,
-          })
+          });
         }
       }
 
       dates[i] = {
         start,
-        end
+        end,
       };
     }
-    setCourses(state => ({ ...state, collisions }));
-  }, [state.appointments, setCourses])
+    setCourses((state) => ({ ...state, collisions }));
+  }, [state.appointments, setCourses]);
 
   return (
-    <div className="schedule" style={{ maxWidth: '70%', height: '100vh'}}>
-      <Typography color = "grey" align="center" fontSize= "4vh" fontWeight= "bold" >
+    <div className="schedule" style={{ maxWidth: '70%', height: '100vh' }}>
+      <Typography color="grey" align="center" fontSize="4vh" fontWeight="bold">
         Course Schedule
       </Typography>
-      <Paper style={{height: '92vh', width: "100%"}}>
-        <Scheduler
-          data={state.appointments}
-        >
-          <ViewState
-            currentDate={currentDate}
-          />
-          <WeekView
-            startDayHour={8}
-            endDayHour={22}
-            excludedDays={[0, 6]}
-          />
+      <Paper style={{ height: '92vh', width: '100%' }}>
+        <Scheduler data={state.appointments}>
+          <ViewState currentDate={currentDate} />
+          <WeekView startDayHour={8} endDayHour={22} excludedDays={[0, 6]} />
           <Appointments />
-          <AppointmentTooltip
-            showCloseButton
-          />
-          <Resources
-            data={state.resources}
-            mainResourceName={'course'}
-          />
+          <AppointmentTooltip showCloseButton />
+          <Resources data={state.resources} mainResourceName={'course'} />
         </Scheduler>
       </Paper>
-    </div> 
-
+    </div>
   );
-};
+}
