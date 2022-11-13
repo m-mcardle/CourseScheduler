@@ -29,7 +29,7 @@ test-lint:
     - eslint --init
     - eslint /src/Schedule.js
   rules:
-    -changes:
+    - changes:
       - client/**/*
 
 
