@@ -26,7 +26,7 @@ test-lint:
   script:
     - cd client
     - npm install eslint --same-dev
-    - eslint --init
+    - ./node_modules/.bin/eslint --init
     - npm run lint
   rules:
     - changes:
