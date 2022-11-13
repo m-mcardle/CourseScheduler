@@ -25,9 +25,9 @@ test-lint:
   stage: test
   script:
     - cd client
-    - npm install eslint
+    - npm install eslint --same-dev
     - eslint --init
-    - eslint /src/Schedule.js
+    - npm run lint
   rules:
     - changes:
       - client/**/*
