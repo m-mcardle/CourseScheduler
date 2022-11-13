@@ -27,7 +27,7 @@ test-lint:
     - cd client
     - npm install eslint
     - eslint --init
-    - eslint ./src/Schedule.js
+    - eslint /src/Schedule.js
   rules:
     -changes:
       - client/**/*
