@@ -36,6 +36,7 @@ test-client:
   script:
     - cd client
     - npm install
+    - npm run lint
     - npm test
   rules:
     - changes:
