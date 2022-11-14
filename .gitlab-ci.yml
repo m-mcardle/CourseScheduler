@@ -20,6 +20,21 @@ test-api:
     - changes:
         - api/**/*
 
+test-lint:
+  image: node:latest
+  stage: test
+  script:
+    - cd client
+    - npm install eslint --same-dev
+    - ./node_modules/.bin/eslint --init
+    - npm run lint
+  rules:
+    - changes:
+      - client/**/*
+
+
+
+
 test-cli:
   image: python:latest
   stage: test
