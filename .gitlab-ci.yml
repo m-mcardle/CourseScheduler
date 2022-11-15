@@ -9,6 +9,7 @@ stages:
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/.cache"
 
 install_deps:
   image: node:latest
@@ -19,6 +20,7 @@ install_deps:
   artifacts:
     paths:
       - client/node_modules/
+      - .cache/
   rules:
     - changes:
         - client/**/*
