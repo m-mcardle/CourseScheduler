@@ -11,7 +11,9 @@ export default function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('https://20.168.192.248/api/courses');
+      // TODO: Make this refetch each time the toggle changes with the new semester
+      // Add appropriate flags to query params (ex: ---/api/f22?DE=Yes&Monday=No)
+      const response = await fetch('https://20.168.192.248/api/f22');
       const data = await response.json();
       const newArray = data.map(course => course['Section Name and Title']);
       setAllCourses(newArray);

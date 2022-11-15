@@ -1,6 +1,6 @@
 """A dummy docstring."""
 import json
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 
 
@@ -8,10 +8,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Open data file
-file = open('./data/courses.json', encoding="utf8")
-courses = json.load(file)
-file.close()
+# Open data files
+f22_file = open('./data/f22.json', encoding="utf8")
+f22 = json.load(f22_file)
+f22_file.close()
+
+w23_file = open('./data/w23.json', encoding="utf8")
+w23 = json.load(w23_file)
+w23_file.close()
 
 # Valid Course fields
 fields = [
@@ -38,11 +42,57 @@ fields = [
     '# of Meetings'
 ]
 
+# Filter options for GET requests
+options = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'DE',
+    'Seminar',
+    'Lecture',
+    'Lab',
+    'Afternoon',
+    'Morning',
+    '# of Meetings'
+]
+
 # Endpoint provides all course data
-@app.route("/api/courses")
-def all_courses():
-    """Function to get all courses in JSON."""
+@app.route("/api/f22")
+def f22_route():
+    """Function to get all courses for F22 in JSON."""
+    args = request.args
+    courses = []
+    for course in f22:
+        valid = True
+        for option in options:
+            if option in args:
+                if args[option] != course[option]:
+                    valid = False
+                    break
+        if valid:
+            courses.append(course)
+
     return courses
+
+@app.route("/api/w23")
+def w23_route():
+    """Function to get all courses for W23 in JSON."""
+    args = request.args
+    courses = []
+    for course in w23:
+        valid = True
+        for option in options:
+            if option in args:
+                if args[option] != course[option]:
+                    valid = False
+                    break
+        if valid:
+            courses.append(course)
+
+    return courses
+
 
 # Endpoint returns all courses that contain a "value" for a given "field"
 @app.route("/api/course/<field>/<value>")
@@ -52,7 +102,7 @@ def get_course(field = "Section Name and Title", value=None):
     if field not in fields:
         return 'Invalid field'
 
-    for course in courses:
+    for course in f22:
         if value in course[field]:
             found_courses.append(course)
 
@@ -61,7 +111,7 @@ def get_course(field = "Section Name and Title", value=None):
 def get_course_meeting(course_name):
     """Gets course meeting data for course."""
     index_found = -1
-    for index, course in enumerate(courses):
+    for index, course in enumerate(f22):
         if course_name in course[fields[0]]:
             index_found = index
             break
@@ -69,7 +119,7 @@ def get_course_meeting(course_name):
         print("None")
         return 'Invalid'
 
-    course = courses[index_found]
+    course = f22[index_found]
 
     course_meetings = {
         "LEC" : None,
