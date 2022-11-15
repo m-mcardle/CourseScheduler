@@ -41,6 +41,7 @@ test-api:
 test-cli:
   image: python:latest
   stage: test
+  needs: []
   script:
     - cd cli
     - python -m unittest -b tests/*.py
@@ -51,7 +52,6 @@ test-cli:
 test-client:
   image: node:latest
   stage: test
-  needs: []
   script:
     - cd client
     - npm run lint
