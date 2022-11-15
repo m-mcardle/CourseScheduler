@@ -1,5 +1,5 @@
-# Sprint 7
-This branch contains the code that was created by team 205 to meet requirements for sprint seven. This sprint was focused on creating a flushed out CI/CD pipeline that handles code linting, testing, and deployment.
+# Sprint 8
+This branch contains the code that was created by team 205 to meet requirements for sprint eight. This sprint was focused on adding Winter 2023 courses.
 
 https://20.168.192.248/ <- check out our web application using this link!
 
