@@ -53,7 +53,8 @@ build:
     paths:
       - client/build/
   rules:
-    - changes:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
         - client/**/*
 
 deploy:
