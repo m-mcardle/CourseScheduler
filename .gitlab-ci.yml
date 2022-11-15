@@ -19,6 +19,9 @@ install_deps:
   artifacts:
     paths:
       - client/node_modules/
+  rules:
+    - changes:
+        - client/**/*
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -52,6 +55,8 @@ test-cli:
 test-client:
   image: node:latest
   stage: test
+  needs:
+    - install_deps
   script:
     - cd client
     - npm run lint
@@ -64,6 +69,7 @@ build:
   image: node:latest
   stage: build
   needs:
+    - install_deps
     - test-client
   script:
     - cd client
@@ -79,6 +85,8 @@ build:
 deploy:
   image: node:latest
   stage: deploy
+  needs:
+    - build
   environment:
     name: production
     url: https://20.168.192.248/
@@ -96,6 +104,8 @@ deploy:
 deploy-api:
   image: node:latest
   stage: deploy
+  needs:
+    - test-api
   environment:
     name: production-api
     url: https://20.168.192.248/api
@@ -111,6 +121,9 @@ deploy-api:
 e2e:
   image: cypress/browsers:node16.14.0-chrome99-ff97
   stage: e2e
+  needs:
+    - install_deps
+    - deploy
   script:
     - cd client
     - npm run e2e:prod
