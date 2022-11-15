@@ -1,4 +1,5 @@
 stages:
+  - install
   - test
   - build
   - deploy
@@ -8,6 +9,20 @@ stages:
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+install_deps:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .npm/
 
 test-api:
   image: python:latest
@@ -35,7 +50,7 @@ test-client:
   stage: test
   script:
     - cd client
-    - npm install
+    - npm ci
     - npm run lint
     - npm test
   rules:
@@ -45,9 +60,11 @@ test-client:
 build:
   image: node:latest
   stage: build
+  needs:
+    - test-client
   script:
     - cd client
-    - npm install
+    - npm ci
     - npm run build
   artifacts:
     paths:
@@ -88,12 +105,6 @@ deploy-api:
     - if: $CI_COMMIT_BRANCH == "main"
       changes:
         - api/**/*
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - node_modules/
-    - .npm/
 
 e2e:
   image: cypress/browsers:node16.14.0-chrome99-ff97
