@@ -14,6 +14,7 @@ install_deps:
   image: node:latest
   stage: install
   script:
+    - cd client
     - npm ci
   artifacts:
     paths:
