@@ -18,12 +18,12 @@ install_deps:
     - npm ci
   artifacts:
     paths:
-      - node_modules/
+      - client/node_modules/
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - node_modules/
+    - client/node_modules/
     - .npm/
 
 test-api:
