@@ -1,5 +1,4 @@
 stages:
-  - install
   - test
   - build
   - deploy
@@ -9,32 +8,10 @@ stages:
 # only cache local items.
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/.cache"
-
-install_deps:
-  image: node:latest
-  stage: install
-  script:
-    - cd client
-    - npm ci
-  artifacts:
-    paths:
-      - client/node_modules/
-      - .cache/
-  rules:
-    - changes:
-        - client/**/*
-
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - client/node_modules/
-    - .npm/
 
 test-api:
   image: python:latest
   stage: test
-  needs: []
   script:
     - cd api
     - pip install pylint
@@ -46,7 +23,6 @@ test-api:
 test-cli:
   image: python:latest
   stage: test
-  needs: []
   script:
     - cd cli
     - python -m unittest -b tests/*.py
@@ -57,10 +33,9 @@ test-cli:
 test-client:
   image: node:latest
   stage: test
-  needs:
-    - install_deps
   script:
     - cd client
+    - npm ci
     - npm run lint
     - npm test
   rules:
@@ -71,10 +46,10 @@ build:
   image: node:latest
   stage: build
   needs:
-    - install_deps
     - test-client
   script:
     - cd client
+    - npm ci
     - npm run build
   artifacts:
     paths:
@@ -124,10 +99,10 @@ e2e:
   image: cypress/browsers:node16.14.0-chrome99-ff97
   stage: e2e
   needs:
-    - install_deps
     - deploy
   script:
     - cd client
+    - npm ci
     - npm run e2e:prod
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
