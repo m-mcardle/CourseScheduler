@@ -11,6 +11,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 install_deps:
+  image: node:latest
   stage: install
   script:
     - npm ci
