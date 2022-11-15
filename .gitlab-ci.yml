@@ -29,6 +29,7 @@ cache:
 test-api:
   image: python:latest
   stage: test
+  needs: []
   script:
     - cd api
     - pip install pylint
@@ -50,9 +51,9 @@ test-cli:
 test-client:
   image: node:latest
   stage: test
+  needs: []
   script:
     - cd client
-    - npm ci
     - npm run lint
     - npm test
   rules:
@@ -66,7 +67,6 @@ build:
     - test-client
   script:
     - cd client
-    - npm ci
     - npm run build
   artifacts:
     paths:
@@ -113,7 +113,6 @@ e2e:
   stage: e2e
   script:
     - cd client
-    - npm ci
     - npm run e2e:prod
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
