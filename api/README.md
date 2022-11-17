@@ -25,11 +25,11 @@ Example:
 
 ### [`/course`](https://20.168.192.248/api/course/Faculty/Klotz)
 
-This endpoints returns courses that match a given field-value pair. For example you can provide a course name and it will find all the courses that match that string. Currently only supports F22 courses.
+This endpoints returns courses that match a given field-value pair. For example you can provide a course name and it will find all the courses that match that string. To switch between semesters (f22 and w23), pass a URL parameter of either `f22` or `w23`. If no semester is specified f22 is the default.
 
 Example:
 ```
-/course/Faculty/Klotz
+/course/Faculty/Klotz?f22
 ```
 
 ### Valid Filter Fields
