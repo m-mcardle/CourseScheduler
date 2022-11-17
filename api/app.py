@@ -98,11 +98,13 @@ def w23_route():
 @app.route("/api/course/<field>/<value>")
 def get_course(field = "Section Name and Title", value=None):
     """Function to get a course."""
+    args = request.args
+    course_data = w23 if 'w23' in args.keys() else f22
     found_courses = []
     if field not in fields:
         return 'Invalid field'
 
-    for course in f22:
+    for course in course_data:
         if value in course[field]:
             found_courses.append(course)
 
