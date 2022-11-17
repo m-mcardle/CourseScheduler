@@ -2,6 +2,51 @@
 
 This is our team's API to provide course information from a Flask server.
 
+## Endpoints
+
+### [`/f22`](https://20.168.192.248/api/f22)
+
+This endpoint returns course information for courses in Fall 2022. Courses can be filtered by passing parameters to the request in the format: `/w22?{field}={value}`.
+
+Example:
+```
+/f22?Monday=No
+```
+
+
+### [`/w23`](https://20.168.192.248/api/w23)
+
+This endpoint returns course information for courses in Winter 2023. Courses can be filtered by passing parameters to the request in the format: `/w23?{field}={value}`.
+
+Example:
+```
+/w23?Monday=No
+```
+
+### [`/course`](https://20.168.192.248/api/course/Faculty/Klotz)
+
+This endpoints returns courses that match a given field-value pair. For example you can provide a course name and it will find all the courses that match that string. Currently only supports F22 courses.
+
+Example:
+```
+/course/Faculty/Klotz
+```
+
+### Valid Filter Fields
+
+* Monday
+* Tuesday
+* Wednesday
+* Thursday
+* Friday
+* DE
+* Seminar
+* Lecture
+* Lab
+* Afternoon
+* Morning
+* \# of Meetings
+
 ## Starting Server
 
 This should start the server to external IPs on port 8080.
