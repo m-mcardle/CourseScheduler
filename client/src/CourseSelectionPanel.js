@@ -9,6 +9,7 @@ import {
   DialogTitle
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
+import { FilterModal } from './FilterModal' 
 import * as React from 'react';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
@@ -35,6 +36,7 @@ export default function CourseSelectionPanel({ setCourses, allCourses, collision
         <Typography color = "white" align="left" fontSize= "4vh" fontWeight= "bold" >
           UoG Course Selection
         </Typography>
+        <FilterModal></FilterModal>
       </Grid>
 
       
