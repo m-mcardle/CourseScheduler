@@ -1,5 +1,6 @@
-import {useState} from 'react';
-import {Box, Button, Typography, Modal} from '@mui/material';
+import { useState } from 'react';
+import { Box, Button, Typography, Modal } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const style = {
   position: 'absolute',
@@ -20,7 +21,18 @@ export function FilterModal() {
 
   return (
     <div>
-      <Button onClick={handleOpen}>Filters</Button>
+      <Button
+        onClick={handleOpen}
+        sx={{
+          mt: 0.5,
+          bgcolor: 'rgba(255,204,0)',
+          justifyContent: 'center',
+          display: 'flex',
+          borderRadius: 100,
+        }}
+      >
+        <FilterListIcon sx={{ color: 'white' }} />
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
