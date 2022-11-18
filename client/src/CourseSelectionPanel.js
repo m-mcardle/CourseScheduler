@@ -7,20 +7,67 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Box,
+  Modal, 
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
-import { FilterModal } from './FilterModal';
-import * as React from 'react';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { 
+  useEffect, 
+  useState,
+  // useRef
+} from 'react';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
 export default function CourseSelectionPanel({
   setCourses,
-  allCourses,
   collisions,
   courses,
 }) {
-  const [open, setOpen] = React.useState(false);
+
+  const [allCourses, setAllCourses] = useState([]);
+  const [days, setDays] = useState(() => []);
+  const [times, setTimes] = useState(() => []);
+  const [classes, setClasses] = useState(() => []);
+  const [semester, setSemester] = useState('f22');
+
+  useEffect(() => {
+    async function fetchIData() {
+      // TODO: Make this refetch each time the toggle changes with the new semester
+      // Add appropriate flags to query params (ex: ---/api/f22?DE=Yes&Monday=No)
+
+      var url = 'https://20.168.192.248/api/'+semester+'?'
+
+      if (days.length > 1){
+        for (let day in days){
+          url = url +'&'+days[day]+'=no'
+        }
+      }
+      if (times.length > 1){
+        for (let time in times){
+          url = url +'&'+times[time]+'=no'
+        }
+      }
+      if (classes.length > 1){
+        for (let classType in classes){
+          url = url +'&'+classes[classType]+'=no'
+        }
+      }
+
+      console.log(url)
+      const response = await fetch(url);
+      const data = await response.json();
+      const newArray = data.map(course => course['Section Name and Title']);
+      setAllCourses(newArray);
+    }
+
+    fetchIData();
+  }, []);
+
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,6 +81,55 @@ export default function CourseSelectionPanel({
   const handleCloseCancel = () => {
     setOpen(false);
   };
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    borderRadius: 3,
+    p: 4,
+  };
+
+  const [openModal, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const handleDays = (
+    event,
+    newDays,
+  ) => {
+      setDays(newDays);
+      // fetchData();
+
+  };
+ 
+  const handleTimes = (
+    event,
+    newTimes,
+  ) => {
+      setTimes(newTimes);
+      // fetchData();
+  };
+ 
+  const handleClasses = (
+    event,
+    newClasses,
+  ) => {
+      setClasses(newClasses);
+      // fetchData();
+  };
+
+  const handleSemester = (
+    event,
+    newSemester,
+  ) => {
+    setSemester(newSemester);
+    // fetchData();
+  };
+
 
   return (
     <Grid
@@ -70,13 +166,129 @@ export default function CourseSelectionPanel({
         bgcolor="rgba(205,50,3)"
         sx={{
           borderTopRightRadius: 40,
-          height: '8vh',
-          p: 1,
-          textAlign: 'left',
+          height: '8vh'
         }}
       >
-        <FilterModal />
+        <Button
+          onClick={handleModalOpen}
+          sx={{
+            mt: 0.5,
+            bgcolor: 'rgba(255,204,0)',
+            justifyContent: 'center',
+            display: 'flex',
+            borderRadius: 100,
+          }}
+        >
+          <FilterListIcon sx={{ color: 'white' }} />
+        </Button>
+        <Modal
+          open={openModal}
+          onClose={handleModalClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={modalStyle}>
+            
+            Exculde Days
+            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
+              
+              <ToggleButtonGroup
+                value = {days}
+                onChange={handleDays}
+              >
+                
+                <ToggleButton value="monday" aria-label="monday">
+                  Monday
+                </ToggleButton>
+
+                <ToggleButton value="tuesday" aria-label="tuesday">
+                  Tuesday
+                </ToggleButton>
+
+                <ToggleButton value="wednesday" aria-label="wednesday">
+                  Wednesday
+                </ToggleButton>                
+
+                <ToggleButton value="thursday" aria-label="thursday">
+                  Thursday
+                </ToggleButton>
+
+                <ToggleButton value="friday" aria-label="friday">
+                  Friday
+                </ToggleButton>
+
+              </ToggleButtonGroup>
+            </Grid>
+            
+            Exclude Times
+            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
+              <ToggleButtonGroup
+                value= {times}
+                onChange={handleTimes}
+              >  
+                
+                <ToggleButton value="morning" aria-label="morning">
+                  Morning
+                </ToggleButton>
+
+                <ToggleButton value="afternoon" aria-label="afternoon">
+                  Afternoon
+                </ToggleButton>
+              
+              </ToggleButtonGroup>
+            </Grid>
+            
+            Exclude Class Type
+            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
+              <ToggleButtonGroup
+                value= {classes}
+                onChange={handleClasses}
+              >    
+                <ToggleButton value="lecture" aria-label="lecture">
+                  Lecture
+                </ToggleButton>
+
+                <ToggleButton value="lab" aria-label="lab">
+                  Lab
+                </ToggleButton>
+
+                <ToggleButton value="seminar" aria-label="seminar">
+                  Seminar
+                </ToggleButton>
+              
+              </ToggleButtonGroup>
+            </Grid>
+
+            Choose Semester
+            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
+
+              {/* F22
+              <Switch color = 'error' checked={checked} onChange={handleSemester} />
+              W23 */}
+
+              <ToggleButtonGroup
+                value= {semester}
+                onChange={handleSemester}
+                exclusive= 'true'
+                unselectable='true'
+              >  
+                <ToggleButton value="f22" aria-label="f22">
+                  f22
+                </ToggleButton>
+                <ToggleButton value="w23" aria-label="w23">
+                  w23
+                </ToggleButton>
+              
+              </ToggleButtonGroup>
+            </Grid>
+
+
+
+          </Box>
+        </Modal>
       </Grid>
+
+     
 
       {/* loop for adding 5 course components */}
       {courseKeys.map((courseKey) => {
