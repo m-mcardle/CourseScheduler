@@ -41,17 +41,17 @@ export default function CourseSelectionPanel({
 
       var url = 'https://20.168.192.248/api/'+semester+'?'
 
-      if (days.length > 1){
+      if (days.length > 0){
         for (let day in days){
           url = url +'&'+days[day]+'=No'
         }
       }
-      if (times.length > 1){
+      if (times.length > 0){
         for (let time in times){
           url = url +'&'+times[time]+'=No'
         }
       }
-      if (classes.length > 1){
+      if (classes.length > 0){
         for (let classType in classes){
           url = url +'&'+classes[classType]+'=No'
         }
@@ -102,8 +102,6 @@ export default function CourseSelectionPanel({
     newDays,
   ) => {
       setDays(newDays);
-      // fetchData();
-
   };
  
   const handleTimes = (
@@ -111,7 +109,6 @@ export default function CourseSelectionPanel({
     newTimes,
   ) => {
       setTimes(newTimes);
-      // fetchData();
   };
  
   const handleClasses = (
@@ -119,7 +116,6 @@ export default function CourseSelectionPanel({
     newClasses,
   ) => {
       setClasses(newClasses);
-      // fetchData();
   };
 
   const handleSemester = (
@@ -127,7 +123,11 @@ export default function CourseSelectionPanel({
     newSemester,
   ) => {
     setSemester(newSemester);
-    // fetchData();
+
+    setCourses((state) => {
+      delete state.courses;
+      return  { ...state, courses:  { ...state.courses } };
+    })
   };
 
 
