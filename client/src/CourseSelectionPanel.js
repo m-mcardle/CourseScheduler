@@ -43,17 +43,17 @@ export default function CourseSelectionPanel({
 
       if (days.length > 1){
         for (let day in days){
-          url = url +'&'+days[day]+'=no'
+          url = url +'&'+days[day]+'=No'
         }
       }
       if (times.length > 1){
         for (let time in times){
-          url = url +'&'+times[time]+'=no'
+          url = url +'&'+times[time]+'=No'
         }
       }
       if (classes.length > 1){
         for (let classType in classes){
-          url = url +'&'+classes[classType]+'=no'
+          url = url +'&'+classes[classType]+'=No'
         }
       }
 
@@ -65,7 +65,7 @@ export default function CourseSelectionPanel({
     }
 
     fetchIData();
-  }, []);
+  }, [semester, classes, days, times]);
 
   const [open, setOpen] = useState(false);
 
@@ -197,23 +197,23 @@ export default function CourseSelectionPanel({
                 onChange={handleDays}
               >
                 
-                <ToggleButton value="monday" aria-label="monday">
+                <ToggleButton value="Monday" aria-label="monday">
                   Monday
                 </ToggleButton>
 
-                <ToggleButton value="tuesday" aria-label="tuesday">
+                <ToggleButton value="Tuesday" aria-label="tuesday">
                   Tuesday
                 </ToggleButton>
 
-                <ToggleButton value="wednesday" aria-label="wednesday">
+                <ToggleButton value="Wednesday" aria-label="wednesday">
                   Wednesday
                 </ToggleButton>                
 
-                <ToggleButton value="thursday" aria-label="thursday">
+                <ToggleButton value="Thursday" aria-label="thursday">
                   Thursday
                 </ToggleButton>
 
-                <ToggleButton value="friday" aria-label="friday">
+                <ToggleButton value="Friday" aria-label="friday">
                   Friday
                 </ToggleButton>
 
@@ -227,11 +227,11 @@ export default function CourseSelectionPanel({
                 onChange={handleTimes}
               >  
                 
-                <ToggleButton value="morning" aria-label="morning">
+                <ToggleButton value="Morning" aria-label="morning">
                   Morning
                 </ToggleButton>
 
-                <ToggleButton value="afternoon" aria-label="afternoon">
+                <ToggleButton value="Afternoon" aria-label="afternoon">
                   Afternoon
                 </ToggleButton>
               
@@ -244,15 +244,15 @@ export default function CourseSelectionPanel({
                 value= {classes}
                 onChange={handleClasses}
               >    
-                <ToggleButton value="lecture" aria-label="lecture">
+                <ToggleButton value="Lecture" aria-label="lecture">
                   Lecture
                 </ToggleButton>
 
-                <ToggleButton value="lab" aria-label="lab">
+                <ToggleButton value="Lab" aria-label="lab">
                   Lab
                 </ToggleButton>
 
-                <ToggleButton value="seminar" aria-label="seminar">
+                <ToggleButton value="Seminar" aria-label="seminar">
                   Seminar
                 </ToggleButton>
               
@@ -331,6 +331,7 @@ export default function CourseSelectionPanel({
               setCourses={setCourses}
               allCourses={allCourses}
               collisionCourses={otherCourses}
+              semester={semester}
             />
           </Grid>
         );

@@ -20,7 +20,7 @@ const filterOptions = createFilterOptions({
   limit: 8,
 });
 
-export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses }) {
+export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses, semester }) {
   // setting states
   const [{courseName}, setCourse] = useState({ courseName: null});
   const [{courseData}, setCourseData] = useState({ courseData: [] });
@@ -55,7 +55,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   async function getCourseData(){
     if (!courseName) { return; }
   
-    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName);
+    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName+'?'+semester);
     const data = await response.json();
     
     setCourse((state) => ({ ...state, courseData: data }));
@@ -67,7 +67,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
   async function getExtraData(value){
     setCourse((state) => ({ ...state, courseName: value }))
-    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+value);
+    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+value+'?'+semester);
     const data = await response.json();
     setCourseData((state) => ({ ...state, courseData: data[0]}));
   }
