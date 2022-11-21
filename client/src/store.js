@@ -1,5 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { persistReducer } from 'redux-persist'
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import coursesSlice from './slice'
 
@@ -11,5 +19,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, coursesSlice)
 
 export default configureStore({
-  reducer: persistedReducer
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 })

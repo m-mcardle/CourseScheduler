@@ -4,6 +4,7 @@ export const coursesSlice = createSlice({
   name: 'counter',
   initialState: {
     courses: {},
+    semester: 'f22'
   },
   reducers: {
     addCourse: (state, action) => {
@@ -12,10 +13,16 @@ export const coursesSlice = createSlice({
     removeCourse: (state, action) => {
       delete state.courses[action.payload.i]
     },
+    removeAllCourses: (state) => {
+      state.courses = {}
+    },
+    setStoreSemester: (state, action) => {
+      state.semester = action.payload
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addCourse, removeCourse } = coursesSlice.actions
+export const { addCourse, removeCourse, removeAllCourses, setStoreSemester } = coursesSlice.actions
 
 export default coursesSlice.reducer

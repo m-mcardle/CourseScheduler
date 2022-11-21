@@ -19,8 +19,8 @@ import {
   useState,
   // useRef
 } from 'react';
-import { useDispatch } from 'react-redux';
-import { removeCourse } from './slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeAllCourses, setStoreSemester } from './slice';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -29,12 +29,13 @@ export default function CourseSelectionPanel({
   collisions,
   courses,
 }) {
-
+  const storeSemester = useSelector((state) => state.semester);
+ 
   const [allCourses, setAllCourses] = useState([]);
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
-  const [semester, setSemester] = useState('f22');
+  const [semester, setSemester] = useState(storeSemester);
 
   const dispatch = useDispatch();
 
@@ -77,6 +78,7 @@ export default function CourseSelectionPanel({
   };
 
   const handleCloseConfirm = () => {
+    dispatch(removeAllCourses());
     setOpen(false);
     window.location.reload(false);
   };
@@ -125,11 +127,8 @@ export default function CourseSelectionPanel({
     event,
     newSemester,
   ) => {
-    dispatch(removeCourse({ i: 'Course 1' }))
-    dispatch(removeCourse({ i: 'Course 2' }))
-    dispatch(removeCourse({ i: 'Course 3' }))
-    dispatch(removeCourse({ i: 'Course 4' }))
-    dispatch(removeCourse({ i: 'Course 5' }))
+    dispatch(removeAllCourses())
+    dispatch(setStoreSemester(newSemester))
 
     setCourses((state) => {
       delete state.courses;
@@ -273,7 +272,7 @@ export default function CourseSelectionPanel({
               <ToggleButtonGroup
                 value= {semester}
                 onChange={handleSemester}
-                exclusive= 'true'
+                exclusive={true}
                 unselectable='true'
               >  
                 <ToggleButton value="f22" aria-label="f22">
@@ -365,7 +364,6 @@ export default function CourseSelectionPanel({
           variant="contained"
           color="error"
           sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-          // onClick = {() => window.location.reload(false)}
           onClick={handleClickOpen}
         >
           Clear Courses
