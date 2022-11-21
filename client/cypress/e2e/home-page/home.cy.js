@@ -64,10 +64,10 @@ describe('home page', () => {
   })
 
   it('can add DE course and not display on schedule', () => {
-    const course_3 = 'ACCT*1220*DE01 (6583) Intro Financial Accounting'
+    const course = 'ACCT*1220*DE01 (6583) Intro Financial Accounting'
     cy.get('.course-input')
       .first()
-      .type(`${course_3}{enter}`)
+      .type(`${course}{enter}`)
 
     cy.get('.course-submit')
       .first()
@@ -75,15 +75,25 @@ describe('home page', () => {
   
     // Assert course was not added to schedule
     cy.get('.schedule').should('not.contain.text', 'ACCT*1220*DE01')
+  })
 
-    cy.get('.course-delete')
+  it('can select a w23 course', () => {
+    cy.get('.filter-button').click()
+
+    cy.contains('w23').click()
+
+    cy.get('.close-button').click()
+
+    const course = 'CIS*3110*0101 (1751) Operating Systems'
+    cy.get('.course-input')
+      .first()
+      .type(`${course}{enter}`)
+
+    cy.get('.course-submit')
       .first()
       .click()
-
-    cy.get('.dialog-confirm')
-      .click()
-
-    // Assert course was removed
-    cy.get('.schedule').should('not.contain.text', 'ACCT*1220*DE01')
+  
+    // Assert course was added to schedule
+    cy.get('.schedule').should('contain.text', 'CIS*3110*0101')
   })
 })
