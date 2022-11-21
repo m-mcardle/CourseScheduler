@@ -170,6 +170,7 @@ export default function CourseSelectionPanel({
         }}
       >
         <Button
+          className='filter-button'
           onClick={handleModalOpen}
           sx={{
             mt: 0.5,
@@ -188,15 +189,13 @@ export default function CourseSelectionPanel({
           aria-describedby="modal-modal-description"
         >
           <Box sx={modalStyle}>
-            
-            Exculde Days
+            Exclude Days
             <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
               
               <ToggleButtonGroup
                 value = {days}
                 onChange={handleDays}
               >
-                
                 <ToggleButton value="Monday" aria-label="monday">
                   Monday
                 </ToggleButton>
@@ -216,7 +215,6 @@ export default function CourseSelectionPanel({
                 <ToggleButton value="Friday" aria-label="friday">
                   Friday
                 </ToggleButton>
-
               </ToggleButtonGroup>
             </Grid>
             
@@ -225,8 +223,7 @@ export default function CourseSelectionPanel({
               <ToggleButtonGroup
                 value= {times}
                 onChange={handleTimes}
-              >  
-                
+              >
                 <ToggleButton value="Morning" aria-label="morning">
                   Morning
                 </ToggleButton>
@@ -234,10 +231,9 @@ export default function CourseSelectionPanel({
                 <ToggleButton value="Afternoon" aria-label="afternoon">
                   Afternoon
                 </ToggleButton>
-              
               </ToggleButtonGroup>
             </Grid>
-            
+
             Exclude Class Type
             <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
               <ToggleButtonGroup
@@ -255,17 +251,11 @@ export default function CourseSelectionPanel({
                 <ToggleButton value="Seminar" aria-label="seminar">
                   Seminar
                 </ToggleButton>
-              
               </ToggleButtonGroup>
             </Grid>
 
             Choose Semester
             <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
-
-              {/* F22
-              <Switch color = 'error' checked={checked} onChange={handleSemester} />
-              W23 */}
-
               <ToggleButtonGroup
                 value= {semester}
                 onChange={handleSemester}
@@ -275,15 +265,28 @@ export default function CourseSelectionPanel({
                 <ToggleButton value="f22" aria-label="f22">
                   f22
                 </ToggleButton>
+
                 <ToggleButton value="w23" aria-label="w23">
                   w23
                 </ToggleButton>
-              
               </ToggleButtonGroup>
             </Grid>
-
-
-
+            <Grid item xs={12}>
+              <Button
+                  className='close-button'
+                  onClick={handleModalClose}
+                  sx={{
+                    mt: 0.5,
+                    bgcolor: 'rgba(255,204,0)',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    borderRadius: 100,
+                    color: 'black'
+                  }}
+                >
+                  Close
+                </Button>
+              </Grid>
           </Box>
         </Modal>
       </Grid>
