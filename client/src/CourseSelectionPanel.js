@@ -174,7 +174,7 @@ export default function CourseSelectionPanel({
           onClick={handleModalOpen}
           sx={{
             mt: 0.5,
-            bgcolor: 'rgba(255,204,0)',
+            bgcolor: 'rgba(205,50,3)',
             justifyContent: 'center',
             display: 'flex',
             borderRadius: 100,
@@ -189,6 +189,11 @@ export default function CourseSelectionPanel({
           aria-describedby="modal-modal-description"
         >
           <Box sx={modalStyle}>
+
+            <Typography color= 'rgba(205,50,3)' align="center" fontSize="4vh" fontWeight="bold" paddingBottom="10px" >
+              Course Selection Helper
+            </Typography>
+
             Exclude Days
             <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
               
@@ -271,17 +276,18 @@ export default function CourseSelectionPanel({
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{display: 'flex',justifyContent: 'right'}}>
               <Button
                   className='close-button'
                   onClick={handleModalClose}
+                  variant="contained"
+                  color= "error"
                   sx={{
                     mt: 0.5,
-                    bgcolor: 'rgba(255,204,0)',
+                    bgcolor: 'rgba(194,4,48)',
                     justifyContent: 'center',
                     display: 'flex',
-                    borderRadius: 100,
-                    color: 'black'
+                    color: 'white'
                   }}
                 >
                   Close

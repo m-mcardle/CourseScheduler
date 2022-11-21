@@ -1,5 +1,5 @@
 # Sprint 8
-This branch contains the code that was created by team 205 to meet requirements for sprint eight. This sprint was focused on adding Winter 2023 courses.
+This branch contains the code that was created by team 205 to meet requirements for sprint eight. This sprint was focused on adding Winter 2023 courses and filtering options.
 
 https://20.168.192.248/ <- check out our web application using this link!
 
@@ -31,3 +31,6 @@ Contains an 'end-to-end' test suite built using the Cypress framework. Simulates
 ## /nginx 📡
 
 Contains our NGINX configuration files along with bash script to manage fresh installation and applying changes to the configuration.
+
+# Video Demo
+[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/tKSsQRMkjDD7biBG5NubXG?)
