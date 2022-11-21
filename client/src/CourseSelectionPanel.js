@@ -19,6 +19,8 @@ import {
   useState,
   // useRef
 } from 'react';
+import { useDispatch } from 'react-redux';
+import { removeCourse } from './slice';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -33,6 +35,8 @@ export default function CourseSelectionPanel({
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
   const [semester, setSemester] = useState('f22');
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchIData() {
@@ -57,7 +61,6 @@ export default function CourseSelectionPanel({
         }
       }
 
-      console.log(url)
       const response = await fetch(url);
       const data = await response.json();
       const newArray = data.map(course => course['Section Name and Title']);
@@ -122,12 +125,18 @@ export default function CourseSelectionPanel({
     event,
     newSemester,
   ) => {
-    setSemester(newSemester);
+    dispatch(removeCourse({ i: 'Course 1' }))
+    dispatch(removeCourse({ i: 'Course 2' }))
+    dispatch(removeCourse({ i: 'Course 3' }))
+    dispatch(removeCourse({ i: 'Course 4' }))
+    dispatch(removeCourse({ i: 'Course 5' }))
 
     setCourses((state) => {
       delete state.courses;
       return  { ...state, courses:  { ...state.courses } };
     })
+
+    setSemester(newSemester);
   };
 
 
@@ -339,6 +348,7 @@ export default function CourseSelectionPanel({
               course={courseKey}
               setCourses={setCourses}
               allCourses={allCourses}
+              selectedCourses={courses}
               collisionCourses={otherCourses}
               semester={semester}
             />

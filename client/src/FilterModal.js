@@ -61,9 +61,9 @@ export default function FilterModal(setDays, days, setTimes, times, setClasses, 
 
   const handleSemester = () => {
     if (semester == 'f22') {
-      setSemester('w22');
+      setSemester('w23');
     } else {
-      setSemester('w22');
+      setSemester('f22');
     }
   };
 

@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { ThemeProvider } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { darkTheme } from './themes';
 import Schedule from './Schedule';
 import CourseSelectionPanel from './CourseSelectionPanel';
 import './App.css';
 
 export default function App() {
-  const [state, setCourses] = useState({ courses: {}, collisions: []});
+  const stateCourses = useSelector((state) => state.courses)
+  const [state, setCourses] = useState({ courses: stateCourses, collisions: []});
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App" style={{display:'flex', flexDirection:'row'}}>

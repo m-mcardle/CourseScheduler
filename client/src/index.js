@@ -4,12 +4,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react'
+
+import { persistStore } from 'redux-persist';
+import store from './store';
+
+const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <CssBaseline />
-    <App />
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <CssBaseline />
+        <App />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

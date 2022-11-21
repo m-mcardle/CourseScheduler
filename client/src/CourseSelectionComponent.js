@@ -14,30 +14,28 @@ import {
   DialogTitle
 } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-import React, { useState, useEffect,} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addCourse, removeCourse } from './slice';
 
 const filterOptions = createFilterOptions({
   limit: 8,
 });
 
-export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses, semester}) {
+export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses, semester, selectedCourses }) {
   // setting states
-  const [{courseName}, setCourse] = useState({ courseName: null});
-  const [{courseData}, setCourseData] = useState({ courseData: [] });
+  const [{courseName}, setCourse] = useState({ courseName: selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null });
+  const [{courseData}, setCourseData] = useState({ courseData: selectedCourses[course] ? selectedCourses[course] : {} });
   
-  const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
 
+  // Reset course each time semester changes
   useEffect(() => {
-    async function clearCourses() {
-      setCourse({ courseName: null})
-      setCourseData({ courseData: []})
-    }
-
-    clearCourses();
-  }, [semester]);
-
-
+    setCourse({ courseName: selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null })
+    setCourseData({ courseData: selectedCourses[course] ? selectedCourses[course] : {} })
+  }, [semester])
 
   const handleClickOpen = () => {
     if (courseName !== null) {
@@ -46,6 +44,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   };
 
   const handleCloseConfirm = () => {
+    dispatch(removeCourse({ i: course }))
     setOpen(false);
     
     // Remove course from `courses`
@@ -56,7 +55,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
     // Clear input values
     setCourse({ courseName: null})
-    setCourseData({ courseData: []})
+    setCourseData({ courseData: {} })
   };
 
   const handleCloseCancel = () => {
@@ -73,6 +72,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
     setCourse((state) => ({ ...state, courseData: data }));
 
     if (data.length === 1) {
+      dispatch(addCourse({ course: data[0], i: course }))
       setCourses((state) => ({...state, courses: { ...state.courses, [course]: data[0] } }))
     }
   }
