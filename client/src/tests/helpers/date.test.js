@@ -16,7 +16,7 @@ describe('Valid meetings', () => {
         endDate: '2021-11-05T10:20',
         title: 'Valid*1000 (LEC)',
         location: 'ROZH, Room 104',
-        id: 'Valid*1000 course0005',
+        id: 'Course 1Valid*1000 course0005',
         course: 'Valid*1000 course'
       },
       {
@@ -24,7 +24,7 @@ describe('Valid meetings', () => {
         endDate: '2021-11-02T09:20',
         title: 'Valid*1000 (SEM)',
         location: 'MCKN, Room 227',
-        id: 'Valid*1000 course0102',
+        id: 'Course 1Valid*1000 course0102',
         course: 'Valid*1000 course'
       }
     ];
