@@ -24,8 +24,8 @@ const filterOptions = createFilterOptions({
 
 export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses, semester, selectedCourses }) {
   // setting states
-  const [{courseName}, setCourse] = useState({ courseName: selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null });
-  const [{courseData}, setCourseData] = useState({ courseData: selectedCourses[course] ? selectedCourses[course] : {} });
+  const [courseName, setCourse] = useState(selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null);
+  const [courseData, setCourseData] = useState(selectedCourses[course] ? selectedCourses[course] : {});
   
   const dispatch = useDispatch();
 
@@ -33,8 +33,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
   // Reset course each time semester changes
   useEffect(() => {
-    setCourse({ courseName: selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null })
-    setCourseData({ courseData: selectedCourses[course] ? selectedCourses[course] : {} })
+    setCourse(selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null)
+    setCourseData(selectedCourses[course] ? selectedCourses[course] : {})
   }, [semester])
 
   const handleClickOpen = () => {
@@ -54,8 +54,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
     })
 
     // Clear input values
-    setCourse({ courseName: null})
-    setCourseData({ courseData: {} })
+    setCourse(null)
+    setCourseData({})
   };
 
   const handleCloseCancel = () => {
@@ -63,27 +63,38 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   };
 
   // function to get course data from api
-  async function getCourseData(){
-    if (!courseName) { return; }
+  async function getCourseData(courseToFetch=courseName) {
+    if (!courseToFetch) { return; }
   
-    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+courseName+'?'+semester);
+    const response = await fetch(`https://20.168.192.248/api/course/Section%20Name%20and%20Title/${courseToFetch}?${semester}`);
     const data = await response.json();
-    
-    setCourse((state) => ({ ...state, courseData: data }));
+    return data;
+  }
 
-    if (data.length === 1) {
-      dispatch(addCourse({ course: data[0], i: course }))
-      setCourses((state) => ({...state, courses: { ...state.courses, [course]: data[0] } }))
+  async function submitCourse() {
+    if (courseData['Section Name and Title']) {
+      dispatch(addCourse({ course: courseData, i: course }))
+      setCourses((state) => ({
+          ...state,
+          courses: {
+              ...state.courses,
+              [course]: courseData
+          }
+        })
+      )
     }
   }
 
-  async function getExtraData(value){
-    setCourse((state) => ({ ...state, courseName: value }))
-    const response = await fetch('https://20.168.192.248/api/course/Section%20Name%20and%20Title/'+value+'?'+semester);
-    const data = await response.json();
-    setCourseData((state) => ({ ...state, courseData: data[0]}));
-  }
+  async function selectCourse(newValue) {
+    setCourse(newValue);
+    const data = await getCourseData(newValue);
 
+    if (!data) {
+      setCourseData({});
+    } else {
+      setCourseData(data[0]);
+    }
+  }
 
   return (
     // main grid
@@ -97,7 +108,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           autoComplete
           filterOptions={filterOptions}
           value={courseName}
-          onChange={(_, value) => getExtraData(value)}
+          onChange={(_, value) => selectCourse(value)}
           renderInput={(params) => (
             <TextField
               color = "main"
@@ -126,7 +137,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
         <IconButton
           className="course-submit"
           aria-label="add"
-          onClick={() => getCourseData()}
+          onClick={() => submitCourse()}
           sx={{  color: 'white' }}
         >
           <AddIcon sx={{  height: "30px", width: "30px"}} />

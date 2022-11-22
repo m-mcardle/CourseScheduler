@@ -17,7 +17,7 @@ export function parseCourses(courses) {
     const instances = []
 
     let courseNum = 0;
-    for (const [, value] of Object.entries(courses)) {
+    for (const [key, value] of Object.entries(courses)) {
       const courseName = value['Section Name and Title']
       const courseCode = courseName.split(' ', 1)[0]
       let rawMeetings = value['Meeting Information']
@@ -62,7 +62,7 @@ export function parseCourses(courses) {
             endDate: currentMonth + '-' + dayOfWeek[days[j]] + 'T' + endTime,
             title: courseCode + ` (${type})`,
             location,
-            id: courseName + courseNum + i + dayOfWeek[days[j]],
+            id: key + courseName + courseNum + i + dayOfWeek[days[j]],
             course: courseName
           }
 

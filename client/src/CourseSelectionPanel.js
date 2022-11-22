@@ -264,6 +264,10 @@ export default function CourseSelectionPanel({
                 <ToggleButton value="Seminar" aria-label="seminar">
                   Seminar
                 </ToggleButton>
+
+                <ToggleButton value="DE" aria-label="de">
+                  DE
+                </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
 
