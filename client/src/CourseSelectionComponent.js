@@ -1,17 +1,17 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import WarningIcon from '@mui/icons-material/Warning';
-import { 
-  Grid, 
-  TextField, 
-  IconButton, 
+import {
+  Grid,
+  TextField,
+  IconButton,
   Button,
-  Autocomplete, 
-  Dialog, 
+  Autocomplete,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
 } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useEffect, useState } from 'react';
@@ -22,20 +22,37 @@ const filterOptions = createFilterOptions({
   limit: 8,
 });
 
-export default function CourseSelectionComponent({ course, setCourses, allCourses, collisionCourses, semester, selectedCourses }) {
+export default function CourseSelectionComponent({
+  course,
+  setCourses,
+  allCourses,
+  collisionCourses,
+  semester,
+  selectedCourses,
+}) {
   // setting states
-  const [courseName, setCourse] = useState(selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null);
-  const [courseData, setCourseData] = useState(selectedCourses[course] ? selectedCourses[course] : {});
-  
+  const [courseName, setCourse] = useState(
+    selectedCourses[course]
+      ? selectedCourses[course]['Section Name and Title']
+      : null
+  );
+  const [courseData, setCourseData] = useState(
+    selectedCourses[course] ? selectedCourses[course] : {}
+  );
+
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
 
   // Reset course each time semester changes
   useEffect(() => {
-    setCourse(selectedCourses[course] ? selectedCourses[course]['Section Name and Title'] : null)
-    setCourseData(selectedCourses[course] ? selectedCourses[course] : {})
-  }, [semester])
+    setCourse(
+      selectedCourses[course]
+        ? selectedCourses[course]['Section Name and Title']
+        : null
+    );
+    setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
+  }, [semester]);
 
   const handleClickOpen = () => {
     if (courseName !== null) {
@@ -44,18 +61,18 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   };
 
   const handleCloseConfirm = () => {
-    dispatch(removeCourse({ i: course }))
+    dispatch(removeCourse({ i: course }));
     setOpen(false);
-    
+
     // Remove course from `courses`
     setCourses((state) => {
       delete state.courses[course];
-      return  { ...state, courses:  { ...state.courses } };
-    })
+      return { ...state, courses: { ...state.courses } };
+    });
 
     // Clear input values
-    setCourse(null)
-    setCourseData({})
+    setCourse(null);
+    setCourseData({});
   };
 
   const handleCloseCancel = () => {
@@ -63,25 +80,28 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
   };
 
   // function to get course data from api
-  async function getCourseData(courseToFetch=courseName) {
-    if (!courseToFetch) { return; }
-  
-    const response = await fetch(`https://20.168.192.248/api/course/Section%20Name%20and%20Title/${courseToFetch}?${semester}`);
+  async function getCourseData(courseToFetch = courseName) {
+    if (!courseToFetch) {
+      return;
+    }
+
+    const response = await fetch(
+      `https://20.168.192.248/api/course/Section%20Name%20and%20Title/${courseToFetch}?${semester}`
+    );
     const data = await response.json();
     return data;
   }
 
   async function submitCourse() {
     if (courseData['Section Name and Title']) {
-      dispatch(addCourse({ course: courseData, i: course }))
+      dispatch(addCourse({ course: courseData, i: course }));
       setCourses((state) => ({
-          ...state,
-          courses: {
-              ...state.courses,
-              [course]: courseData
-          }
-        })
-      )
+        ...state,
+        courses: {
+          ...state.courses,
+          [course]: courseData,
+        },
+      }));
     }
   }
 
@@ -98,9 +118,21 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
 
   return (
     // main grid
-    <Grid container  sx={{ p: 1, alignItems: 'center', justifyContent: 'center', display: 'flex' }}>
+    <Grid
+      container
+      sx={{
+        p: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+      }}
+    >
       {/* text field for course input */}
-      <Grid item xs={8} sx={{ mx: 1.5, bgcolor: 'rgba(255,255,255)', borderRadius:1}}>
+      <Grid
+        item
+        xs={8}
+        sx={{ mx: 1.5, bgcolor: 'background.default', borderRadius: 1 }}
+      >
         <Autocomplete
           className="course-input"
           options={allCourses}
@@ -111,9 +143,9 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           onChange={(_, value) => selectCourse(value)}
           renderInput={(params) => (
             <TextField
-              color = "main"
+              color="textFieldColor"
               focused
-              label={course} 
+              label={course}
               variant="filled"
               fullWidth
               {...params}
@@ -121,7 +153,7 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           )}
         />
       </Grid>
-      
+
       {/* button for adding course */}
       <Grid
         item
@@ -131,16 +163,16 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           bgcolor: 'rgba(255,204,0)',
           justifyContent: 'center',
           display: 'flex',
-          borderRadius: 100
+          borderRadius: 100,
         }}
       >
         <IconButton
           className="course-submit"
           aria-label="add"
           onClick={() => submitCourse()}
-          sx={{  color: 'white' }}
+          sx={{ color: 'white' }}
         >
-          <AddIcon sx={{  height: "30px", width: "30px"}} />
+          <AddIcon sx={{ height: '30px', width: '30px' }} />
         </IconButton>
       </Grid>
 
@@ -153,15 +185,15 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           bgcolor: 'rgba(194,4,48)',
           justifyContent: 'center',
           display: 'flex',
-          borderRadius: 100
+          borderRadius: 100,
         }}
       >
         <IconButton
           className="course-delete"
-          sx={{  color: 'white' }}
+          sx={{ color: 'white' }}
           onClick={handleClickOpen}
         >
-          <DeleteIcon sx={{  height: "30px", width: "30px"}} />
+          <DeleteIcon sx={{ height: '30px', width: '30px' }} />
         </IconButton>
 
         <Dialog
@@ -170,8 +202,8 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title" >
-            {"Delete " + course}
+          <DialogTitle id="alert-dialog-title">
+            {'Delete ' + course}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -179,31 +211,45 @@ export default function CourseSelectionComponent({ course, setCourses, allCourse
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseCancel} sx={{color:'grey'}}>Cancel</Button>
-            <Button className="dialog-confirm" onClick={handleCloseConfirm} autoFocus sx={{color:'red'}}>
+            <Button onClick={handleCloseCancel} sx={{ color: 'grey' }}>
+              Cancel
+            </Button>
+            <Button
+              className="dialog-confirm"
+              onClick={handleCloseConfirm}
+              autoFocus
+              sx={{ color: 'red' }}
+            >
               Confirm
             </Button>
           </DialogActions>
         </Dialog>
-
       </Grid>
 
-      {courseName
-        ?
-        <div className='secondary-info'>
-          <p className='secondary-text'>Faculty: {courseData['Faculty']}, Meetings: {courseData['# of Meetings']}, Term: {courseData['Term']}</p>
+      {courseName ? (
+        <div className="secondary-info">
+          <p className="secondary-text">
+            Faculty: {courseData['Faculty']}, Meetings:{' '}
+            {courseData['# of Meetings']}, Term: {courseData['Term']}
+          </p>
         </div>
-        : undefined
-      }
+      ) : undefined}
 
-      {collisionCourses.length
-        ?
-        <div className='collide secondary-info'>
-          <WarningIcon sx={{  height: "14px", width: "14px", display: 'inline', verticalAlign: 'middle' }} />
-          <p style={{ fontSize: '14px', display: 'inline' }}>Conflicts with: {collisionCourses.join(', ')}</p>
+      {collisionCourses.length ? (
+        <div className="collide secondary-info">
+          <WarningIcon
+            sx={{
+              height: '14px',
+              width: '14px',
+              display: 'inline',
+              verticalAlign: 'middle',
+            }}
+          />
+          <p style={{ fontSize: '14px', display: 'inline' }}>
+            Conflicts with: {collisionCourses.join(', ')}
+          </p>
         </div>
-        : undefined
-      }
+      ) : undefined}
     </Grid>
   );
 }
