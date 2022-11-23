@@ -378,11 +378,26 @@ export default function CourseSelectionPanel({
           </Grid>
         );
       })}
+      
+      <Grid
+        item
+        xs={12}
+        sx={{ p: 2, justifyContent: 'left', display: 'flex'}}
+        >
+          <Button
+          variant="contained"
+          color="error"
+          sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+          onClick={handleClickOpen}
+          >
+            Suggest
+          </Button>
+      </Grid>
 
       <Grid
         item
         xs={12}
-        sx={{ p: 2, justifyContent: 'center', display: 'flex' }}
+        sx={{ p: 2, justifyContent: 'right', display: 'flex' }}
       >
         <Button
           variant="contained"
