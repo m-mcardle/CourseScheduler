@@ -1,0 +1,80 @@
+:root {
+    --font-color: #0d0d0d;
+    --background-color: #e1e1e1;
+    --link-color: skyblue;
+}
+
+[data-theme="dark"] {
+    --font-color: #e1e1e1;
+    --background-color: #0d0d0d;
+    --link-color: skyblue;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+customcolor {
+    color: var(--link-color);
+}
+
+.toggle-theme-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: right;
+    gap: 4px;
+}
+
+.toggle-theme-wrapper span {
+    font-size: 20px;
+}
+
+.toggle-theme {
+    position: relative;
+    display: inline-block;
+    height: 28px;
+    width: 50px;
+}
+
+.toggle-theme input {
+    display: none;
+}
+
+.slider {
+    background-color: #d9d9d9;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: 0.4s;
+}
+
+.slider:before {
+    background-color: #ffffff;
+    content: "";
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    bottom: 4px;
+    left: 4px;
+    transition: 0.5s;
+}
+
+.slider.round {
+    border-radius: 32px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+input:checked + .slider {
+    background-color: skyblue;
+}
