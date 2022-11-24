@@ -399,8 +399,8 @@ export default function CourseSelectionPanel({
           sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
           onClick={handleClickOpen}
           >
-          Clear Courses
-        </Button>
+            Clear Courses
+          </Button>
 
         <Dialog
           open={open}
