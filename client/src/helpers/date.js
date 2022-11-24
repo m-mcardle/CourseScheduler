@@ -74,7 +74,7 @@ export function parseCourses(courses, parseExams="false") {
             id: key + courseName + courseNum + i + dayOfWeek[days[j]],
             course: courseName
           }
-
+          classFind(location).then((data) => newEntry.classFind = data);
           entries.push(newEntry)
         }
       }
@@ -91,4 +91,12 @@ export function parseCourses(courses, parseExams="false") {
         instances,
         entries
     }
+}
+
+export async function classFind(location) {
+  const formattedLocation = location.replace(", Room ", "");
+
+  const response = await fetch(`http://127.0.0.1:5000/api/classfind?location=${formattedLocation}`);
+  const data =  await response.json();
+  return (data === 200) ? formattedLocation : '';
 }

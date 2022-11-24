@@ -10,11 +10,32 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Typography } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 
 import { currentDate, parseCourses } from './helpers/date';
 
+import { Room } from '@mui/icons-material';
+
 dayjs.extend(isBetween);
+
+
+export const Content = (({
+  appointmentData, ...restProps
+}) => (
+  <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+    <Grid container alignItems="center">
+      <Grid item xs={2} textAlign="center">
+        <Room />
+      </Grid>
+      <Grid item xs={10}>
+        {appointmentData.classFind
+          ? <a href={`https://classfind.com/guelph/room/${appointmentData.classFind}`}>{appointmentData.location}</a>
+          : <span>{appointmentData.location}</span>
+        }
+      </Grid>
+    </Grid>
+  </AppointmentTooltip.Content>
+));
 
 export default function Schedule({ courses, setCourses, scheduleSettings }) {
   const [state, setState] = useState({
@@ -31,7 +52,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings }) {
   // Hook for parsing selected courses' meetings
   useEffect(() => {
     const { entries, instances } = parseCourses(courses, scheduleSettings.showExams);
-
+  
     setState((state) => ({
       ...state,
       appointments: entries,
@@ -87,7 +108,10 @@ export default function Schedule({ courses, setCourses, scheduleSettings }) {
           <ViewState currentDate={currentDate} />
           <WeekView startDayHour={8} endDayHour={22} excludedDays={[0, 6]} />
           <Appointments />
-          <AppointmentTooltip showCloseButton />
+          <AppointmentTooltip
+            showCloseButton
+            contentComponent={Content}
+          />
           <Resources data={state.resources} mainResourceName={'course'} />
         </Scheduler>
       </Paper>
