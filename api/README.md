@@ -55,6 +55,7 @@ This should start the server to external IPs on port 8080.
 python3 -m venv venv
 . venv/bin/activate
 pip install flask
+pip install requests
 pip install pylint
 pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:8080 'app:app'
