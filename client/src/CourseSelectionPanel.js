@@ -39,16 +39,6 @@ export default function CourseSelectionPanel({
   const [allCourses, setAllCourses] = useState([]);
   const [coursesData, setCoursesData] = useState([]);
   const [suggestCourses, setSuggCourses] = useState([]);
-  /*const [state, setState] = useState({
-    appointments: [],
-    resources: [
-      {
-        fieldName: 'course',
-        title: 'Course',
-        instances: [],
-      },
-    ],
-  });*/
 
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
@@ -94,38 +84,36 @@ export default function CourseSelectionPanel({
     const newCourses = coursesData.filter((course) =>
       course['Section Name and Title'].includes(targetCode)
     );
-    const newnewCourses = {};
-    for (let i = 0; i < 5; i++) {
-      if (newCourses[i]) {
-        newnewCourses[`Course ${i}`] = newCourses[i];
+    const suggestedCourses = {};
+
+// while we have < 5 courses and there are collisions
+    let i = 1;
+    let j = 0;
+    if (newCourses.length) {
+      while (i <= 5 && newCourses[j]) {
+        const newCollisions = []
+        suggestedCourses[`Course ${i}`] = newCourses[j];
+        console.log(newCourses[j])
+        const { entries } = parseCourses(suggestedCourses);
+        getCollisions({ appointments: entries }, setSuggCourses, newCollisions);
+
+        if (newCollisions.length === 0) {
+          i++;
+        } else {
+          delete suggestedCourses[`Course ${i}`];
+        }
+        j++;
       }
     }
-    const { entries } = parseCourses(newnewCourses, scheduleSettings.showExams);
-    console.log(entries);
-    getCollisions({ appointments: entries }, setSuggCourses, collisions);
-    console.log(collisions);
 
-    /*setState((state) => ({
-      ...state,
-      appointments: entries,
-      resources: [
-        {
-          fieldName: 'course',
-          title: 'Course',
-          instances,
-        },
-      ],
-    }));
-    setSuggCourses(newCourses);*/
+    console.log("Final courses:", suggestedCourses);
+    setSuggCourses(suggestedCourses);
   }, [courses]);
 
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
-    const collisions = [];
-    getCollisions(parseCourses(suggestCourses), setSuggCourses, collisions);
-    console.log(collisions);
-    console.log(suggestCourses);
+    setCourses((state) => ({ ...state, courses: suggestCourses }));
   };
 
   const handleClickOpen = () => {
