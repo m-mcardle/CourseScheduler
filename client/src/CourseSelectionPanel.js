@@ -38,7 +38,7 @@ export default function CourseSelectionPanel({
   const storeSemester = useSelector((state) => state.semester);
 
   const [allCourses, setAllCourses] = useState([]);
-  // const [suggestCourses, setSuggCourses] = useState([])
+  const [suggestCourses, setSuggCourses] = useState([])
   
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
@@ -77,6 +77,7 @@ export default function CourseSelectionPanel({
       const data = await response.json();
       const newArray = data.map((course) => course['Section Name and Title']);
       setAllCourses(newArray);
+      setSuggCourses(data);
     }
 
     fetchIData();
@@ -85,11 +86,14 @@ export default function CourseSelectionPanel({
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
-    console.log(allCourses)
+    // console.log(allCourses)
     console.log(courses)
+    console.log(suggestCourses)
     var targetCode = courses['Course 1']['Section Name and Title'].slice(0, 3)
     console.log(targetCode)
-    var newCourses = allCourses.filter(course => course.includes(targetCode));
+    // var newCourses = allCourses.filter(course => course.includes(targetCode));
+    var newCourses = suggestCourses.filter(course => course['Section Name and Title'].includes(targetCode));
+
     console.log(newCourses)
   }
 
