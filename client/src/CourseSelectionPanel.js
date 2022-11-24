@@ -93,8 +93,8 @@ export default function CourseSelectionPanel({
     console.log(targetCode)
     // var newCourses = allCourses.filter(course => course.includes(targetCode));
     var newCourses = suggestCourses.filter(course => course['Section Name and Title'].includes(targetCode));
-
-    console.log(newCourses)
+    setSuggCourses(newCourses)
+    console.log(suggestCourses)
   }
 
   const handleClickOpen = () => {
@@ -398,7 +398,7 @@ export default function CourseSelectionPanel({
       <Grid
         item 
         xs={12}
-        sx={{ p: 2, justifyContent: 'centre', display: 'flex' }}
+        sx={{ p: 2, justifyContent: 'space-between', display: 'flex' }}
         container spacing = {2}
       >
         <Grid item xs = {2}>
