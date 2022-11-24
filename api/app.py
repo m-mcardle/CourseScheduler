@@ -1,5 +1,6 @@
 """A dummy docstring."""
 import json
+import requests
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -205,6 +206,14 @@ def get_course_meeting(course_name):
 def get_course_meetings(value=None):
     """Route for getting course meetings."""
     return get_course_meeting(value)
+
+
+@app.route("/api/classfind")
+def classfind():
+    """Function to search for a course on ClassFind."""
+    args = request.args
+    response = requests.get(f"https://classfind.com/guelph/room/{args['location']}")
+    return str(response.status_code)
 
 
 if __name__ == '__main__':
