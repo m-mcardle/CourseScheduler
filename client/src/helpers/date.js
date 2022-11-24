@@ -12,9 +12,12 @@ const dayOfWeek = {
 
 // Takes in object of courses with properties as `Course 1: CIS*3760`, `Course 2: CIS*3210`
 // Returns object containing entries (meetings) and instances (courses)
-export function parseCourses(courses) {
+export function parseCourses(courses, parseExams="false") {
     const entries = []
     const instances = []
+
+    // Value of `parseExams` will be string of boolean, this just simplifies it to a boolean
+    parseExams = (parseExams === "true");
 
     let courseNum = 0;
     for (const [key, value] of Object.entries(courses)) {
@@ -30,7 +33,12 @@ export function parseCourses(courses) {
 
         const type = rows[0].split(' ', 1)[0]
         // If meeting isn't a valid type skip
-        if (type !== 'LEC' && type !== 'LAB' && type !== 'SEM') {
+        if (type !== 'LEC' && type !== 'LAB' && type !== 'SEM' && type !== 'EXAM') {
+          continue;
+        }
+
+        // If meeting is an exam but we aren't showing exams skip
+        if (!parseExams && type === 'EXAM') {
           continue;
         }
 
@@ -40,7 +48,8 @@ export function parseCourses(courses) {
           continue;
         }
 
-        const times = rows[1].split(" - ");
+        // This splits the time into start/end and then removes any dates (ex: `02:30PM - 04:30PM (2022/12/09)` ==> removes `(2022/12/09)`)
+        const times = rows[1].split(" - ").map((time) => time.split(' ')[0]);
         const location = rows[2];
 
         for (const j in days) {

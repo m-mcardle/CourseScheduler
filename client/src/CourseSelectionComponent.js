@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
 } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useEffect, useState } from 'react';
@@ -228,10 +229,10 @@ export default function CourseSelectionComponent({
 
       {courseName ? (
         <div className="secondary-info">
-          <p className="secondary-text">
+          <Typography variant="caption" align="center">
             Faculty: {courseData['Faculty']}, Meetings:{' '}
             {courseData['# of Meetings']}, Term: {courseData['Term']}
-          </p>
+          </Typography>
         </div>
       ) : undefined}
 
