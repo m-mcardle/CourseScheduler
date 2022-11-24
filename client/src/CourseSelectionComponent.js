@@ -95,11 +95,11 @@ export default function CourseSelectionComponent({
   async function selectCourse(newValue) {
     setCourse(newValue);
     const data = await getCourseData(newValue);
-    dispatch(addCourse({ course: data, i: course }));
 
     if (!data) {
       setCourseData({});
     } else {
+      dispatch(addCourse({ course: data[0], i: course }));
       setCourseData(data[0]);
     }
   }

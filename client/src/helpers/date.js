@@ -96,7 +96,7 @@ export function parseCourses(courses, parseExams="false") {
 export async function classFind(location) {
   const formattedLocation = location.replace(", Room ", "");
 
-  const response = await fetch(`http://127.0.0.1:5000/api/classfind?location=${formattedLocation}`);
+  const response = await fetch(`https://20.168.192.248/api/classfind?location=${formattedLocation}`);
   const data =  await response.json();
   return (data === 200) ? formattedLocation : '';
 }
