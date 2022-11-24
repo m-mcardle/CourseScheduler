@@ -8,19 +8,25 @@ import {
   DialogContentText,
   DialogTitle,
   Box,
-  Modal, 
+  Modal,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  IconButton,
+  useTheme,
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { 
-  useEffect, 
+import {
+  useEffect,
   useState,
+  useContext,
   // useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester } from './slice';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ColorModeContext } from './App';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -30,7 +36,7 @@ export default function CourseSelectionPanel({
   courses,
 }) {
   const storeSemester = useSelector((state) => state.semester);
- 
+
   const [allCourses, setAllCourses] = useState([]);
   // const [suggestCourses, setSuggCourses] = useState([])
   
@@ -38,6 +44,8 @@ export default function CourseSelectionPanel({
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
   const [semester, setSemester] = useState(storeSemester);
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
   const dispatch = useDispatch();
 
@@ -46,28 +54,28 @@ export default function CourseSelectionPanel({
       // TODO: Make this refetch each time the toggle changes with the new semester
       // Add appropriate flags to query params (ex: ---/api/f22?DE=Yes&Monday=No)
 
-      var url = 'https://20.168.192.248/api/'+semester+'?'
+      var url = 'https://20.168.192.248/api/' + semester + '?';
 
-      if (days.length > 0){
-        for (let day in days){
-          url = url +'&'+days[day]+'=No'
+      if (days.length > 0) {
+        for (let day in days) {
+          url = url + '&' + days[day] + '=No';
         }
       }
-      if (times.length > 0){
-        for (let time in times){
-          url = url +'&'+times[time]+'=No'
+      if (times.length > 0) {
+        for (let time in times) {
+          url = url + '&' + times[time] + '=No';
         }
       }
-      if (classes.length > 0){
-        for (let classType in classes){
-          url = url +'&'+classes[classType]+'=No'
+      if (classes.length > 0) {
+        for (let classType in classes) {
+          url = url + '&' + classes[classType] + '=No';
         }
       }
 
       console.log(url)
       const response = await fetch(url);
       const data = await response.json();
-      const newArray = data.map(course => course['Section Name and Title']);
+      const newArray = data.map((course) => course['Section Name and Title']);
       setAllCourses(newArray);
     }
 
@@ -114,42 +122,29 @@ export default function CourseSelectionPanel({
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
-  const handleDays = (
-    event,
-    newDays,
-  ) => {
-      setDays(newDays);
-  };
- 
-  const handleTimes = (
-    event,
-    newTimes,
-  ) => {
-      setTimes(newTimes);
-  };
- 
-  const handleClasses = (
-    event,
-    newClasses,
-  ) => {
-      setClasses(newClasses);
+  const handleDays = (event, newDays) => {
+    setDays(newDays);
   };
 
-  const handleSemester = (
-    event,
-    newSemester,
-  ) => {
-    dispatch(removeAllCourses())
-    dispatch(setStoreSemester(newSemester))
+  const handleTimes = (event, newTimes) => {
+    setTimes(newTimes);
+  };
+
+  const handleClasses = (event, newClasses) => {
+    setClasses(newClasses);
+  };
+
+  const handleSemester = (event, newSemester) => {
+    dispatch(removeAllCourses());
+    dispatch(setStoreSemester(newSemester));
 
     setCourses((state) => {
       delete state.courses;
-      return  { ...state, courses:  { ...state.courses } };
-    })
+      return { ...state, courses: { ...state.courses } };
+    });
 
     setSemester(newSemester);
   };
-
 
   return (
     <Grid
@@ -159,7 +154,7 @@ export default function CourseSelectionPanel({
       sx={{
         minWidth: '500px',
         width: '30%',
-        bgcolor: 'rgba(216,216,216)',
+        bgcolor: 'courseSelectionPanelColor',
         borderTopRightRadius: 40,
         borderBottomRightRadius: 40,
         justifyContent: 'center',
@@ -168,7 +163,7 @@ export default function CourseSelectionPanel({
     >
       <Grid
         item
-        xs={10}
+        xs={9}
         bgcolor="rgba(205,50,3)"
         sx={{
           height: '8vh',
@@ -182,15 +177,31 @@ export default function CourseSelectionPanel({
       </Grid>
       <Grid
         item
+        xs={1}
+        bgcolor="rgba(205,50,3)"
+        sx={{
+          height: '8vh',
+        }}
+      >
+        <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </IconButton>
+      </Grid>
+      <Grid
+        item
         xs={2}
         bgcolor="rgba(205,50,3)"
         sx={{
           borderTopRightRadius: 40,
-          height: '8vh'
+          height: '8vh',
         }}
       >
         <Button
-          className='filter-button'
+          className="filter-button"
           onClick={handleModalOpen}
           sx={{
             mt: 0.5,
@@ -209,18 +220,22 @@ export default function CourseSelectionPanel({
           aria-describedby="modal-modal-description"
         >
           <Box sx={modalStyle}>
-
-            <Typography color= 'rgba(205,50,3)' align="center" fontSize="4vh" fontWeight="bold" paddingBottom="10px" >
+            <Typography
+              color="rgba(205,50,3)"
+              align="center"
+              fontSize="4vh"
+              fontWeight="bold"
+              paddingBottom="10px"
+            >
               Course Selection Helper
             </Typography>
-
             Exclude Days
-            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
-              
-              <ToggleButtonGroup
-                value = {days}
-                onChange={handleDays}
-              >
+            <Grid
+              item
+              xs={12}
+              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
+            >
+              <ToggleButtonGroup value={days} onChange={handleDays}>
                 <ToggleButton value="Monday" aria-label="monday">
                   Monday
                 </ToggleButton>
@@ -231,7 +246,7 @@ export default function CourseSelectionPanel({
 
                 <ToggleButton value="Wednesday" aria-label="wednesday">
                   Wednesday
-                </ToggleButton>                
+                </ToggleButton>
 
                 <ToggleButton value="Thursday" aria-label="thursday">
                   Thursday
@@ -242,13 +257,13 @@ export default function CourseSelectionPanel({
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            
             Exclude Times
-            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
-              <ToggleButtonGroup
-                value= {times}
-                onChange={handleTimes}
-              >
+            <Grid
+              item
+              xs={12}
+              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
+            >
+              <ToggleButtonGroup value={times} onChange={handleTimes}>
                 <ToggleButton value="Morning" aria-label="morning">
                   Morning
                 </ToggleButton>
@@ -258,13 +273,13 @@ export default function CourseSelectionPanel({
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-
             Exclude Class Type
-            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
-              <ToggleButtonGroup
-                value= {classes}
-                onChange={handleClasses}
-              >    
+            <Grid
+              item
+              xs={12}
+              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
+            >
+              <ToggleButtonGroup value={classes} onChange={handleClasses}>
                 <ToggleButton value="Lecture" aria-label="lecture">
                   Lecture
                 </ToggleButton>
@@ -282,15 +297,18 @@ export default function CourseSelectionPanel({
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-
             Choose Semester
-            <Grid item xs={12} sx={{ height: "8vh", p: 1, textAlign: 'center' }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
+            >
               <ToggleButtonGroup
-                value= {semester}
+                value={semester}
                 onChange={handleSemester}
                 exclusive={true}
-                unselectable='true'
-              >  
+                unselectable="true"
+              >
                 <ToggleButton value="f22" aria-label="f22">
                   f22
                 </ToggleButton>
@@ -300,28 +318,30 @@ export default function CourseSelectionPanel({
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>
-            <Grid item xs={12} sx={{display: 'flex',justifyContent: 'right'}}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: 'flex', justifyContent: 'right' }}
+            >
               <Button
-                  className='close-button'
-                  onClick={handleModalClose}
-                  variant="contained"
-                  color= "error"
-                  sx={{
-                    mt: 0.5,
-                    bgcolor: 'rgba(194,4,48)',
-                    justifyContent: 'center',
-                    display: 'flex',
-                    color: 'white'
-                  }}
-                >
-                  Close
-                </Button>
-              </Grid>
+                className="close-button"
+                onClick={handleModalClose}
+                variant="contained"
+                color="error"
+                sx={{
+                  mt: 0.5,
+                  bgcolor: 'rgba(194,4,48)',
+                  justifyContent: 'center',
+                  display: 'flex',
+                  color: 'white',
+                }}
+              >
+                Close
+              </Button>
+            </Grid>
           </Box>
         </Modal>
       </Grid>
-
-     
 
       {/* loop for adding 5 course components */}
       {courseKeys.map((courseKey) => {
@@ -370,7 +390,7 @@ export default function CourseSelectionPanel({
           </Grid>
         );
       })}
-
+      
       <Grid
         item 
         xs={12}

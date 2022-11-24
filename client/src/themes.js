@@ -1,8 +1,16 @@
-import { createTheme } from '@mui/material';
-
-export const darkTheme = createTheme({
+export const getDesignTokens = (mode) => ({
   palette: {
-    mode: 'light',
-    main: '#829baf',
+    mode,
+    ...(mode === 'light'
+      ? {
+          // palette values for light mode
+          textFieldColor: '#829baf',
+          courseSelectionPanelColor: 'rgba(216,216,216)',
+        }
+      : {
+          // palette values for dark mode
+          textFieldColor: '#fff',
+          courseSelectionPanelColor: '#000',
+        }),
   },
 });
