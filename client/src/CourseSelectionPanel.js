@@ -20,7 +20,6 @@ import {
   useEffect,
   useState,
   useContext,
-  // useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester } from './slice';
@@ -34,6 +33,8 @@ export default function CourseSelectionPanel({
   setCourses,
   collisions,
   courses,
+  scheduleSettings,
+  setScheduleSettings,
 }) {
   const storeSemester = useSelector((state) => state.semester);
 
@@ -50,26 +51,17 @@ export default function CourseSelectionPanel({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchIData() {
-      // TODO: Make this refetch each time the toggle changes with the new semester
-      // Add appropriate flags to query params (ex: ---/api/f22?DE=Yes&Monday=No)
-
+    async function fetchData() {
       var url = 'https://20.168.192.248/api/' + semester + '?';
 
-      if (days.length > 0) {
-        for (let day in days) {
-          url = url + '&' + days[day] + '=No';
-        }
+      for (let day in days) {
+        url += '&' + days[day] + '=No';
       }
-      if (times.length > 0) {
-        for (let time in times) {
-          url = url + '&' + times[time] + '=No';
-        }
+      for (let time in times) {
+        url += '&' + times[time] + '=No';
       }
-      if (classes.length > 0) {
-        for (let classType in classes) {
-          url = url + '&' + classes[classType] + '=No';
-        }
+      for (let classType in classes) {
+        url += '&' + classes[classType] + '=No';
       }
 
       console.log(url)
@@ -80,7 +72,7 @@ export default function CourseSelectionPanel({
       setSuggCourses(data);
     }
 
-    fetchIData();
+    fetchData();
   }, [semester, classes, days, times]);
 
   const [open, setOpen] = useState(false);
@@ -150,6 +142,10 @@ export default function CourseSelectionPanel({
     setSemester(newSemester);
   };
 
+  const handleShowExams = (event, newValue) => {
+    setScheduleSettings((settings) => ({ ...settings, showExams: newValue }));
+  };
+
   return (
     <Grid
       className="selection-panel"
@@ -175,7 +171,7 @@ export default function CourseSelectionPanel({
           textAlign: 'center',
         }}
       >
-        <Typography color="white" align="left" fontSize="4vh" fontWeight="bold">
+        <Typography color="white" align="left" fontSize="3vh" fontWeight="bold">
           UoG Course Selection
         </Typography>
       </Grid>
@@ -298,6 +294,26 @@ export default function CourseSelectionPanel({
 
                 <ToggleButton value="DE" aria-label="de">
                   DE
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            Show Exams
+            <Grid
+              item
+              xs={12}
+              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
+            >
+              <ToggleButtonGroup
+                value={scheduleSettings.showExams}
+                onChange={handleShowExams}
+                exclusive={true}
+              >
+                <ToggleButton value="true" aria-label="yes">
+                  Yes
+                </ToggleButton>
+
+                <ToggleButton value="false" aria-label="no">
+                  No
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>

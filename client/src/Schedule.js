@@ -16,7 +16,7 @@ import { currentDate, parseCourses } from './helpers/date';
 
 dayjs.extend(isBetween);
 
-export default function Schedule({ courses, setCourses }) {
+export default function Schedule({ courses, setCourses, scheduleSettings }) {
   const [state, setState] = useState({
     appointments: [],
     resources: [
@@ -30,7 +30,7 @@ export default function Schedule({ courses, setCourses }) {
 
   // Hook for parsing selected courses' meetings
   useEffect(() => {
-    const { entries, instances } = parseCourses(courses);
+    const { entries, instances } = parseCourses(courses, scheduleSettings.showExams);
 
     setState((state) => ({
       ...state,
@@ -43,7 +43,7 @@ export default function Schedule({ courses, setCourses }) {
         },
       ],
     }));
-  }, [courses]);
+  }, [courses, scheduleSettings.showExams]);
 
   // Hook for detecting collisions
   useEffect(() => {
