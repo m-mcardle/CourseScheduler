@@ -16,16 +16,14 @@ import {
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import {
-  useEffect,
-  useState,
-  useContext,
-} from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester } from './slice';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { ColorModeContext } from './App';
+import { getCollisions } from './Schedule';
+import { parseCourses } from './helpers/date';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -39,8 +37,19 @@ export default function CourseSelectionPanel({
   const storeSemester = useSelector((state) => state.semester);
 
   const [allCourses, setAllCourses] = useState([]);
-  const [suggestCourses, setSuggCourses] = useState([])
-  
+  const [coursesData, setCoursesData] = useState([]);
+  const [suggestCourses, setSuggCourses] = useState([]);
+  /*const [state, setState] = useState({
+    appointments: [],
+    resources: [
+      {
+        fieldName: 'course',
+        title: 'Course',
+        instances: [],
+      },
+    ],
+  });*/
+
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
@@ -64,30 +73,60 @@ export default function CourseSelectionPanel({
         url += '&' + classes[classType] + '=No';
       }
 
-      console.log(url)
+      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
       const newArray = data.map((course) => course['Section Name and Title']);
       setAllCourses(newArray);
+      setCoursesData(data);
       setSuggCourses(data);
     }
 
     fetchData();
   }, [semester, classes, days, times]);
 
+  useEffect(() => {
+    const targetCode = courses['Course 1']
+      ? courses['Course 1']['Section Name and Title'].split('*')[0]
+      : 'ACCT';
+    console.log(targetCode);
+    // var newCourses = allCourses.filter(course => course.includes(targetCode));
+    const newCourses = coursesData.filter((course) =>
+      course['Section Name and Title'].includes(targetCode)
+    );
+    const newnewCourses = {};
+    for (let i = 0; i < 5; i++) {
+      if (newCourses[i]) {
+        newnewCourses[`Course ${i}`] = newCourses[i];
+      }
+    }
+    const { entries } = parseCourses(newnewCourses, scheduleSettings.showExams);
+    console.log(entries);
+    getCollisions({ appointments: entries }, setSuggCourses, collisions);
+    console.log(collisions);
+
+    /*setState((state) => ({
+      ...state,
+      appointments: entries,
+      resources: [
+        {
+          fieldName: 'course',
+          title: 'Course',
+          instances,
+        },
+      ],
+    }));
+    setSuggCourses(newCourses);*/
+  }, [courses]);
+
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
-    // console.log(allCourses)
-    console.log(courses)
-    console.log(suggestCourses)
-    var targetCode = courses['Course 1']['Section Name and Title'].slice(0, 3)
-    console.log(targetCode)
-    // var newCourses = allCourses.filter(course => course.includes(targetCode));
-    var newCourses = suggestCourses.filter(course => course['Section Name and Title'].includes(targetCode));
-    setSuggCourses(newCourses)
-    console.log(suggestCourses)
-  }
+    const collisions = [];
+    getCollisions(parseCourses(suggestCourses), setSuggCourses, collisions);
+    console.log(collisions);
+    console.log(suggestCourses);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -410,25 +449,26 @@ export default function CourseSelectionPanel({
           </Grid>
         );
       })}
-      
+
       <Grid
-        item 
+        item
         xs={12}
         sx={{ p: 2, justifyContent: 'space-between', display: 'flex' }}
-        container spacing = {2}
+        container
+        spacing={2}
       >
-        <Grid item xs = {2}>
+        <Grid item xs={2}>
           <Button
             variant="contained"
             color="error"
             sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-            onClick = {handleSuggest}
+            onClick={handleSuggest}
           >
             Suggest
           </Button>
         </Grid>
-        
-        <Grid item xs = {3}>
+
+        <Grid item xs={3}>
           <Button
             variant="contained"
             color="error"
@@ -465,11 +505,7 @@ export default function CourseSelectionPanel({
             </DialogActions>
           </Dialog>
         </Grid>
-       
-        
       </Grid>
-        
-      
     </Grid>
   );
 }
