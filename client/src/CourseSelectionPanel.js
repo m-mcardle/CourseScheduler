@@ -32,6 +32,8 @@ export default function CourseSelectionPanel({
   const storeSemester = useSelector((state) => state.semester);
  
   const [allCourses, setAllCourses] = useState([]);
+  // const [suggestCourses, setSuggCourses] = useState([])
+  
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
@@ -62,6 +64,7 @@ export default function CourseSelectionPanel({
         }
       }
 
+      console.log(url)
       const response = await fetch(url);
       const data = await response.json();
       const newArray = data.map(course => course['Section Name and Title']);
@@ -72,6 +75,15 @@ export default function CourseSelectionPanel({
   }, [semester, classes, days, times]);
 
   const [open, setOpen] = useState(false);
+
+  const handleSuggest = () => {
+    console.log(allCourses)
+    console.log(courses)
+    var targetCode = courses['Course 1']['Section Name and Title'].slice(0, 3)
+    console.log(targetCode)
+    var newCourses = allCourses.filter(course => course.includes(targetCode));
+    console.log(newCourses)
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -360,47 +372,64 @@ export default function CourseSelectionPanel({
       })}
 
       <Grid
-        item
+        item 
         xs={12}
-        sx={{ p: 2, justifyContent: 'center', display: 'flex' }}
+        sx={{ p: 2, justifyContent: 'centre', display: 'flex' }}
+        container spacing = {2}
       >
-        <Button
-          variant="contained"
-          color="error"
-          sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-          onClick={handleClickOpen}
-        >
-          Clear Courses
-        </Button>
-
-        <Dialog
-          open={open}
-          onClose={handleCloseCancel}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {'Delete All Courses'}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to remove all courses from the schedule?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseCancel} sx={{ color: 'grey' }}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleCloseConfirm}
-              autoFocus
-              sx={{ color: 'red' }}
-            >
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <Grid item xs = {2}>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+            onClick = {handleSuggest}
+          >
+            Suggest
+          </Button>
+        </Grid>
+        
+        <Grid item xs = {3}>
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+            onClick={handleClickOpen}
+          >
+            Clear Courses
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleCloseCancel}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {'Delete All Courses'}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to remove all courses from the schedule?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseCancel} sx={{ color: 'grey' }}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleCloseConfirm}
+                autoFocus
+                sx={{ color: 'red' }}
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+       
+        
       </Grid>
+        
+      
     </Grid>
   );
 }
