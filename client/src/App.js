@@ -10,7 +10,8 @@ import './App.css';
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function App() {
-  const stateCourses = useSelector((state) => state.courses);
+  const semester = useSelector((state) => state.semester);
+  const stateCourses = useSelector((state) => state.courses[semester]);
   const darkMode = useSelector((state) => state.darkMode);
   const dispatch = useDispatch();
   const [state, setCourses] = useState({

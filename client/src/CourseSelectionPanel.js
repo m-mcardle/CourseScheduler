@@ -37,6 +37,7 @@ export default function CourseSelectionPanel({
   setScheduleSettings,
 }) {
   const storeSemester = useSelector((state) => state.semester);
+  const storeCourses = useSelector((state) => state.courses);
 
   const [allCourses, setAllCourses] = useState([]);
   const [suggestCourses, setSuggCourses] = useState([])
@@ -131,14 +132,8 @@ export default function CourseSelectionPanel({
   };
 
   const handleSemester = (event, newSemester) => {
-    dispatch(removeAllCourses());
     dispatch(setStoreSemester(newSemester));
-
-    setCourses((state) => {
-      delete state.courses;
-      return { ...state, courses: { ...state.courses } };
-    });
-
+    setCourses((state) => ({ ...state, courses: { ...storeCourses[newSemester] } }))
     setSemester(newSemester);
   };
 

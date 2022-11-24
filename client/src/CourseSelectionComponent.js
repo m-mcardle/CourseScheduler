@@ -1,5 +1,4 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
 import WarningIcon from '@mui/icons-material/Warning';
 import {
   Grid,
@@ -61,7 +60,7 @@ export default function CourseSelectionComponent({
     }
   };
 
-  const handleCloseConfirm = () => {
+  const deleteCourse = () => {
     dispatch(removeCourse({ i: course }));
     setOpen(false);
 
@@ -93,28 +92,27 @@ export default function CourseSelectionComponent({
     return data;
   }
 
-  async function submitCourse() {
-    if (courseData['Section Name and Title']) {
-      dispatch(addCourse({ course: courseData, i: course }));
-      setCourses((state) => ({
-        ...state,
-        courses: {
-          ...state.courses,
-          [course]: courseData,
-        },
-      }));
-    }
-  }
-
   async function selectCourse(newValue) {
     setCourse(newValue);
     const data = await getCourseData(newValue);
+    dispatch(addCourse({ course: data, i: course }));
 
     if (!data) {
       setCourseData({});
     } else {
       setCourseData(data[0]);
     }
+  }
+
+  async function previewCourse(newValue) {
+    const newData = await getCourseData(newValue);
+    setCourses((state) => ({
+      ...state,
+      courses: {
+        ...state.courses,
+        [course]: { ...newData[0] },
+      },
+    }));
   }
 
   return (
@@ -152,35 +150,26 @@ export default function CourseSelectionComponent({
               {...params}
             />
           )}
+          renderOption={(params, option) => (
+            <li
+              {...params}
+              onMouseEnter={() => {
+                previewCourse(option)
+              }}
+              onMouseLeave={() => {
+                deleteCourse()
+              }}
+            >
+              {option}
+            </li>
+          )}
         />
-      </Grid>
-
-      {/* button for adding course */}
-      <Grid
-        item
-        xs={1}
-        sx={{
-          mx: 1.5,
-          bgcolor: 'rgba(255,204,0)',
-          justifyContent: 'center',
-          display: 'flex',
-          borderRadius: 100,
-        }}
-      >
-        <IconButton
-          className="course-submit"
-          aria-label="add"
-          onClick={() => submitCourse()}
-          sx={{ color: 'white' }}
-        >
-          <AddIcon sx={{ height: '30px', width: '30px' }} />
-        </IconButton>
       </Grid>
 
       {/* button for deleting  course */}
       <Grid
         item
-        xs={1}
+        xs={2}
         sx={{
           mx: 1.5,
           bgcolor: 'rgba(194,4,48)',
@@ -217,7 +206,7 @@ export default function CourseSelectionComponent({
             </Button>
             <Button
               className="dialog-confirm"
-              onClick={handleCloseConfirm}
+              onClick={deleteCourse}
               autoFocus
               sx={{ color: 'red' }}
             >
