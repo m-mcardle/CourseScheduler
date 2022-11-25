@@ -43,30 +43,8 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="App" style={{ display: 'flex', flexDirection: 'row' }}>
-          {fullscreen && 
-            <div style={{  height: '100vh', minwidth:'100%', width:'100%'}}>
-              <Schedule
-                courses={state.courses}
-                setCourses={setCourses}
-                scheduleSettings={scheduleSettings}
-                fullscreen={fullscreen}
-                setFullscreen={setFullscreen}
-              />
-            </div>    
-          }
-
-          {!fullscreen && 
-            <div style = {{ display: "flex"}}>
-              <div  style = {{ height: '100vh', minwidth:'30%', width:'30%'}}>
-                <CourseSelectionPanel
-                  setCourses={setCourses}
-                  collisions={state.collisions}
-                  courses={state.courses}
-                  scheduleSettings={scheduleSettings}
-                  setScheduleSettings={setScheduleSettings}
-                />
-              </div>
-              <div style={{ height: '100vh', minwidth:'70%', width:'70%'}}>
+            {fullscreen ? (
+              <div style={{  height: '100vh', minwidth:'100%', width:'100%'}}>
                 <Schedule
                   courses={state.courses}
                   setCourses={setCourses}
@@ -74,17 +52,32 @@ export default function App() {
                   fullscreen={fullscreen}
                   setFullscreen={setFullscreen}
                 />
-              </div>
-            </div>  
-          } 
+              </div>    
+            ) : (
+              <div style = {{ display: "flex"}}>
+                <div  style = {{ height: '100vh', minwidth:'30%', width:'30%'}}>
+                  <CourseSelectionPanel
+                    setCourses={setCourses}
+                    collisions={state.collisions}
+                    courses={state.courses}
+                    scheduleSettings={scheduleSettings}
+                    setScheduleSettings={setScheduleSettings}
+                  />
+                </div>
 
-
+                <div style={{ height: '100vh', minwidth:'70%', width:'70%'}}>
+                  <Schedule
+                    courses={state.courses}
+                    setCourses={setCourses}
+                    scheduleSettings={scheduleSettings}
+                    fullscreen={fullscreen}
+                    setFullscreen={setFullscreen}
+                  />
+                </div>
+              </div>  
+            )}
         </div>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
-
-
-
-// style={{ display: 'none' }}

@@ -20,6 +20,9 @@ import { Room } from '@mui/icons-material';
 // import { removeAllCourses, setStoreSemester } from './slice';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+
 import { ColorModeContext } from './App';
 
 import {
@@ -32,8 +35,6 @@ import {
 } from 'react';
 
 dayjs.extend(isBetween);
-
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 
 export const Content = (({
@@ -145,9 +146,12 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
           onClick={fullscreenClick}
           style = {{marginLeft: '25px'}}
         >
-          <FullscreenIcon   />
+          {fullscreen ? (
+            <FullscreenExitIcon />
+          ) : (
+            <FullscreenIcon />
+          )}
         </IconButton>
-
 
         <Typography display = 'inline-block' width='90%' color="grey" fontSize="4vh" fontWeight="bold"  align = 'center'>
           Course Schedule
@@ -161,9 +165,6 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
           )}
         </IconButton>
       </Grid>
-
-
-
 
       <Paper style={{ height: '92vh', width: '100%' }}>
         <Scheduler data={state.appointments}>
