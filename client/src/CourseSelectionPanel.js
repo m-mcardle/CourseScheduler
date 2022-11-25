@@ -38,7 +38,8 @@ export default function CourseSelectionPanel({
 
   const [allCourses, setAllCourses] = useState([]);
   const [coursesData, setCoursesData] = useState([]);
-  const [suggestCourses, setSuggCourses] = useState([]);
+
+  const [suggestCourses, setSuggCourses] = useState({});
 
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
@@ -63,13 +64,11 @@ export default function CourseSelectionPanel({
         url += '&' + classes[classType] + '=No';
       }
 
-      console.log(url);
       const response = await fetch(url);
       const data = await response.json();
       const newArray = data.map((course) => course['Section Name and Title']);
       setAllCourses(newArray);
       setCoursesData(data);
-      setSuggCourses(data);
     }
 
     fetchData();
@@ -79,23 +78,19 @@ export default function CourseSelectionPanel({
     const targetCode = courses['Course 1']
       ? courses['Course 1']['Section Name and Title'].split('*')[0]
       : 'ACCT';
-    console.log(targetCode);
-    // var newCourses = allCourses.filter(course => course.includes(targetCode));
     const newCourses = coursesData.filter((course) =>
       course['Section Name and Title'].includes(targetCode)
     );
     const suggestedCourses = {};
 
-// while we have < 5 courses and there are collisions
+    // while we have < 5 courses and there are collisions
     let i = 1;
     let j = 0;
     if (newCourses.length) {
       while (i <= 5 && newCourses[j]) {
-        const newCollisions = []
         suggestedCourses[`Course ${i}`] = newCourses[j];
-        console.log(newCourses[j])
         const { entries } = parseCourses(suggestedCourses);
-        getCollisions({ appointments: entries }, setSuggCourses, newCollisions);
+        const newCollisions = getCollisions({ appointments: entries });
 
         if (newCollisions.length === 0) {
           i++;
@@ -106,9 +101,8 @@ export default function CourseSelectionPanel({
       }
     }
 
-    console.log("Final courses:", suggestedCourses);
     setSuggCourses(suggestedCourses);
-  }, [courses]);
+  }, [coursesData, courses]);
 
   const [open, setOpen] = useState(false);
 

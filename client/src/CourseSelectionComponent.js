@@ -53,7 +53,7 @@ export default function CourseSelectionComponent({
         : null
     );
     setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
-  }, [semester]);
+  }, [semester, selectedCourses[course]]);
 
   const handleClickOpen = () => {
     if (courseName !== null) {

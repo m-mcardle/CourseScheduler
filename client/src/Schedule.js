@@ -16,7 +16,8 @@ import { currentDate, parseCourses } from './helpers/date';
 
 dayjs.extend(isBetween);
 
-export function getCollisions(state, setCourses, collisions) {
+export function getCollisions(state) {
+  const collisions = [];
   const dates = [];
   for (const i in state.appointments) {
     const appointment = state.appointments[i];
@@ -43,7 +44,7 @@ export function getCollisions(state, setCourses, collisions) {
       end,
     };
   }
-  setCourses((state) => ({ ...state, collisions }));
+  return collisions;
 }
 
 export default function Schedule({ courses, setCourses, scheduleSettings }) {
@@ -80,8 +81,8 @@ export default function Schedule({ courses, setCourses, scheduleSettings }) {
 
   // Hook for detecting collisions
   useEffect(() => {
-    const collisions = [];
-    getCollisions(state, setCourses, collisions);
+    const collisions = getCollisions(state);
+    setCourses((s) => ({ ...s, collisions }))
   }, [state.appointments, setCourses]);
 
   return (

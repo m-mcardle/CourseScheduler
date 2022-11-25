@@ -54,7 +54,7 @@ export function parseCourses(courses, parseExams="false") {
 
         for (const j in days) {
           // If time is TBA skip
-          if (times[0].includes('TBA') || times[1].includes('TBA')) {
+          if (times.length !== 2 || times[0].includes('TBA') || times[1].includes('TBA')) {
             continue;
           }
 
