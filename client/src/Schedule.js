@@ -1,4 +1,9 @@
-import { useEffect, useState } from 'react';
+import { 
+  useEffect, 
+  useState,
+  useContext,
+  createRef
+} from 'react';
 import Paper from '@mui/material/Paper';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
@@ -6,15 +11,24 @@ import {
   Appointments,
   WeekView,
   Resources,
-  AppointmentTooltip,
+  AppointmentTooltip
 } from '@devexpress/dx-react-scheduler-material-ui';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { Typography, Grid } from '@mui/material';
-
+import { 
+  Typography, 
+  Grid,
+  Box,
+  Modal,
+  Button
+} from '@mui/material';
 import { currentDate, parseCourses } from './helpers/date';
-
 import { Room } from '@mui/icons-material';
+import {
+  exportComponentAsJPEG,
+  exportComponentAsPDF,
+  exportComponentAsPNG
+} from "react-component-export-image";
 
 // import { useDispatch, useSelector } from 'react-redux';
 // import { removeAllCourses, setStoreSemester } from './slice';
@@ -22,6 +36,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 import { ColorModeContext } from './App';
 
@@ -30,9 +45,6 @@ import {
   useTheme,
 } from '@mui/material';
 
-import {
-  useContext,
-} from 'react';
 
 dayjs.extend(isBetween);
 
@@ -60,6 +72,12 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
 
+  const [scheduleRef] = useState(createRef());
+
+  const [openModal, setModalOpen] = useState(false);
+  const handleModalOpen = () => {setModalOpen(true)};
+  const handleModalClose = () => setModalOpen(false);
+
 
 
   const fullscreenClick = () => {
@@ -68,6 +86,17 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
     } else {
       setFullscreen(true);
     }
+  };
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    borderRadius: 3,
+    p: 4,
   };
 
   const [state, setState] = useState({
@@ -132,9 +161,87 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
 
   return (
     <div className="schedule" style={{width:'100%', height: '100vh' }}>
+      
+      <div 
+        style={{
+          position:'fixed',
+          width:'40px',
+          height:'40px',
+          bottom:'40px',
+          right:'40px',
+          backgroundColor:'#FFCC00',
+          color:'#FFF',
+          borderRadius:'50px',
+          align:'center',
+          zIndex: '100'
+        }}
+      >
+        <IconButton
+          color="inherit"
+          onClick={handleModalOpen}
+        >
+            <FileDownloadIcon />
+        </IconButton>
+      </div>
 
+      <Modal
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography
+            color="rgba(205,50,3)"
+            align="center"
+            fontSize="4vh"
+            fontWeight="bold"
+            paddingBottom="10px"
+          >
+            Export Schedule
+          </Typography>
 
+          <Grid
+            item 
+            xs={12}
+            sx={{ p: 2, justifyContent: 'center', display: 'flex' }}
+            container spacing = {2}
+          >
+            <Grid item >
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+                onClick = {() => exportComponentAsPNG(scheduleRef)}
+              >
+                PNG
+              </Button>
+            </Grid>
+            
+            <Grid item >
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+                onClick={() => exportComponentAsJPEG(scheduleRef)}
+              >
+                JPEG
+              </Button>
+            </Grid>
 
+            <Grid item >
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+                onClick={() => exportComponentAsPDF(scheduleRef)}
+              >
+                PDF
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
 
       <Grid sx={{width:'100%'}}>
         
@@ -166,7 +273,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
         </IconButton>
       </Grid>
 
-      <Paper style={{ height: '92vh', width: '100%' }}>
+      <Paper style={{ height: '92vh', width: '100%' }} ref={scheduleRef}>
         <Scheduler data={state.appointments}>
           <ViewState currentDate={currentDate} />
           <WeekView startDayHour={8} endDayHour={22} excludedDays={[0, 6]} />
