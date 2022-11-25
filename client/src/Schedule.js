@@ -16,7 +16,24 @@ import { currentDate, parseCourses } from './helpers/date';
 
 import { Room } from '@mui/icons-material';
 
+// import { useDispatch, useSelector } from 'react-redux';
+// import { removeAllCourses, setStoreSemester } from './slice';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { ColorModeContext } from './App';
+
+import {
+  IconButton,
+  useTheme,
+} from '@mui/material';
+
+import {
+  useContext,
+} from 'react';
+
 dayjs.extend(isBetween);
+
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 
 export const Content = (({
@@ -37,7 +54,21 @@ export const Content = (({
   </AppointmentTooltip.Content>
 ));
 
-export default function Schedule({ courses, setCourses, scheduleSettings }) {
+export default function Schedule({ courses, setCourses, scheduleSettings, fullscreen, setFullscreen }) {
+
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
+
+
+
+  const fullscreenClick = () => {
+    if (fullscreen == true) {
+      setFullscreen(false);
+    } else {
+      setFullscreen(true);
+    }
+  };
+
   const [state, setState] = useState({
     appointments: [],
     resources: [
@@ -99,10 +130,41 @@ export default function Schedule({ courses, setCourses, scheduleSettings }) {
   }, [state.appointments, setCourses]);
 
   return (
-    <div className="schedule" style={{ maxWidth: '70%', height: '100vh' }}>
-      <Typography color="grey" align="center" fontSize="4vh" fontWeight="bold">
-        Course Schedule
-      </Typography>
+    <div className="schedule" style={{width:'100%', height: '100vh' }}>
+
+
+
+
+      <Grid sx={{width:'100%'}}>
+        
+        <IconButton
+          align="center" 
+          display = 'inline-block' 
+          width='5%' 
+          color="inherit"
+          onClick={fullscreenClick}
+          style = {{marginLeft: '25px'}}
+        >
+          <FullscreenIcon   />
+        </IconButton>
+
+
+        <Typography display = 'inline-block' width='90%' color="grey" fontSize="4vh" fontWeight="bold"  align = 'center'>
+          Course Schedule
+        </Typography>
+        
+        <IconButton display = 'inline-block' width='5% ' onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </IconButton>
+      </Grid>
+
+
+
+
       <Paper style={{ height: '92vh', width: '100%' }}>
         <Scheduler data={state.appointments}>
           <ViewState currentDate={currentDate} />

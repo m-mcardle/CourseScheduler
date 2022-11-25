@@ -10,22 +10,16 @@ import {
   Box,
   Modal,
   ToggleButton,
-  ToggleButtonGroup,
-  IconButton,
-  useTheme,
+  ToggleButtonGroup
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {
   useEffect,
-  useState,
-  useContext,
+  useState
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester } from './slice';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { ColorModeContext } from './App';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -46,8 +40,6 @@ export default function CourseSelectionPanel({
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
   const [semester, setSemester] = useState(storeSemester);
-  const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
 
   const dispatch = useDispatch();
 
@@ -147,8 +139,8 @@ export default function CourseSelectionPanel({
       container
       spacing={0}
       sx={{
-        minWidth: '500px',
-        width: '30%',
+        width: '100%',
+        height: '100vh',
         bgcolor: 'courseSelectionPanelColor',
         borderTopRightRadius: 40,
         borderBottomRightRadius: 40,
@@ -158,44 +150,26 @@ export default function CourseSelectionPanel({
     >
       <Grid
         item
-        xs={9}
-        bgcolor="rgba(205,50,3)"
-        sx={{
-          height: '8vh',
-          p: 1,
-          textAlign: 'center',
-        }}
-      >
-        <Typography color="white" align="left" fontSize="3vh" fontWeight="bold">
-          UoG Course Selection
-        </Typography>
-      </Grid>
-      <Grid
-        item
-        xs={1}
-        bgcolor="rgba(205,50,3)"
-        sx={{
-          height: '8vh',
-        }}
-      >
-        <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-          {theme.palette.mode === 'dark' ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
-        </IconButton>
-      </Grid>
-      <Grid
-        item
-        xs={2}
+        xs={12}
         bgcolor="rgba(205,50,3)"
         sx={{
           borderTopRightRadius: 40,
           height: '8vh',
+          p: 1,
+          // textAlign: 'center',
+          display: 'flex'
         }}
       >
+
+        <Typography sx={{justifyContent:'center'}} width = '80%' color="white" align="left" fontSize="3vh" fontWeight="bold">
+          UoG Course Selection
+        </Typography>
+
+
         <Button
+          flex= {1}
+          align="right"
+          width = '20%'
           className="filter-button"
           onClick={handleModalOpen}
           sx={{
@@ -356,7 +330,10 @@ export default function CourseSelectionPanel({
             </Grid>
           </Box>
         </Modal>
-      </Grid>
+      </Grid>  
+      
+      {/* </Grid> */}
+
 
       {/* loop for adding 5 course components */}
       {courseKeys.map((courseKey) => {
@@ -409,10 +386,10 @@ export default function CourseSelectionPanel({
       <Grid
         item 
         xs={12}
-        sx={{ p: 2, justifyContent: 'space-between', display: 'flex' }}
+        sx={{ p: 2, justifyContent: 'center', display: 'flex' }}
         container spacing = {2}
       >
-        <Grid item xs = {2}>
+        <Grid item >
           <Button
             variant="contained"
             color="error"
@@ -423,7 +400,7 @@ export default function CourseSelectionPanel({
           </Button>
         </Grid>
         
-        <Grid item xs = {3}>
+        <Grid item >
           <Button
             variant="contained"
             color="error"
