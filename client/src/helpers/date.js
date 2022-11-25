@@ -74,7 +74,8 @@ export function parseCourses(courses, parseExams="false") {
             id: key + courseName + courseNum + i + dayOfWeek[days[j]],
             course: courseName
           }
-          classFind(location).then((data) => newEntry.classFind = data);
+          // This is absolutely rocking our API with requests and bc it isn't that useful I'm removing it
+          // classFind(location).then((data) => newEntry.classFind = data);
           entries.push(newEntry)
         }
       }
