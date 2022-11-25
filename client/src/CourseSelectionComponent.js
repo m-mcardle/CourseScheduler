@@ -101,6 +101,13 @@ export default function CourseSelectionComponent({
     } else {
       dispatch(addCourse({ course: data[0], i: course }));
       setCourseData(data[0]);
+      setCourses((state) => ({
+        ...state,
+        courses: {
+          ...state.courses,
+          [course]: { ...data[0] },
+        },
+      }));
     }
   }
 

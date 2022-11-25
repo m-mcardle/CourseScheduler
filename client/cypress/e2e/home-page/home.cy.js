@@ -4,6 +4,8 @@ describe('home page', () => {
   beforeEach(() => {
     // URL will prepended based on `baseUrl`, can be set w/ CYPRESS_BASE_URL
     cy.visit('/')
+    // Wait for API data
+    cy.wait(1000)
   })
 
   it('displays selection panel and schedule', () => {
@@ -16,10 +18,6 @@ describe('home page', () => {
     cy.get('.course-input')
       .first()
       .type(`${course}{enter}`)
-
-    cy.get('.course-submit')
-      .first()
-      .click()
   
     // Assert course was added
     cy.get('.schedule').should('contain.text', 'ACCT*1220*0101')
@@ -41,18 +39,10 @@ describe('home page', () => {
       .first()
       .type(`${course_1}{enter}`)
 
-    cy.get('.course-submit')
-      .first()
-      .click()
-
     const course_2 = 'ACCT*1220*0102 (6574) Intro Financial Accounting'
     cy.get('.course-input')
       .last()
       .type(`${course_2}{enter}`)
-
-    cy.get('.course-submit')
-      .last()
-      .click()
 
     cy.get('.collide')
       .first()
@@ -68,10 +58,6 @@ describe('home page', () => {
     cy.get('.course-input')
       .first()
       .type(`${course}{enter}`)
-
-    cy.get('.course-submit')
-      .first()
-      .click()
   
     // Assert course was not added to schedule
     cy.get('.schedule').should('not.contain.text', 'ACCT*1220*DE01')
@@ -84,14 +70,13 @@ describe('home page', () => {
 
     cy.get('.close-button').click()
 
+    // Wait for API data
+    cy.wait(1000)
+
     const course = 'CIS*3110*0101 (1751) Operating Systems'
     cy.get('.course-input')
       .first()
       .type(`${course}{enter}`)
-
-    cy.get('.course-submit')
-      .first()
-      .click()
   
     // Assert course was added to schedule
     cy.get('.schedule').should('contain.text', 'CIS*3110*0101')
