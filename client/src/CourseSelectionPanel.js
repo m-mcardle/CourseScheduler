@@ -88,7 +88,12 @@ export default function CourseSelectionPanel({
     let j = 0;
     if (newCourses.length) {
       while (i <= 5 && newCourses[j]) {
-        suggestedCourses[`Course ${i}`] = newCourses[j];
+        // If current course is not already selected, use a new course in place of a selected one
+        if (!courses || !courses[`Course ${i}`]) {
+          suggestedCourses[`Course ${i}`] = newCourses[j];
+        } else {
+          suggestedCourses[`Course ${i}`] = courses[`Course ${i}`];
+        }
         const { entries } = parseCourses(suggestedCourses);
         const newCollisions = getCollisions({ appointments: entries });
 
@@ -107,7 +112,10 @@ export default function CourseSelectionPanel({
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
-    setCourses((state) => ({ ...state, courses: suggestCourses }));
+    setCourses((state) => ({
+      ...state,
+      courses: { ...suggestCourses, ...state.courses },
+    }));
   };
 
   const handleClickOpen = () => {
