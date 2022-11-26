@@ -14,12 +14,12 @@ import {
 } from '@mui/material';
 import CourseSelectionComponent from './CourseSelectionComponent';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import {
-  useEffect,
-  useState
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester } from './slice';
+
+import { getCollisions } from './Schedule';
+import { parseCourses } from './helpers/date';
 
 const courseKeys = ['Course 1', 'Course 2', 'Course 3', 'Course 4', 'Course 5'];
 
@@ -34,8 +34,10 @@ export default function CourseSelectionPanel({
   const storeCourses = useSelector((state) => state.courses);
 
   const [allCourses, setAllCourses] = useState([]);
-  const [suggestCourses, setSuggCourses] = useState([])
-  
+  const [coursesData, setCoursesData] = useState([]);
+
+  const [suggestCourses, setSuggCourses] = useState({});
+
   const [days, setDays] = useState(() => []);
   const [times, setTimes] = useState(() => []);
   const [classes, setClasses] = useState(() => []);
@@ -57,30 +59,59 @@ export default function CourseSelectionPanel({
         url += '&' + classes[classType] + '=No';
       }
 
-      console.log(url)
       const response = await fetch(url);
       const data = await response.json();
       const newArray = data.map((course) => course['Section Name and Title']);
       setAllCourses(newArray);
-      setSuggCourses(data);
+      setCoursesData(data);
     }
 
     fetchData();
   }, [semester, classes, days, times]);
 
+  useEffect(() => {
+    const targetCode = courses['Course 1']
+      ? courses['Course 1']['Section Name and Title'].split('*')[0]
+      : 'ACCT';
+    const newCourses = coursesData.filter((course) =>
+      course['Section Name and Title'].includes(targetCode)
+    );
+    const suggestedCourses = {};
+
+    // while we have < 5 courses and there are collisions
+    let i = 1;
+    let j = 0;
+    if (newCourses.length) {
+      while (i <= 5 && newCourses[j]) {
+        // If current course is not already selected, use a new course in place of a selected one
+        if (!courses || !courses[`Course ${i}`]) {
+          suggestedCourses[`Course ${i}`] = newCourses[j];
+        } else {
+          suggestedCourses[`Course ${i}`] = courses[`Course ${i}`];
+        }
+        const { entries } = parseCourses(suggestedCourses);
+        const newCollisions = getCollisions({ appointments: entries });
+
+        if (newCollisions.length === 0) {
+          i++;
+        } else {
+          delete suggestedCourses[`Course ${i}`];
+        }
+        j++;
+      }
+    }
+
+    setSuggCourses(suggestedCourses);
+  }, [coursesData, courses]);
+
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
-    // console.log(allCourses)
-    console.log(courses)
-    console.log(suggestCourses)
-    var targetCode = courses['Course 1']['Section Name and Title'].slice(0, 3)
-    console.log(targetCode)
-    // var newCourses = allCourses.filter(course => course.includes(targetCode));
-    var newCourses = suggestCourses.filter(course => course['Section Name and Title'].includes(targetCode));
-    setSuggCourses(newCourses)
-    console.log(suggestCourses)
-  }
+    setCourses((state) => ({
+      ...state,
+      courses: { ...suggestCourses, ...state.courses },
+    }));
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -382,25 +413,27 @@ export default function CourseSelectionPanel({
           </Grid>
         );
       })}
-      
+
       <Grid
-        item 
+        item
         xs={12}
         sx={{ p: 2, justifyContent: 'center', display: 'flex' }}
         container spacing = {2}
       >
         <Grid item >
+
           <Button
             variant="contained"
             color="error"
             sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-            onClick = {handleSuggest}
+            onClick={handleSuggest}
           >
             Suggest
           </Button>
         </Grid>
-        
+      
         <Grid item >
+
           <Button
             variant="contained"
             color="error"
@@ -437,11 +470,7 @@ export default function CourseSelectionPanel({
             </DialogActions>
           </Dialog>
         </Grid>
-       
-        
       </Grid>
-        
-      
     </Grid>
   );
 }

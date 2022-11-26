@@ -47,7 +47,36 @@ import {
 
 
 dayjs.extend(isBetween);
+export function getCollisions(state) {
+  const collisions = [];
+  const dates = [];
+  for (const i in state.appointments) {
+    const appointment = state.appointments[i];
+    const start = dayjs(appointment.startDate);
+    const end = dayjs(appointment.endDate);
 
+    for (const j in dates) {
+      // Shift times by a second to ensure that matching start/end times count as collisions
+      const newStart = start.add(1, 'second');
+      const newEnd = end.subtract(1, 'second');
+      if (
+        newStart.isBetween(dates[j].start, dates[j].end) ||
+        newEnd.isBetween(dates[j].start, dates[j].end)
+      ) {
+        collisions.push({
+          course1: appointment.course,
+          course2: state.appointments[j].course,
+        });
+      }
+    }
+
+    dates[i] = {
+      start,
+      end,
+    };
+  }
+  return collisions;
+}
 
 export const Content = (({
   appointmentData, ...restProps
@@ -99,6 +128,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
     p: 4,
   };
 
+
   const [state, setState] = useState({
     appointments: [],
     resources: [
@@ -112,8 +142,11 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
 
   // Hook for parsing selected courses' meetings
   useEffect(() => {
-    const { entries, instances } = parseCourses(courses, scheduleSettings.showExams);
-  
+    const { entries, instances } = parseCourses(
+      courses,
+      scheduleSettings.showExams
+    );
+
     setState((state) => ({
       ...state,
       appointments: entries,
@@ -129,34 +162,8 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
 
   // Hook for detecting collisions
   useEffect(() => {
-    const collisions = [];
-    const dates = [];
-    for (const i in state.appointments) {
-      const appointment = state.appointments[i];
-      const start = dayjs(appointment.startDate);
-      const end = dayjs(appointment.endDate);
-
-      for (const j in dates) {
-        // Shift times by a second to ensure that matching start/end times count as collisions
-        const newStart = start.add(1, 'second');
-        const newEnd = end.subtract(1, 'second');
-        if (
-          newStart.isBetween(dates[j].start, dates[j].end) ||
-          newEnd.isBetween(dates[j].start, dates[j].end)
-        ) {
-          collisions.push({
-            course1: appointment.course,
-            course2: state.appointments[j].course,
-          });
-        }
-      }
-
-      dates[i] = {
-        start,
-        end,
-      };
-    }
-    setCourses((state) => ({ ...state, collisions }));
+    const collisions = getCollisions(state);
+    setCourses((s) => ({ ...s, collisions }))
   }, [state.appointments, setCourses]);
 
   return (
