@@ -39,19 +39,23 @@ export default function CourseSelectionComponent({
   const [courseData, setCourseData] = useState(
     selectedCourses[course] ? selectedCourses[course] : {}
   );
+  const [isHovering, setHovering] = useState(false);
 
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
 
-  // Reset course each time semester changes
+  // Reset course each time semester changes or we are injecting a new course through `selectedCourses`
   useEffect(() => {
-    setCourse(
-      selectedCourses[course]
-        ? selectedCourses[course]['Section Name and Title']
-        : null
-    );
-    setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
+    // Don't update if we are just previewing a course
+    if (!isHovering) {
+      setCourse(
+        selectedCourses[course]
+          ? selectedCourses[course]['Section Name and Title']
+          : null
+      );
+      setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
+    }
   }, [semester, selectedCourses[course]]);
 
   const handleClickOpen = () => {
@@ -161,10 +165,12 @@ export default function CourseSelectionComponent({
             <li
               {...params}
               onMouseEnter={() => {
+                setHovering(true)
                 previewCourse(option)
               }}
               onMouseLeave={() => {
                 deleteCourse()
+                setHovering(false)
               }}
             >
               {option}
