@@ -16,7 +16,7 @@ import CourseSelectionComponent from './CourseSelectionComponent';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeAllCourses, setStoreSemester } from './slice';
+import { removeAllCourses, setStoreSemester, setStoreCourses } from './slice';
 
 import { getCollisions } from './Schedule';
 import { parseCourses } from './helpers/date';
@@ -109,6 +109,7 @@ export default function CourseSelectionPanel({
   const [open, setOpen] = useState(false);
 
   const handleSuggest = () => {
+    dispatch(setStoreCourses({ ...suggestCourses, ...courses }))
     setCourses((state) => ({
       ...state,
       courses: { ...suggestCourses, ...state.courses },

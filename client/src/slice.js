@@ -11,6 +11,9 @@ export const coursesSlice = createSlice({
     darkMode: false
   },
   reducers: {
+    setStoreCourses: (state, action) => {
+      state.courses[state.semester] = { ...action.payload }
+    },
     addCourse: (state, action) => {
       state.courses[state.semester][action.payload.i] = { ...action.payload.course }
     },
@@ -30,6 +33,6 @@ export const coursesSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addCourse, removeCourse, removeAllCourses, setStoreSemester, setDarkMode } = coursesSlice.actions
+export const { addCourse, removeCourse, removeAllCourses, setStoreSemester, setDarkMode, setStoreCourses } = coursesSlice.actions
 
 export default coursesSlice.reducer
