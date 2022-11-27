@@ -29,6 +29,8 @@ export default function CourseSelectionPanel({
   courses,
   scheduleSettings,
   setScheduleSettings,
+  // semester,
+  // setSemester
 }) {
   const storeSemester = useSelector((state) => state.semester);
   const storeCourses = useSelector((state) => state.courses);
@@ -196,6 +198,21 @@ export default function CourseSelectionPanel({
           UoG Course Selection
         </Typography>
 
+        <ToggleButtonGroup
+          value={semester}
+          onChange={handleSemester}
+          exclusive={true}
+          unselectable="true"
+        >
+          <ToggleButton value="f22" aria-label="f22">
+            f22
+          </ToggleButton>
+
+          <ToggleButton value="w23" aria-label="w23">
+            w23
+          </ToggleButton>
+        </ToggleButtonGroup>
+
 
         <Button
           flex= {1}
@@ -314,27 +331,6 @@ export default function CourseSelectionPanel({
 
                 <ToggleButton value="false" aria-label="no">
                   No
-                </ToggleButton>
-              </ToggleButtonGroup>
-            </Grid>
-            Choose Semester
-            <Grid
-              item
-              xs={12}
-              sx={{ height: '8vh', p: 1, textAlign: 'center' }}
-            >
-              <ToggleButtonGroup
-                value={semester}
-                onChange={handleSemester}
-                exclusive={true}
-                unselectable="true"
-              >
-                <ToggleButton value="f22" aria-label="f22">
-                  f22
-                </ToggleButton>
-
-                <ToggleButton value="w23" aria-label="w23">
-                  w23
                 </ToggleButton>
               </ToggleButtonGroup>
             </Grid>

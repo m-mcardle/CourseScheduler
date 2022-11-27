@@ -18,6 +18,7 @@ export default function App() {
   const dispatch = useDispatch();
  
   const [fullscreen, setFullscreen] = useState(false);
+  // const [semester, setSemester] = useState(storeSemester);
  
   const [state, setCourses] = useState({
     courses: stateCourses,
@@ -51,6 +52,7 @@ export default function App() {
                   scheduleSettings={scheduleSettings}
                   fullscreen={fullscreen}
                   setFullscreen={setFullscreen}
+                  semester={semester}
                 />
               </div>    
             ) : (
@@ -62,6 +64,8 @@ export default function App() {
                     courses={state.courses}
                     scheduleSettings={scheduleSettings}
                     setScheduleSettings={setScheduleSettings}
+                    // semester={semester}
+                    // setSemester={setSemester}
                   />
                 </div>
 
@@ -72,6 +76,7 @@ export default function App() {
                     scheduleSettings={scheduleSettings}
                     fullscreen={fullscreen}
                     setFullscreen={setFullscreen}
+                    semester={semester}
                   />
                 </div>
               </div>  
