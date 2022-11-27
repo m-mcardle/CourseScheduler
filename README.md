@@ -44,4 +44,4 @@ Contains an 'end-to-end' test suite built using the Cypress framework. Simulates
 Contains our NGINX configuration files along with bash script to manage fresh installation and applying changes to the configuration.
 
 # Video Demo
-[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/tKSsQRMkjDD7biBG5NubXG?)
+[![thumbnail](https://i.etsystatic.com/10919371/r/il/155a7d/1563938723/il_570xN.1563938723_1rmr.jpg)](https://share.vidyard.com/watch/a7XpkAopHF3YMTttDFzGFL?)
