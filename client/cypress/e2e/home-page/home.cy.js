@@ -64,11 +64,7 @@ describe('home page', () => {
   })
 
   it('can select a w23 course', () => {
-    cy.get('.filter-button').click()
-
     cy.contains('w23').click()
-
-    cy.get('.close-button').click()
 
     // Wait for API data
     cy.wait(1000)
