@@ -1,5 +1,16 @@
-# Sprint 8
-This branch contains the code that was created by team 205 to meet requirements for sprint eight. This sprint was focused on adding Winter 2023 courses and filtering options.
+# Sprint 9
+This branch contains the code that was created by team 205 to meet requirements for sprint nine. This sprint was completely open-ended which allowed us to implement whatever functionality we desired.
+
+Key features we have implemented:
+
+* Course Suggestions
+* Course Preview (On Hover)
+* 'Show Exams' Toggle
+* Dark Mode
+* DE Course Filtering
+* Fullscreen Calendar View
+* Exporting Calendar (PNG, PDF, JPEG, JSON)
+
 
 https://20.168.192.248/ <- check out our web application using this link!
 
