@@ -107,8 +107,6 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
   const handleModalOpen = () => {setModalOpen(true)};
   const handleModalClose = () => setModalOpen(false);
 
-
-
   const fullscreenClick = () => {
     if (fullscreen == true) {
       setFullscreen(false);
@@ -219,7 +217,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
                 variant="contained"
                 color="error"
                 sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-                onClick = {() => exportComponentAsPNG(scheduleRef)}
+                onClick = {() => exportComponentAsPNG(scheduleRef, {fileName:'Schedule'})}
               >
                 PNG
               </Button>
@@ -230,7 +228,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
                 variant="contained"
                 color="error"
                 sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-                onClick={() => exportComponentAsJPEG(scheduleRef)}
+                onClick={() => exportComponentAsJPEG(scheduleRef, {fileName:'Schedule'})}
               >
                 JPEG
               </Button>
@@ -241,11 +239,26 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
                 variant="contained"
                 color="error"
                 sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
-                onClick={() => exportComponentAsPDF(scheduleRef)}
+                onClick={() => exportComponentAsPDF(scheduleRef, {fileName:'Schedule'})}
               >
                 PDF
               </Button>
             </Grid>
+
+            <Grid item >
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ height: 40, bgcolor: 'rgba(194,4,48)' }}
+                href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                  JSON.stringify(courses, null, 4)
+                )}`}
+                download='Schedule.json'
+              >
+                JSON
+              </Button>
+            </Grid>
+
           </Grid>
         </Box>
       </Modal>
