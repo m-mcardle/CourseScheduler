@@ -96,7 +96,7 @@ export const Content = (({
   </AppointmentTooltip.Content>
 ));
 
-export default function Schedule({ courses, setCourses, scheduleSettings, fullscreen, setFullscreen }) {
+export default function Schedule({ courses, setCourses, scheduleSettings, fullscreen, setFullscreen, semester }) {
 
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
@@ -268,7 +268,7 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
         </IconButton>
 
         <Typography display = 'inline-block' width='90%' color="grey" fontSize="4vh" fontWeight="bold"  align = 'center'>
-          Course Schedule
+          {semester.toUpperCase()} Course Schedule
         </Typography>
         
         <IconButton display = 'inline-block' width='5% ' onClick={colorMode.toggleColorMode} color="inherit">
