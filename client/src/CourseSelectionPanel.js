@@ -160,6 +160,7 @@ export default function CourseSelectionPanel({
   const handleSemester = (event, newSemester) => {
     dispatch(setStoreSemester(newSemester));
     setCourses((state) => ({ ...state, courses: { ...storeCourses[newSemester] } }))
+    window.location.reload(false);
     setSemester(newSemester);
   };
 
@@ -213,7 +214,6 @@ export default function CourseSelectionPanel({
             w23
           </ToggleButton>
         </ToggleButtonGroup>
-
 
         <Button
           flex= {1}
