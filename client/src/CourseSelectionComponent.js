@@ -45,18 +45,27 @@ export default function CourseSelectionComponent({
 
   const [open, setOpen] = useState(false);
 
-  // Reset course each time semester changes or we are injecting a new course through `selectedCourses`
+  const updateCourseState = () => {
+    setCourse(
+      selectedCourses[course]
+        ? selectedCourses[course]['Section Name and Title']
+        : null
+    );
+    setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
+  }
+
+  // Reset course each time we are injecting a new course through `selectedCourses`
   useEffect(() => {
     // Don't update if we are just previewing a course
     if (!isHovering) {
-      setCourse(
-        selectedCourses[course]
-          ? selectedCourses[course]['Section Name and Title']
-          : null
-      );
-      setCourseData(selectedCourses[course] ? selectedCourses[course] : {});
+      updateCourseState();
     }
-  }, [semester, selectedCourses[course]]);
+  }, [selectedCourses[course]]);
+
+  // Reset course each time semester changes
+  useEffect(() => {
+    updateCourseState();
+  }, [semester]);
 
   const handleClickOpen = () => {
     if (courseName !== null) {
