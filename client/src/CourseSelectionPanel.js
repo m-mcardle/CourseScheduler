@@ -17,7 +17,6 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllCourses, setStoreSemester, setStoreCourses } from './slice';
-
 import { getCollisions } from './Schedule';
 import { parseCourses } from './helpers/date';
 
@@ -28,9 +27,7 @@ export default function CourseSelectionPanel({
   collisions,
   courses,
   scheduleSettings,
-  setScheduleSettings,
-  // semester,
-  // setSemester
+  setScheduleSettings
 }) {
   const storeSemester = useSelector((state) => state.semester);
   const storeCourses = useSelector((state) => state.courses);
@@ -160,6 +157,7 @@ export default function CourseSelectionPanel({
   const handleSemester = (event, newSemester) => {
     dispatch(setStoreSemester(newSemester));
     setCourses((state) => ({ ...state, courses: { ...storeCourses[newSemester] } }))
+    window.location.reload(false);
     setSemester(newSemester);
   };
 
@@ -194,7 +192,6 @@ export default function CourseSelectionPanel({
           display: 'flex'
         }}
       >
-
         <Typography sx={{justifyContent:'center'}} width = '80%' color="white" align="left" fontSize="3vh" fontWeight="bold">
           UoG Course Selection
         </Typography>
@@ -213,7 +210,6 @@ export default function CourseSelectionPanel({
             w23
           </ToggleButton>
         </ToggleButtonGroup>
-
 
         <Button
           flex= {1}
@@ -360,9 +356,6 @@ export default function CourseSelectionPanel({
         </Modal>
       </Grid>  
       
-      {/* </Grid> */}
-
-
       {/* loop for adding 5 course components */}
       {courseKeys.map((courseKey) => {
         let collides = false;

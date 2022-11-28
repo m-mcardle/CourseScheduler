@@ -29,22 +29,16 @@ import {
   exportComponentAsPDF,
   exportComponentAsPNG
 } from "react-component-export-image";
-
-// import { useDispatch, useSelector } from 'react-redux';
-// import { removeAllCourses, setStoreSemester } from './slice';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-
 import { ColorModeContext } from './App';
-
 import {
   IconButton,
   useTheme,
 } from '@mui/material';
-
 
 dayjs.extend(isBetween);
 export function getCollisions(state) {
@@ -126,7 +120,6 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
     p: 4,
   };
 
-
   const [state, setState] = useState({
     appointments: [],
     resources: [
@@ -166,7 +159,6 @@ export default function Schedule({ courses, setCourses, scheduleSettings, fullsc
 
   return (
     <div className="schedule" style={{width:'100%', height: '100vh' }}>
-      
       <div 
         style={{
           position:'fixed',

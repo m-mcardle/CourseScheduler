@@ -6,11 +6,9 @@ import { getDesignTokens } from './themes';
 import Schedule from './Schedule';
 import CourseSelectionPanel from './CourseSelectionPanel';
 import './App.css';
- 
- 
- 
+
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
- 
+
 export default function App() {
   const semester = useSelector((state) => state.semester);
   const stateCourses = useSelector((state) => state.courses[semester]);
@@ -64,8 +62,6 @@ export default function App() {
                     courses={state.courses}
                     scheduleSettings={scheduleSettings}
                     setScheduleSettings={setScheduleSettings}
-                    // semester={semester}
-                    // setSemester={setSemester}
                   />
                 </div>
 
