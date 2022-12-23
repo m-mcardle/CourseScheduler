@@ -1,15 +1,26 @@
-# Sprint 9
-This branch contains the code that was created by team 205 to meet requirements for sprint nine. This sprint was completely open-ended which allowed us to implement whatever functionality we desired.
+# UofG Course Scheduler 🗓
 
-Key features we have implemented:
+## React Web App + Flask API
 
-* Course Suggestions
-* Course Preview (On Hover)
-* 'Show Exams' Toggle
-* Dark Mode
-* DE Course Filtering
-* Fullscreen Calendar View
-* Exporting Calendar (PNG, PDF, JPEG, JSON)
+### Description 📚
+
+React web application that provides a schedule-building tool for University of Guelph students.
+
+### Infrastructure 🏗️
+
+The front-end of the application was built using React. The course data is fetched from a Flask API which loads its data from parsing the university's website HTML. Traffic to the API and client is managed through NGINX, which serves on HTTPS through a self-signed certificate. The application is hosted on a Microsoft Azure VM and accessible at [20.232.137.237](https://20.232.137.237).
+
+Testing for the application was done through Python's `unittest` library, React's `@testing-library`, and Cypress for E2E coverage of the application.
+
+### Related Concepts / Learnings 💭
+
+* Full Stack Development
+* React
+* Flask APIs
+* Python HTML Parser
+* NGINX
+* Microsoft Azure
+* Cypress
 
 
 https://20.232.137.237/ <- check out our web application using this link!
