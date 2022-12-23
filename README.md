@@ -12,7 +12,7 @@ Key features we have implemented:
 * Exporting Calendar (PNG, PDF, JPEG, JSON)
 
 
-https://20.168.192.248/ <- check out our web application using this link!
+https://20.232.137.237/ <- check out our web application using this link!
 
 
 # Repository
@@ -21,7 +21,7 @@ This next section describes the purpose of each subdirectory in this repo. For m
 
 ## /api 📊
 
-Contains code for our Flask API that provides course information. Accessible at [20.168.192.248/api/{query}](https://20.168.192.248/api/courses). Hosted through a reverse proxy that forwards all traffic to our gunicorn WSGI that is hosting the app on port 8080. This WSGI is kept running through the use of `pm2`. All code written in this directory is linted through `pylint`.
+Contains code for our Flask API that provides course information. Accessible at [20.232.137.237/api/{query}](https://20.232.137.237/api/courses). Hosted through a reverse proxy that forwards all traffic to our gunicorn WSGI that is hosting the app on port 8080. This WSGI is kept running through the use of `pm2`. All code written in this directory is linted through `pylint`.
 
 Is automatically deployed through GitLab CI/CD by copying over the latest `api` code to the server each time changes made to `main`, and then reloads the `pm2` process with the new code.
 
@@ -33,7 +33,7 @@ Contains unit tests to ensure our data remains parsed as expected. These unit te
 
 ## /client 🖥
 
-Contains code for our React Web Application that provides an interface for a user to generate a course schedule. Fetches data from our Flask API and displays it in a calendar. Accessible at [20.168.192.248](https://20.168.192.248). Statically served through NGINX by placing our compiled application in the `/www` directory. All code written in this directory is linted through `eslint`.
+Contains code for our React Web Application that provides an interface for a user to generate a course schedule. Fetches data from our Flask API and displays it in a calendar. Accessible at [20.232.137.237](https://20.232.137.237). Statically served through NGINX by placing our compiled application in the `/www` directory. All code written in this directory is linted through `eslint`.
 
 Contains unit tests that are automatically ran each time a commit is made that adjusts code in this directory. Also is automatically re-deployed whenever new changes are made to the `main` branch.
 

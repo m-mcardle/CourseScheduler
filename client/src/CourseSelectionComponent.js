@@ -99,7 +99,7 @@ export default function CourseSelectionComponent({
     }
 
     const response = await fetch(
-      `https://20.168.192.248/api/course/Section%20Name%20and%20Title/${courseToFetch}?${semester}`
+      `https://20.232.137.237/api/course/Section%20Name%20and%20Title/${courseToFetch}?${semester}`
     );
     const data = await response.json();
     return data;

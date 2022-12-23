@@ -46,7 +46,7 @@ export default function CourseSelectionPanel({
 
   useEffect(() => {
     async function fetchData() {
-      var url = 'https://20.168.192.248/api/' + semester + '?';
+      var url = 'https://20.232.137.237/api/' + semester + '?';
 
       for (let day in days) {
         url += '&' + days[day] + '=No';
